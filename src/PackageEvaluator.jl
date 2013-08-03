@@ -1,135 +1,73 @@
 module PackageEvaluator
 
-export evaluatePackage, scorePackage
+export evalPkg, scorePkg
 
-const REQUIRE_EXISTS = 1.
-const REQUIRE_VERSION = 1.
-const LICENSE_EXISTS = 1.
+const REQUIRE_EXISTS = 20.
+const REQUIRE_VERSION = 20.
+const LICENSE_EXISTS = 10.
 const LICENSE = 0.
 const LICENSE_FILE = 0.
+const TEST_RUNTESTS = 20.
+const TEST_TRAVIS = 10.
+const MAX_SCORE = REQUIRE_EXISTS + REQUIRE_VERSION + LICENSE_EXISTS + TEST_RUNTESTS + TEST_TRAVIS
 
-function scorePackage(features)
+# Evaluate the package itself
+include("package.jl")
+
+macro scoreMsg(key, msg, fatal)
+  quote
+    write(o, $msg)
+    if features[$key]
+      total_score += eval($key)
+      write(o, " - ✓ Passed (+$(eval($key)))\n")
+    else
+      write(o, " - ✗ Failed!\n")
+      fatal_error = true && $fatal
+    end
+  end
+end
+
+function scorePkg(features, o = STDOUT)
 
   total_score = 0.
   fatal_error = false
 
-  println("\n# Package Analysis Results")
-  println("\n## REQUIRE file")
-  println("- Requirement: packages must have a REQUIRE file")
-  if features[:REQUIRE_EXISTS]
-    total_score += REQUIRE_EXISTS
-    println(" - ✓ Passed (+$REQUIRE_EXISTS)")
-  else
-    println(" - ✗ Failed!")
-    fatal_error = true
-  end
+  write(o, "# Package Analysis Results\n")
 
-  println("- Requirement: REQUIRE file specifies a Julia version")
-  if features[:REQUIRE_VERSION]
-    total_score += REQUIRE_VERSION
-    println(" - ✓ Passed (+$REQUIRE_VERSION)")
-  else
-    println(" - ✗ Failed!")
-    fatal_error = true
-  end
+  write(o, "## Package Itself\n")
+  write(o, "### REQUIRE file\n")
+  @scoreMsg(:REQUIRE_EXISTS,  "- Requirement: packages must have a REQUIRE file\n", true)
+  @scoreMsg(:REQUIRE_VERSION, "- Requirement: REQUIRE file specifies a Julia version\n", true)
 
-  println("\n## Licensing")
-  println("- Recommendation: Packages should have a license")
+  write(o, "\n### Licensing\n")
+  @scoreMsg(:LICENSE_EXISTS,  "- Recommendation: Packages should have a license\n", false)
   if features[:LICENSE_EXISTS]
-    total_score += LICENSE_EXISTS
-    println(" - ✓ Passed (+$LICENSE_EXISTS)")
-    println("  - Detected license in $(features[:LICENSE_FILE]): $LICENSE")
-  else
-    println(" - ✗ Failed!")
+    write(o, " - License detected in $(features[:LICENSE_FILE]): $(features[:LICENSE])\n")
   end
-  println("\n---")
-  println("\n## Summary")
-  println(" - Total score: $total_score")
+
+  write(o, "\n### Testing\n")
+  @scoreMsg(:TEST_RUNTESTS, "- Requirement: Packages must have a test/runtests.jl file\n", true)
+  @scoreMsg(:TEST_TRAVIS,   "- Recommendation: Packages should have TravisCI support\n", false)
+
+
+  write(o, "\n---\n")
+  write(o, "\n## Summary\n")
+  write(o, " - Total score: $total_score out of $MAX_SCORE\n")
   if fatal_error
-    println(" - One or more requirements failed - please fix and try again.")
+    write(o, " - One or more requirements failed - please fix and try again.\n")
   end
 
 end
 
 
-function evaluatePackage(repo_url)
+function evalPkg(pkg_path)
   features = Dict{Symbol,Any}()
 
-  # Extract repository name
-  pkg_name = split(repo_url, "/")[end][1:(end-4)]
-  # Clone to local directory
-  println("Cloning package '$pkg_name'...")
-  run(`git clone $repo_url`)
-  println("Done!")
+  checkREQUIRE(features, pkg_path)
+  checkLicense(features, pkg_path)
+  checkTesting(features, pkg_path)
 
-  # Begin checks
-  checkREQUIRE(features, pkg_name)
-  checkLicense(features, pkg_name)
-
-  #println(features)
-
-  # Clean up
-  run(`rm -rf $pkg_name`)
-
-  return features
-end
-
-function checkREQUIRE(features, pkg_name)
-  REQUIRE_path = joinpath(pkg_name, "REQUIRE")
-  if isfile(REQUIRE_path)
-    # Exists
-    features[:REQUIRE_EXISTS] = true
-    # Does it specifiy a Julia dependency?
-    grep_result = readall(REQUIRE_path)
-    features[:REQUIRE_VERSION] = ismatch(r"julia", grep_result)
-  else
-    # Does not exist
-    features[:REQUIRE_EXISTS] = false
-    features[:REQUIRE_VERSION] = false
-  end
-end
-
-function checkLicense(features, pkg_name)
-
-  # Test for some sort of license file first
-  possible_files = [joinpath(pkg_name, "LICENSE"),
-                    joinpath(pkg_name, "LICENSE.md"),
-                    joinpath(pkg_name, "README"),
-                    joinpath(pkg_name, "README.md")]
-  for filename in possible_files
-    if isfile(filename)
-      if guessLicense(features, filename)
-        return
-      end
-    end
-  end      
-    
-  # Failed
-  features[:LICENSE_EXISTS] = false
-  features[:LICENSE] = "Unknown"
-  features[:LICENSE_FILE] = ""
-end
-
-function guessLicense(features, filename)
-  # Be greedy, read the whole file
-  # TODO: Make [key: license, value: list of possibilities] pairs, loop
-  println("Looking in $filename for license...")
-  text = lowercase(readall(filename))
-  if ismatch(r"mit license", text)
-    features[:LICENSE_EXISTS] = true
-    features[:LICENSE] = "MIT"
-  elseif ismatch(r"gpl version 2", text)
-    features[:LICENSE_EXISTS] = true
-    features[:LICENSE] = "GPL v2"
-  elseif ismatch(r"gpl version 3", text) ||
-         ismatch(r"http://www.gnu.org/licenses/gpl-3.0.txt", text)
-    features[:LICENSE_EXISTS] = true
-    features[:LICENSE] = "GPL v3"
-  else
-    return false
-  end
-  features[:LICENSE_FILE] = filename
-  return true
+  scorePkg(features)
 end
 
 end
