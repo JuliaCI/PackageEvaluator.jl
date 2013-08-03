@@ -9,6 +9,7 @@ Example of current output:
 
 ---
 
+```
 # Package Analysis Results
 
 ## Package Itself
@@ -44,3 +45,4 @@ Example of current output:
 
 ## Summary
  - Total score: 110.0 out of 120.0
+```
