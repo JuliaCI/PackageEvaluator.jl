@@ -26,4 +26,4 @@ end
 #cleanRepo("Example.jl")
 
 # Ourselves
-evalPkg(".")
+evalPkg(".", joinpath("test","METADATATest"))

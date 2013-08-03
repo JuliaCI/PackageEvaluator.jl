@@ -9,10 +9,17 @@ const LICENSE = 0.
 const LICENSE_FILE = 0.
 const TEST_RUNTESTS = 20.
 const TEST_TRAVIS = 10.
-const MAX_SCORE = REQUIRE_EXISTS + REQUIRE_VERSION + LICENSE_EXISTS + TEST_RUNTESTS + TEST_TRAVIS
+const MAX_PKG_SCORE = REQUIRE_EXISTS + REQUIRE_VERSION + LICENSE_EXISTS + TEST_RUNTESTS + TEST_TRAVIS
+
+const URL_EXISTS = 20.
+const DESC_EXISTS = 20.
+const MAX_METADATA_SCORE = URL_EXISTS + DESC_EXISTS
 
 # Evaluate the package itself
 include("package.jl")
+
+# Evaluate the metdata entry
+include("metadata.jl")
 
 macro scoreMsg(key, msg, fatal)
   quote
@@ -27,32 +34,46 @@ macro scoreMsg(key, msg, fatal)
   end
 end
 
-function scorePkg(features, o = STDOUT)
+function scorePkg(features, pkg_path, metadata_path, o = STDOUT)
 
   total_score = 0.
+  max_score = 0.
   fatal_error = false
 
   write(o, "# Package Analysis Results\n")
 
-  write(o, "## Package Itself\n")
-  write(o, "### REQUIRE file\n")
-  @scoreMsg(:REQUIRE_EXISTS,  "- Requirement: packages must have a REQUIRE file\n", true)
-  @scoreMsg(:REQUIRE_VERSION, "- Requirement: REQUIRE file specifies a Julia version\n", true)
+  if pkg_path != ""
+    max_score += MAX_PKG_SCORE
+    write(o, "\n## Package Itself\n")
+    write(o, "\n### REQUIRE file\n")
+    @scoreMsg(:REQUIRE_EXISTS,  "- Requirement: packages must have a REQUIRE file\n", true)
+    @scoreMsg(:REQUIRE_VERSION, "- Requirement: REQUIRE file specifies a Julia version\n", true)
 
-  write(o, "\n### Licensing\n")
-  @scoreMsg(:LICENSE_EXISTS,  "- Recommendation: Packages should have a license\n", false)
-  if features[:LICENSE_EXISTS]
-    write(o, " - License detected in $(features[:LICENSE_FILE]): $(features[:LICENSE])\n")
+    write(o, "\n### Licensing\n")
+    @scoreMsg(:LICENSE_EXISTS,  "- Recommendation: Packages should have a license\n", false)
+    if features[:LICENSE_EXISTS]
+      write(o, " - License detected in $(features[:LICENSE_FILE]): $(features[:LICENSE])\n")
+    end
+
+    write(o, "\n### Testing\n")
+    @scoreMsg(:TEST_RUNTESTS, "- Requirement: Packages must have a test/runtests.jl file\n", true)
+    @scoreMsg(:TEST_TRAVIS,   "- Recommendation: Packages should have TravisCI support\n", false)
   end
 
-  write(o, "\n### Testing\n")
-  @scoreMsg(:TEST_RUNTESTS, "- Requirement: Packages must have a test/runtests.jl file\n", true)
-  @scoreMsg(:TEST_TRAVIS,   "- Recommendation: Packages should have TravisCI support\n", false)
+  if metadata_path != ""
+    max_score += MAX_METADATA_SCORE
+    write(o, "\n## Package METADATA Entry\n")
+    write(o, "\n### url file\n")
+    @scoreMsg(:URL_EXISTS, "- Requirement: Packages must have a url file\n", true)
 
+    write(o, "\n### DESCRIPTION.md file\n")
+    @scoreMsg(:DESC_EXISTS, "- Requirement: Packages must have a DESCRIPTION.md file\n", true)
+  end
 
   write(o, "\n---\n")
   write(o, "\n## Summary\n")
-  write(o, " - Total score: $total_score out of $MAX_SCORE\n")
+
+  write(o, " - Total score: $total_score out of $max_score\n")
   if fatal_error
     write(o, " - One or more requirements failed - please fix and try again.\n")
   end
@@ -60,14 +81,20 @@ function scorePkg(features, o = STDOUT)
 end
 
 
-function evalPkg(pkg_path)
+function evalPkg(pkg_path="",metadata_path="")
   features = Dict{Symbol,Any}()
 
-  checkREQUIRE(features, pkg_path)
-  checkLicense(features, pkg_path)
-  checkTesting(features, pkg_path)
+  if pkg_path != ""
+    checkREQUIRE(features, pkg_path)
+    checkLicense(features, pkg_path)
+    checkTesting(features, pkg_path)
+  end
+  if metadata_path != ""
+    checkURL(features, metadata_path)
+    checkDesc(features, metadata_path) 
+  end
 
-  scorePkg(features)
+  scorePkg(features, pkg_path, metadata_path)
 end
 
 end

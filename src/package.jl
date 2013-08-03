@@ -41,7 +41,7 @@ end
 function guessLicense(features, filename)
   # Be greedy, read the whole file
   # TODO: Make [key: license, value: list of possibilities] pairs, loop
-  println("Looking in $filename for license...")
+  # println("Looking in $filename for license...")
   text = lowercase(readall(filename))
   if ismatch(r"mit license", text)
     features[:LICENSE_EXISTS] = true
