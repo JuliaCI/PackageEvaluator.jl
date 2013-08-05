@@ -12,4 +12,24 @@ function checkDesc(features, metadata_path)
   features[:DESC_EXISTS] = isfile(desc_path)
 end
 
+###############################################################################
+# require files
+function checkRequire(features, metadata_path)
+  all_requires_ok = true
+  features[:REQUIRES_FAILS] = ASCIIString[]
 
+  versions_folder = joinpath(metadata_path, "versions")
+  # What is the OS independent way to do this?
+  version_list = split(readall(`ls $versions_folder`), "\n")
+  for version in version_list[1:(end-1)]
+    version_folder = joinpath(versions_folder, version)
+    require_file = joinpath(version_folder, "requires")
+    file_contents = readall(require_file)
+    passes = ismatch(r"julia", file_contents)
+    if !passes
+      all_requires_ok = false
+      push!(features[:REQUIRES_FAILS], version)
+    end
+  end
+  features[:REQUIRES_OK] = all_requires_ok
+end

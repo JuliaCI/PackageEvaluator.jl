@@ -13,7 +13,9 @@ const MAX_PKG_SCORE = REQUIRE_EXISTS + REQUIRE_VERSION + LICENSE_EXISTS + TEST_R
 
 const URL_EXISTS = 20.
 const DESC_EXISTS = 20.
-const MAX_METADATA_SCORE = URL_EXISTS + DESC_EXISTS
+const REQUIRES_OK = 20.
+const REQUIRES_FAILS = 0.
+const MAX_METADATA_SCORE = URL_EXISTS + DESC_EXISTS + REQUIRES_OK
 
 # Evaluate the package itself
 include("package.jl")
@@ -56,7 +58,7 @@ function scorePkg(features, pkg_path, metadata_path, o = STDOUT)
     end
 
     write(o, "\n### Testing\n")
-    @scoreMsg(:TEST_RUNTESTS, "- Requirement: Packages must have a test/runtests.jl file\n", true)
+    @scoreMsg(:TEST_RUNTESTS, "- Recommendation: Packages should have a test/runtests.jl file\n", false)
     @scoreMsg(:TEST_TRAVIS,   "- Recommendation: Packages should have TravisCI support\n", false)
   end
 
@@ -68,6 +70,15 @@ function scorePkg(features, pkg_path, metadata_path, o = STDOUT)
 
     write(o, "\n### DESCRIPTION.md file\n")
     @scoreMsg(:DESC_EXISTS, "- Requirement: Packages must have a DESCRIPTION.md file\n", true)
+
+    write(o, "\n### requires files\n")
+    @scoreMsg(:REQUIRES_OK, "- Requirement: Each package version requires file must specify a Julia version\n", true)
+    if !features[:REQUIRES_OK]
+      write(o, "- Failed versions:\n")
+      for version in features[:REQUIRES_FAILS]
+        write(o, " - $version\n")
+      end
+    end
   end
 
   write(o, "\n---\n")
@@ -91,7 +102,8 @@ function evalPkg(pkg_path="",metadata_path="")
   end
   if metadata_path != ""
     checkURL(features, metadata_path)
-    checkDesc(features, metadata_path) 
+    checkDesc(features, metadata_path)
+    checkRequire(features, metadata_path)
   end
 
   scorePkg(features, pkg_path, metadata_path)

@@ -26,7 +26,7 @@ Example of current output:
  - License detected in ./LICENSE: MIT
 
 ### Testing
-- Requirement: Packages must have a test/runtests.jl file
+- Recommendation: Packages should have a test/runtests.jl file
  - ✓ Passed (+20.0)
 - Recommendation: Packages should have TravisCI support
  - ✗ Failed!
@@ -41,8 +41,14 @@ Example of current output:
 - Requirement: Packages must have a DESCRIPTION.md file
  - ✓ Passed (+20.0)
 
+### requires files
+- Requirement: Each package version requires file must specify a Julia version
+ - ✗ Failed!
+- Failed versions:
+ - 0.0.1
+
 ---
 
 ## Summary
- - Total score: 110.0 out of 120.0
+ - Total score: 110.0 out of 140.0
 ```
