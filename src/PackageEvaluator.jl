@@ -15,6 +15,7 @@ const URL_EXISTS = 20.
 const DESC_EXISTS = 20.
 const REQUIRES_OK = 20.
 const REQUIRES_FAILS = 0.
+const REQUIRES_PASSES = 0.
 const MAX_METADATA_SCORE = URL_EXISTS + DESC_EXISTS + REQUIRES_OK
 
 # Evaluate the package itself
@@ -76,6 +77,10 @@ function scorePkg(features, pkg_path, metadata_path, o = STDOUT)
     if !features[:REQUIRES_OK]
       write(o, "- Failed versions:\n")
       for version in features[:REQUIRES_FAILS]
+        write(o, " - $version\n")
+      end
+      write(o, "- Passed versions:\n")
+      for version in features[:REQUIRES_PASSES]
         write(o, " - $version\n")
       end
     end

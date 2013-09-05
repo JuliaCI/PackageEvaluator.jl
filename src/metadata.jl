@@ -17,6 +17,7 @@ end
 function checkRequire(features, metadata_path)
   all_requires_ok = true
   features[:REQUIRES_FAILS] = ASCIIString[]
+  features[:REQUIRES_PASSES] = ASCIIString[]
 
   versions_folder = joinpath(metadata_path, "versions")
   # What is the OS independent way to do this?
@@ -29,6 +30,8 @@ function checkRequire(features, metadata_path)
     if !passes
       all_requires_ok = false
       push!(features[:REQUIRES_FAILS], version)
+    else
+      push!(features[:REQUIRES_PASSES], version)
     end
   end
   features[:REQUIRES_OK] = all_requires_ok
