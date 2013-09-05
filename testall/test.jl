@@ -24,8 +24,12 @@ Pkg.add(pkg_name)
 evalPkg("$home/.julia/$pkg_name", "METADATA.jl/$pkg_name")
 
 # Run the packages tests
-let
-  include("$home/.julia/$pkg_name/run_tests.jl")
+try
+  let
+    include("$home/.julia/$pkg_name/run_tests.jl")
+  end
+catch
+  println("Failed some tests!")
 end
 
 # Clean up
