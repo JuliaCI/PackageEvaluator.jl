@@ -25,7 +25,10 @@ function checkLicense(features, pkg_path)
                     joinpath(pkg_path, "LICENSE.txt"),
                     joinpath(pkg_path, "README"),
                     joinpath(pkg_path, "README.md"),
-                    joinpath(pkg_path, "README.txt")]
+                    joinpath(pkg_path, "README.txt"),
+                    joinpath(pkg_path, "COPYING"),
+                    joinpath(pkg_path, "COPYING.md"),
+                    joinpath(pkg_path, "COPYING.txt")]
   for filename in possible_files
     if isfile(filename)
       if guessLicense(features, filename)
@@ -48,13 +51,19 @@ function guessLicense(features, filename)
   if ismatch(r"mit license", text)
     features[:LICENSE_EXISTS] = true
     features[:LICENSE] = "MIT"
-  elseif ismatch(r"gpl version 2", text)
+  elseif ismatch(r"gpl version 2", text) ||
+         ismatch(r"gnu general public license\s+version 2", text)
     features[:LICENSE_EXISTS] = true
     features[:LICENSE] = "GPL v2"
   elseif ismatch(r"gpl version 3", text) ||
-         ismatch(r"http://www.gnu.org/licenses/gpl-3.0.txt", text)
+         ismatch(r"http://www.gnu.org/licenses/gpl-3.0.txt", text) ||
+         ismatch(r"gnu general public license\s+version 3", text)
     features[:LICENSE_EXISTS] = true
     features[:LICENSE] = "GPL v3"
+  elseif ismatch(r"lgpl version 2.1", text) ||
+         ismatch(r"gnu lesser general public license\s+version 2\.1", text)
+    features[:LICENSE_EXISTS] = true
+    features[:LICENSE] = "LGPL v2.1"
   else
     return false
   end
