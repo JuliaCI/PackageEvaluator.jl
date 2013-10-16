@@ -49,20 +49,23 @@
       <ul>
       <li>Check for the existence of a REQUIRE file in the root of the package.</li>
       <li>Check that the REQUIRE file specifies a Julia version.</li>
-      <li>Check that a LICENSE file exists in the root of the package.</li>
-      <li>Determine the license type.</li>
-      <li>Checks that the package has tests that can be launched from a single file (e.g. test/runtests.jl)</li>
+      <li>Check that a LICENSE file exists in the root of the package, and determine type.<ul>
+        <li>Will look for LICENSE, LICENSE.md, and LICENSE.txt</li></ul></li>
+      <li>Checks that the package has tests that can be launched from a single file<ul>
+        <li>Will look for /runtests.jl, /run_tests.jl, /test/runtests.jl, /test/run_tests.jl, or as a fallback the existence of .jl files in a /test/ folder.</li></ul></li>
       <li>Checks that the recommend test/runtests.jl file exists.</li>
-      <li>Checks that the tests pass, if they exist.</li>
+      <li>Checks that the tests pass, if they exist.<ul>
+        <li>Will not run tests if could not determine a "master" file e.g. runtests.jl</li></ul></li>
       <li>Checks that the tests pass without warnings (coming soon).</li>
       <li>Checks for TravisCI support.</li>
       </ul>
       <h3>Metadata</h3>
       <ul>
       <li>Checks for the existence of a url file.</li>
-      <li>Checks for the existence of a DESCRIPTION.md file.</li>
+      <li>Checks for the existence of a DESCRIPTION.md file.<ul>
+        <li>Experimental proposal, not implemented anywhere yet</li></ul></li>
       <li>Checks for the existence of a requires file for every version, and all must specify a Julia version.</li>
       </ul>
-      
+
       <h2>Summary Table</h2>
       <p>Click package name for more detailed breakdown.</p>
