@@ -65,10 +65,37 @@ end
 # Testing folder/file
 function checkTesting(features, pkg_path)
   # Look for runtests.jl
-  runtests_file = joinpath(pkg_path, "test", "runtests.jl")
-  features[:TEST_RUNTESTS] = isfile(runtests_file)
-
+  possible_locations = [
+    joinpath(pkg_path, "test", "runtests.jl"),
+    joinpath(pkg_path, "test", "run_tests.jl"),
+    joinpath(pkg_path, "run_tests.jl"),
+    joinpath(pkg_path, "runtests.jl")]
+  foundit = 0
+  for i = 1:length(possible_locations)
+    if isfile(possible_locations[i])
+      foundit = i
+      break
+    end
+  end
+  features[:TEST_EXISTS] = (foundit>0)
+  features[:TEST_RUNTESTS] = (foundit==1)
+  
   # Second, do they have a .travis.yml file?
   travis_file = joinpath(pkg_path, ".travis.yml")
   features[:TEST_TRAVIS] = isfile(travis_file)
+
+  # Run the tests to see how they go
+  if features[:TEST_EXISTS]
+    features[:TEST_PASSES] = true
+    testoutput = ""
+    try
+      testoutput = readall(`julia $(possible_locations[foundit])`)
+    catch
+      features[:TEST_PASSES] = false
+    end
+    println("00")
+    println(testoutput)
+    println("00")
+    features[:TEST_NOWARNING] = !ismatch(r"WARNING", testoutput)
+  end
 end

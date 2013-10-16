@@ -1,0 +1,1 @@
+This script is expected to be run on a fresh Julia install with nothing in .julia except this package.

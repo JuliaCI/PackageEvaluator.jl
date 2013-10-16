@@ -16,14 +16,10 @@ end
 
 
 # JuMP
-#cloneRepo("https://github.com/IainNZ/JuMP.jl.git")
-#evalPkg("JuMP.jl")
-#cleanRepo("JuMP.jl")
+#evalPkg("JuMP",false)
 
 # Example.jl
-#cloneRepo("https://github.com/JuliaLang/Example.jl.git")
-#evalPkg("Example.jl")
-#cleanRepo("Example.jl")
+evalPkg("Example",false)
 
-# Ourselves
-evalPkg(".", joinpath("test", "METADATATest"))
+# Ourselves (infinite loop!)
+#evalPkgFromPaths(Pkg.dir("PackageEvaluator"), joinpath(Pkg.dir("PackageEvaluator"),"test", "METADATATest"))

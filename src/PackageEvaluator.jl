@@ -1,15 +1,19 @@
 module PackageEvaluator
 
-export evalPkg, scorePkg
+export evalPkg, evalPkgFromPaths, scorePkg
 
 const REQUIRE_EXISTS = 20.
 const REQUIRE_VERSION = 20.
 const LICENSE_EXISTS = 10.
 const LICENSE = 0.
 const LICENSE_FILE = 0.
-const TEST_RUNTESTS = 20.
+const TEST_EXISTS = 20.
+const TEST_RUNTESTS = 10.
+const TEST_PASSES = 20.
+const TEST_NOWARNING = 10.
 const TEST_TRAVIS = 10.
-const MAX_PKG_SCORE = REQUIRE_EXISTS + REQUIRE_VERSION + LICENSE_EXISTS + TEST_RUNTESTS + TEST_TRAVIS
+const MAX_PKG_SCORE = REQUIRE_EXISTS + REQUIRE_VERSION + LICENSE_EXISTS + 
+                      TEST_EXISTS + TEST_RUNTESTS + TEST_PASSES + TEST_NOWARNING + TEST_TRAVIS
 
 const URL_EXISTS = 20.
 const DESC_EXISTS = 20.
@@ -25,16 +29,16 @@ include("package.jl")
 include("metadata.jl")
 
 macro scoreMsg(key, msg, fatal)
-  quote
+  esc(quote
     write(o, $msg)
     if features[$key]
       total_score += eval($key)
       write(o, " - ✓ Passed (+$(eval($key)))\n")
     else
       write(o, " - ✗ Failed!\n")
-      fatal_error = true && $fatal
+      fatal_error = fatal_error || (true && $fatal)
     end
-  end
+  end)
 end
 
 function scorePkg(features, pkg_path, metadata_path, o = STDOUT)
@@ -44,6 +48,8 @@ function scorePkg(features, pkg_path, metadata_path, o = STDOUT)
   fatal_error = false
 
   write(o, "# Package Analysis Results\n")
+  write(o, "Package path: $pkg_path\n")
+  write(o, "METADATA path: $metadata_path\n")
 
   if pkg_path != ""
     max_score += MAX_PKG_SCORE
@@ -59,6 +65,11 @@ function scorePkg(features, pkg_path, metadata_path, o = STDOUT)
     end
 
     write(o, "\n### Testing\n")
+    @scoreMsg(:TEST_EXISTS,   "- Recommendation: Packages should have tests\n", false)
+    if features[:TEST_EXISTS]
+      @scoreMsg(:TEST_PASSES,    "- Requirement: If tests exist, they should pass.\n", true)
+      #@scoreMsg(:TEST_NOWARNING, "- Recommendation: If tests exist, they should not have any warnings.\n", false)
+    end
     @scoreMsg(:TEST_RUNTESTS, "- Recommendation: Packages should have a test/runtests.jl file\n", false)
     @scoreMsg(:TEST_TRAVIS,   "- Recommendation: Packages should have TravisCI support\n", false)
   end
@@ -70,7 +81,7 @@ function scorePkg(features, pkg_path, metadata_path, o = STDOUT)
     @scoreMsg(:URL_EXISTS, "- Requirement: Packages must have a url file\n", true)
 
     write(o, "\n### DESCRIPTION.md file\n")
-    @scoreMsg(:DESC_EXISTS, "- Requirement: Packages must have a DESCRIPTION.md file\n", true)
+    @scoreMsg(:DESC_EXISTS, "- Recommendation: Packages should have a DESCRIPTION.md file\n", false)
 
     write(o, "\n### requires files\n")
     @scoreMsg(:REQUIRES_OK, "- Requirement: Each package version requires file must specify a Julia version\n", true)
@@ -94,24 +105,39 @@ function scorePkg(features, pkg_path, metadata_path, o = STDOUT)
     write(o, " - One or more requirements failed - please fix and try again.\n")
   end
 
+  return total_score
 end
 
+function evalPkg(pkg, addremove=true, o=STDOUT)
+  # Need to add Pkg
+  if addremove
+    Pkg.add(pkg)
+  end
 
-function evalPkg(pkg_path="",metadata_path="")
+  score = evalPkgFromPaths(Pkg.dir(pkg), joinpath(ENV["HOME"],".julia","METADATA",pkg), o)
+
+  # Remove Pkg
+  if addremove
+    Pkg.rm(pkg)
+  end
+
+  return score
+end
+
+function evalPkgFromPaths(pkg_path, metadata_path, o=STDOUT)
   features = Dict{Symbol,Any}()
 
-  if pkg_path != ""
-    checkREQUIRE(features, pkg_path)
-    checkLicense(features, pkg_path)
-    checkTesting(features, pkg_path)
-  end
-  if metadata_path != ""
-    checkURL(features, metadata_path)
-    checkDesc(features, metadata_path)
-    checkRequire(features, metadata_path)
-  end
+  # Package
+  checkREQUIRE(features, pkg_path)
+  checkLicense(features, pkg_path)
+  checkTesting(features, pkg_path)
+  
+  # Metadata
+  checkURL(features, metadata_path)
+  checkDesc(features, metadata_path)
+  checkRequire(features, metadata_path)
 
-  scorePkg(features, pkg_path, metadata_path)
+  return scorePkg(features, pkg_path, metadata_path, o)
 end
 
 end
