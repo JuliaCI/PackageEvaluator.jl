@@ -73,31 +73,46 @@ function checkTesting(features, pkg_path)
     joinpath(pkg_path, "run_tests.jl"),
     joinpath(pkg_path, "runtests.jl")]
   foundit = 0
+  test_file = ""
   for i = 1:length(possible_locations)
     if isfile(possible_locations[i])
       foundit = i
+      test_file = possible_locations[foundit]
       break
     end
   end
   features[:TEST_EXISTS] = (foundit>0)
   features[:TEST_RUNTESTS] = (foundit==1)
   
+  # Fall back - do they have any tests?
+  if !features[:TEST_EXISTS]
+    tests_folder = joinpath(pkg_path, "test")
+    try
+      file_list = split(readall(`ls $tests_folder`), "\n")
+      for file in file_list
+        if file[(end-2):(end)] == ".jl"
+          features[:TEST_EXISTS] = true
+          break
+        end
+      end
+    catch
+      # No test folder at all
+    end
+  end
+  
   # Second, do they have a .travis.yml file?
   travis_file = joinpath(pkg_path, ".travis.yml")
   features[:TEST_TRAVIS] = isfile(travis_file)
 
   # Run the tests to see how they go
-  if features[:TEST_EXISTS]
+  if features[:TEST_EXISTS] && test_file != ""
     features[:TEST_PASSES] = true
     testoutput = ""
     try
-      testoutput = readall(`julia $(possible_locations[foundit])`)
+      testoutput = readall(`julia $(test_file)`)
     catch
       features[:TEST_PASSES] = false
     end
-    println("00")
-    println(testoutput)
-    println("00")
     features[:TEST_NOWARNING] = !ismatch(r"WARNING", testoutput)
   end
 end
