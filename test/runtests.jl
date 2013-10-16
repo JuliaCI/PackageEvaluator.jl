@@ -19,7 +19,7 @@ end
 #evalPkg("JuMP",false)
 
 # Example.jl
-evalPkg("Example",false)
+evalPkg("Example")
 
 # Ourselves (infinite loop!)
 #evalPkgFromPaths(Pkg.dir("PackageEvaluator"), joinpath(Pkg.dir("PackageEvaluator"),"test", "METADATATest"))
