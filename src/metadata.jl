@@ -25,7 +25,10 @@ function checkRequire(features, metadata_path)
   for version in version_list[1:(end-1)]
     version_folder = joinpath(versions_folder, version)
     require_file = joinpath(version_folder, "requires")
-    file_contents = readall(require_file)
+    file_contents = ""
+    try
+      file_contents = readall(require_file)
+    end
     passes = ismatch(r"julia", file_contents)
     if !passes
       all_requires_ok = false

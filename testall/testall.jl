@@ -6,8 +6,15 @@ available_pkg = Pkg.available()
 done = 0
 for pkg_name in available_pkg
 
-# For now cheat and cherry pick one
-#pkg_name = "Distributions"
+  # Check if we have already made the file
+  if isfile(string(pkg_name, ".md"))
+    continue
+  end
+
+  # Check the exception list
+  if pkg_name == "MinimalPerfectHashes"
+    continue
+  end
 
   # Run PackageEvaluator
   o = open(string(pkg_name,".md"), "w")
@@ -15,7 +22,7 @@ for pkg_name in available_pkg
   close(o)
 
   done = done + 1
-  if done >= 5
-    break
-  end
+#  if done >= 5
+#    break
+#  end
 end

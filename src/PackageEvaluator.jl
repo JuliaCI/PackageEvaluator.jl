@@ -108,7 +108,7 @@ function scorePkg(features, pkg_path, metadata_path, o = STDOUT)
   write(o, "RAW FEATURES\n")
   for k in keys(features)
     if k == :REQUIRE_PASSES || k == :REQUIRES_FAILS
-      write(o, "$k == [$(join(features[k]," "))]\n"
+      write(o, "$k == [$(join(features[k]," "))]\n")
     else
       write(o, "$k == $(features[k])\n")
     end
