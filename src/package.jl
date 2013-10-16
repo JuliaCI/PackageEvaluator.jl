@@ -83,6 +83,8 @@ function checkTesting(features, pkg_path)
   end
   features[:TEST_EXISTS] = (foundit>0)
   features[:TEST_RUNTESTS] = (foundit==1)
+  features[:TEST_PASSES] = false
+  features[:TEST_NOWARNING] = false
   
   # Fall back - do they have any tests?
   if !features[:TEST_EXISTS]
