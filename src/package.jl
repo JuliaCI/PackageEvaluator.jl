@@ -22,8 +22,10 @@ function checkLicense(features, pkg_path)
   # Test for some sort of license file first
   possible_files = [joinpath(pkg_path, "LICENSE"),
                     joinpath(pkg_path, "LICENSE.md"),
+                    joinpath(pkg_path, "LICENSE.txt"),
                     joinpath(pkg_path, "README"),
-                    joinpath(pkg_path, "README.md")]
+                    joinpath(pkg_path, "README.md"),
+                    joinpath(pkg_path, "README.txt")]
   for filename in possible_files
     if isfile(filename)
       if guessLicense(features, filename)
