@@ -11,11 +11,11 @@ close(preindex)
 keyorder = [:REQUIRE_EXISTS, :REQUIRE_VERSION, :LICENSE,
             :TEST_EXISTS, :TEST_RUNTESTS, :TEST_PASSES, :TEST_NOWARNING, :TEST_TRAVIS,
             :URL_EXISTS, :DESC_EXISTS, :REQUIRES_OK]
-headers = ["Package", "Score", "REQUIRE<br>exists", "REQUIRE<br>Julia ver.", "License", "Has any", "runtests.jl<br>exists", "Pass?", "No warnings?", "TravisCI?", "url<br>exists", "DESCRIPTION.md<br>exists", "requires<br>Julia ver."]
+headers = ["Package", "Score", "REQUIRE<br>exists", "REQUIRE<br>Julia ver.", "License", "Has any", "runtests.jl<br>exists", "Pass?", "No warnings?", "TravisCI?", "url<br>exists", "DESC.md<br>exists", "requires<br>Julia ver."]
 write(summary, "<table>\n")
-write(summary, "<tr><td colspan=\"3\"></td><td colspan=\"2\">Package</td><td colspan=\"5\">Tests</td><td colspan=\"3\">METADATA</td></tr>\n")
+write(summary, "<tr><td colspan=\"2\"></td><td colspan=\"3\">Package</td><td colspan=\"5\">Tests</td><td colspan=\"3\">METADATA</td></tr>\n")
 for h in headers
-  write(summary, "<td>$h</td>")
+  write(summary, "<td width=\"7.69%\">$h</td>")
 end
 write(summary,"</tr>\n")
 
@@ -44,7 +44,19 @@ for pkg_name in available_pkg
   write(summary, "<td>$(int(round(score*100)))%</td>")
   for k in keyorder
     if k in keys(features)
-      write(summary, "<td>$(features[k])</td>")
+      if k != :LICENSE
+        if features[k]
+          write(summary, "<td class=\"grn\">$(features[k])</td>")
+        else
+          write(summary, "<td class=\"red\">$(features[k])</td>")
+        end
+      else
+        if features[k] != "Unknown"
+          write(summary, "<td class=\"grn\">$(features[k])</td>")
+        else
+          write(summary, "<td class=\"red\">$(features[k])</td>")
+        end
+      end
     else
       write(summary, "<td></td>")
     end
