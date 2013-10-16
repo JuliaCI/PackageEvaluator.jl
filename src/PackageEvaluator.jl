@@ -33,23 +33,23 @@ macro scoreMsg(key, msg, fatal)
     write(o, $msg)
     if features[$key]
       total_score += eval($key)
-      write(o, " - ✓ Passed (+$(eval($key)))\n")
+      write(o, "    - ✓ Passed (+$(eval($key)))\n")
     else
-      write(o, " - ✗ Failed!\n")
+      write(o, "    - ✗ Failed!\n")
       fatal_error = fatal_error || (true && $fatal)
     end
   end)
 end
 
-function scorePkg(features, pkg_path, metadata_path, o = STDOUT)
+function scorePkg(features, pkg_name, pkg_path, metadata_path, o = STDOUT)
 
   total_score = 0.
   max_score = 0.
   fatal_error = false
 
-  write(o, "# Package Analysis Results\n")
-  write(o, "Package path: $pkg_path\n")
-  write(o, "METADATA path: $metadata_path\n")
+  write(o, "# $pkg_name\n\n")
+  #write(o, "- Local path: $pkg_path\n")
+  #write(o, "- METADATA path: $metadata_path\n")
 
   if pkg_path != ""
     max_score += MAX_PKG_SCORE
@@ -88,11 +88,11 @@ function scorePkg(features, pkg_path, metadata_path, o = STDOUT)
     if !features[:REQUIRES_OK]
       write(o, "- Failed versions:\n")
       for version in features[:REQUIRES_FAILS]
-        write(o, " - $version\n")
+        write(o, "    - $version\n")
       end
       write(o, "- Passed versions:\n")
       for version in features[:REQUIRES_PASSES]
-        write(o, " - $version\n")
+        write(o, "    - $version\n")
       end
     end
   end
@@ -105,16 +105,16 @@ function scorePkg(features, pkg_path, metadata_path, o = STDOUT)
     write(o, " - One or more requirements failed - please fix and try again.\n\n")
   end
 
-  write(o, "RAW FEATURES\n")
+  write(o, "\n---\n\n## Raw Features\n")
   for k in keys(features)
-    if k == :REQUIRE_PASSES || k == :REQUIRES_FAILS
-      write(o, "$k == [$(join(features[k]," "))]\n")
+    if k == :REQUIRES_PASSES || k == :REQUIRES_FAILS
+      write(o, "    $k == [$(join(features[k]," "))]\n")
     else
-      write(o, "$k == $(features[k])\n")
+      write(o, "    $k == $(features[k])\n")
     end
   end
 
-  return total_score
+  return total_score / max_score
 end
 
 function evalPkg(pkg, addremove=true, o=STDOUT)
@@ -123,17 +123,17 @@ function evalPkg(pkg, addremove=true, o=STDOUT)
     Pkg.add(pkg)
   end
 
-  score = evalPkgFromPaths(Pkg.dir(pkg), joinpath(ENV["HOME"],".julia","METADATA",pkg), o)
+  score, features = evalPkgFromPaths(pkg, Pkg.dir(pkg), joinpath(ENV["HOME"],".julia","METADATA",pkg), o)
 
   # Remove Pkg
   if addremove
     Pkg.rm(pkg)
   end
 
-  return score
+  return score, features
 end
 
-function evalPkgFromPaths(pkg_path, metadata_path, o=STDOUT)
+function evalPkgFromPaths(pkg_name, pkg_path, metadata_path, o=STDOUT)
   features = Dict{Symbol,Any}()
 
   # Package
@@ -146,7 +146,7 @@ function evalPkgFromPaths(pkg_path, metadata_path, o=STDOUT)
   checkDesc(features, metadata_path)
   checkRequire(features, metadata_path)
 
-  return scorePkg(features, pkg_path, metadata_path, o)
+  return scorePkg(features, pkg_name, pkg_path, metadata_path, o), features
 end
 
 end
