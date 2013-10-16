@@ -102,7 +102,12 @@ function scorePkg(features, pkg_path, metadata_path, o = STDOUT)
 
   write(o, " - Total score: $total_score out of $max_score\n")
   if fatal_error
-    write(o, " - One or more requirements failed - please fix and try again.\n")
+    write(o, " - One or more requirements failed - please fix and try again.\n\n")
+  end
+
+  write(o, "RAW FEATURES\n")
+  for k in keys(features)
+    write(o, "$k == $(features[k])\n")
   end
 
   return total_score
