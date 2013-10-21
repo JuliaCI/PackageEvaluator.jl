@@ -90,7 +90,7 @@ function checkTesting(features, pkg_path, pkg_name)
   for folder in possible_folders
     try
       # ls the folder
-      file_list = split(readall(`ls $tests_folder`), "\n")
+      file_list = split(readall(`ls $folder`), "\n")
       # if that didn't die, look through the files
       for file in file_list
         # Any Julia files in there?

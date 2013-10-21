@@ -28,12 +28,12 @@
     text-align: center;
     padding: 5px;
   }
-  .grn {
-    background-color: #CCFFCC;
-  }
-  .red {
-    background-color: #FFCCCC;
-  }
+  .grn { background-color: #CCFFCC; }
+  .red { background-color: #FFCCCC; }
+  .using_fail { background-color: #FF0000; }
+  .using_pass { background-color: #CCFFCC; }
+  .full_fail  { background-color: #FFCCCC; }
+  .full_pass  { background-color: #00FF00; }
   </style>
 
 </head>
@@ -44,7 +44,7 @@
       <hr />
     </div>
     <div class="sixteen columns">
-      <h2>List of tests run</h2>
+      <!--<h2>List of tests run</h2>
       <h3>Package</h3>
       <ul>
       <li>Check for the existence of a REQUIRE file in the root of the package.</li>
@@ -65,7 +65,29 @@
       <li>Checks for the existence of a DESCRIPTION.md file.<ul>
         <li>Experimental proposal, not implemented anywhere yet</li></ul></li>
       <li>Checks for the existence of a requires file for every version, and all must specify a Julia version.</li>
-      </ul>
+      </ul>-->
 
       <h2>Summary Table</h2>
       <p>Click package name for more detailed breakdown.</p>
+
+      <table>
+      <tr>
+        <td colspan="3"></td>  <!-- Package and Repo and License-->
+        <td colspan="2">Testing</td>  <!-- Status and Details -->
+        <td colspan="3">Other</td> <!-- REQs, travisCI -->
+      </tr>
+      <tr>
+        <td>Package</td>
+        <td>Repo</td>
+        <td>License</td>
+
+        <td>Status</td>
+        <td>Details</td>
+
+        <td>Pkg REQ</td>
+        <td>META req</td>
+        <td>TravisCI</td>
+      </tr>
+
+
+

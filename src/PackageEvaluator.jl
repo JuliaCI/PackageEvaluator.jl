@@ -9,6 +9,9 @@ include("metadata.jl")
 # Score it
 include("score.jl")
 
+# All-testing
+include("testall.jl")
+
 ###############################################################################
 # evalPkg
 # Performs all tests on a single package.
