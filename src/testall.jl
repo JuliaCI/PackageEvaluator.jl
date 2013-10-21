@@ -3,7 +3,7 @@ using PackageEvaluator
 
 # Setup the index file
 summary = open("index.html","w")
-preindex = open("preindex.inc","r")
+preindex = open(joinpath(Pkg.dir("PackageEvalutaor"),"extra","preindex.inc","r")
 write(summary, readall(preindex))
 close(preindex)
 
