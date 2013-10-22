@@ -70,7 +70,7 @@
       </ul>-->
 
       <h2>Summary Table</h2>
-      <p>Click package name for more detailed breakdown.</p>
+      
       <table>
       <tr>
         <td colspan="2"><strong>Testing Key</strong></td>
@@ -80,8 +80,8 @@
       <tr><td class="using_pass" width="20"></td><td>Couldn't run tests, "using $pkg_name" worked</td></tr>
       <tr><td class="full_pass" width="20"></td><td>Could run tests, and they passed</td></tr>
       </table>
-
       <br>
+      <p>Other: these are recommended but not required. "Pkg REQ" is green if the REQUIRE file in package specifies a Julia version. "META req" is green if all the requires file in METADATA specify a Julia version. "TravisCI" is green if the package has TravisCI configured.</p>
 
       <table>
       <tr>
