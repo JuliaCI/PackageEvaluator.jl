@@ -67,6 +67,10 @@ function guessLicense(features, filename)
          ismatch(r"gnu lesser general public license\s+version 2\.1", text)
     features[:LICENSE_EXISTS] = true
     features[:LICENSE] = "LGPL v2.1"
+  # BSD
+  elseif ismatch(r"BSD", text)
+    features[:LICENSE_EXISTS] = true
+    features[:LICENSE] = "BSD"
   # No license identified
   else
     return false
@@ -130,7 +134,10 @@ function checkTesting(features, pkg_path, pkg_name)
     # See if "using" works
     testoutput = ""
     try
-      testoutput = readall(`julia -e 'using $pkg_name'`)
+      fp = open("testusing.jl","w")
+      write(fp, "using $pkg_name\n")
+      close(fp)
+      testoutput = readall(`julia testusing.jl`)
       features[:TEST_STATUS] = "using_pass"
     catch
       # Didn't run without errors
@@ -142,7 +149,12 @@ function checkTesting(features, pkg_path, pkg_name)
     # Run the tests to see how they go
     testoutput = ""
     try
+      # Move into the package directory in case tests rely on that
+      # First saw in ASCIIPlots
+      curdir = strip(readall(`pwd`))
+      cd(Pkg.dir(pkg_name))
       testoutput = readall(`julia $(features[:TEST_MASTERFILE])`)
+      cd(curdir)
       features[:TEST_STATUS] = "full_pass"
     catch
       # Has tests, and they failed

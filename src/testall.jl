@@ -50,7 +50,7 @@ function testAll(limit = Inf)
     write(summary, "  <td><a href=\"$(features[:URL])\">$(pkg_name).jl</a></td>\n")
     # License
     if features[:LICENSE] == "Unknown"
-      write(summary, "  <td class=\"red\">Unknown</td>")
+      write(summary, "  <td class=\"red\">?</td>")
     else
       write(summary, "  <td class=\"grn\">$(features[:LICENSE])</td>\n")
     end
@@ -63,7 +63,7 @@ function testAll(limit = Inf)
     t_exist = features[:TEST_EXIST]
     t_status = features[:TEST_STATUS]
     t_master = features[:TEST_MASTERFILE]
-    write(summary, "  <td class=\"$t_status\"></td>")
+    write(summary, "  <td class=\"$t_status thk\"></td>")
     details = ""
     if t_exist && t_master == ""
       details = "Tests exist, no master file to run, tried 'using $pkg_name'"
@@ -91,9 +91,9 @@ function testAll(limit = Inf)
     
     # Pkg req
     if features[:REQUIRE_VERSION]
-      write(summary, "  <td class=\"grn\"></td>")
+      write(summary, "  <td class=\"grn thk\"></td>")
     else
-      write(summary, "  <td></td>")
+      write(summary, "  <td class=\"thk\"></td>")
     end
     # META req
     if features[:REQUIRES_OK]

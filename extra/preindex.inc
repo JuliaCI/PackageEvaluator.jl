@@ -28,12 +28,14 @@
     text-align: center;
     padding: 5px;
   }
-  .grn { background-color: #CCFFCC; }
-  .red { background-color: #FFCCCC; }
-  .using_fail { background-color: #FF0000; }
-  .using_pass { background-color: #CCFFCC; }
-  .full_fail  { background-color: #FFCCCC; }
-  .full_pass  { background-color: #00FF00; }
+  .grn { background-color: #AAFFAA; }
+  .red { background-color: #FFAAAA; }
+  .using_fail { background-color: #FF2222; }
+  .using_pass { background-color: #AAAAFF; }
+  .full_fail  { background-color: #FFAA22; }
+  .full_pass  { background-color: #22FF22; }
+  .thk { border-left: 3px solid black; }
+
   </style>
 
 </head>
@@ -69,22 +71,33 @@
 
       <h2>Summary Table</h2>
       <p>Click package name for more detailed breakdown.</p>
+      <table>
+      <tr>
+        <td colspan="2"><strong>Testing Key</strong></td>
+      </tr>
+      <tr><td class="using_fail" width="20"></td><td>Couldn't run tests, "using $pkg_name" failed</td></tr>
+      <tr><td class="full_fail" width="20"></td><td>Could run tests, but they failed</td></tr>
+      <tr><td class="using_pass" width="20"></td><td>Couldn't run tests, "using $pkg_name" worked</td></tr>
+      <tr><td class="full_pass" width="20"></td><td>Could run tests, and they passed</td></tr>
+      </table>
+
+      <br>
 
       <table>
       <tr>
         <td colspan="3"></td>  <!-- Package and Repo and License-->
-        <td colspan="2">Testing</td>  <!-- Status and Details -->
-        <td colspan="3">Other</td> <!-- REQs, travisCI -->
+        <td colspan="2" class="thk">Testing</td>  <!-- Status and Details -->
+        <td colspan="3" class="thk">Other</td> <!-- REQs, travisCI -->
       </tr>
       <tr>
         <td>Package</td>
         <td>Repo</td>
         <td>License</td>
 
-        <td>Status</td>
+        <td class="thk">Status</td>
         <td>Details</td>
 
-        <td>Pkg REQ</td>
+        <td class="thk">Pkg REQ</td>
         <td>META req</td>
         <td>TravisCI</td>
       </tr>
