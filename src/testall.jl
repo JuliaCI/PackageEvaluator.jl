@@ -3,7 +3,58 @@
 # Performs all tests on all packages in METADATA single package.
 # Outputs an index.html file containing a table of results
 export testAll
-function testAll(limit = Inf)
+
+writeKey(json, key, value::String, last=false) = write(json, "  \"$key\": \"$value\"$(!last?",":"")\n")
+
+function writeJSON(pkg_name, features)
+  json = open("$pkg_name.json", "w")
+
+  write(json, "{\n")
+  writeKey(json, "name", pkg_name)
+  writeKey(json, "url", features[:URL])
+  writeKey(json, "license", features[:LICENSE])
+  writeKey(json, "status", features[:TEST_STATUS])
+  writeKey(json, "details", getDetailsString(pkg_name, features))
+  writeKey(json, "pkgreq", features[:REQUIRE_VERSION] ? "true" : "false")
+  writeKey(json, "metareq", features[:REQUIRES_OK] ? "true" : "false")
+  writeKey(json, "travis", features[:TEST_TRAVIS] ? "true" : "false", true)
+  write(json, "}")
+
+  close(json)
+end
+
+function getDetailsString(pkg_name, features)
+  t_exist = features[:TEST_EXIST]
+  t_status = features[:TEST_STATUS]
+  t_master = features[:TEST_MASTERFILE]
+  
+  details = ""
+  if t_exist && t_master == ""
+    details = "Tests exist, no master file to run, tried 'using $pkg_name'"
+    if t_status == "using_fail"
+      details = string(details, ", failed!")
+    else
+      details = string(details, ", no errors.")
+    end
+  elseif t_exist && t_master != ""
+    details = "Tests exist, ran 'julia $(splitdir(t_master)[2])'"
+    if t_status == "full_fail"
+      details = string(details, ", failed!")
+    else
+      details = string(details, ", passed!")
+    end
+  else
+    details = "No tests, tried 'using $pkg_name'"
+    if t_status == "using_fail"
+      details = string(details, ", failed!")
+    else
+      details = string(details, ", no errors.")
+    end
+  end
+  return details
+end
+
+function testAll(limit = Inf, writeJSONs=true)
 
   summary = open("index.html","w")
 
@@ -18,6 +69,8 @@ function testAll(limit = Inf)
   available_pkg = Pkg.available()
   done = 0
   for pkg_name in available_pkg
+
+
 
     # Check if we have already made the package description file
     #if isfile(string(pkg_name, ".md"))
@@ -56,37 +109,8 @@ function testAll(limit = Inf)
     end
     
     # Testing
-    # Possibilities:
-    # exist or not
-    # masterfile = "" or something
-    # using/full_pass/fail
-    t_exist = features[:TEST_EXIST]
-    t_status = features[:TEST_STATUS]
-    t_master = features[:TEST_MASTERFILE]
-    write(summary, "  <td class=\"$t_status thk\"></td>")
-    details = ""
-    if t_exist && t_master == ""
-      details = "Tests exist, no master file to run, tried 'using $pkg_name'"
-      if t_status == "using_fail"
-        details = string(details, ", failed!")
-      else
-        details = string(details, ", no errors.")
-      end
-    elseif t_exist && t_master != ""
-      details = "Tests exist, ran 'julia $(splitdir(t_master)[2])'"
-      if t_status == "full_fail"
-        details = string(details, ", failed!")
-      else
-        details = string(details, ", passed!")
-      end
-    else
-      details = "No tests, tried 'using $pkg_name'"
-      if t_status == "using_fail"
-        details = string(details, ", failed!")
-      else
-        details = string(details, ", no errors.")
-      end
-    end
+    write(summary, "  <td class=\"$(features[:TEST_STATUS]) thk\"></td>")
+    details = getDetailsString(pkg_name, features)
     write(summary, "  <td>$details</td>\n")
     
     # Pkg req
@@ -109,6 +133,11 @@ function testAll(limit = Inf)
     end
 
     write(summary, "</tr>\n")
+
+    # WriteJSON
+    if writeJSONs
+      writeJSON(pkg_name, features)
+    end
 
     # Limit number of packages to test
     done = done + 1
