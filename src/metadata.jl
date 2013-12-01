@@ -46,4 +46,5 @@ function checkRequire(features, metadata_path)
     end
   end
   features[:REQUIRES_OK] = all_requires_ok
+  features[:VERSION] = version_list[end-1]
 end
