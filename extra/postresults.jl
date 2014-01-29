@@ -1,4 +1,5 @@
 Pkg.add("Requests")
+Pkg.add("JSON")
 using Requests
 json_head = Dict{String, String}()
 json_head["Content-Type"] = "application/json"
@@ -13,3 +14,4 @@ for file in readdir()
     end
 end
 Pkg.rm("Requests")
+Pkg.rm("JSON")
