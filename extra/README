@@ -1,4 +1,4 @@
-This script is expected to be run on a fresh Julia install with nothing in .julia
+`genresults.jl` is expected to be run on a fresh Julia install with nothing in .julia
 except this package.
 
 tohtml.py generates the site by converting the Markdown to HTML. Requires Python 3

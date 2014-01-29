@@ -3,14 +3,14 @@ module PackageEvaluator
 # Evaluate the package itself
 include("package.jl")
 
-# Evaluate the metdata entry
+# Evaluate the metadata entry
 include("metadata.jl")
 
-# Score it
+# Score it (scorePkg)
 include("score.jl")
 
-# All-testing
-include("testall.jl")
+# Output it (featuresToJSON, getDetailsString)
+include("output.jl")
 
 ###############################################################################
 # evalPkg
