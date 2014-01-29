@@ -77,7 +77,7 @@ function testAll(limit = Inf, writeJSON=true, writeHTML=false)
     # WriteJSON
     if writeJSON
       json_str = featuresToJSON(pkg_name, features)
-      json_fp = open("$(pkg_name).json","w")
+      json_fp = open(joinpath(Pkg.dir("PackageEvaluator"),"extra","$(pkg_name).json"),"w")
       write(json_fp, json_str)
       close(json_fp)
     end
