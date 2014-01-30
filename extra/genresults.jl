@@ -24,11 +24,21 @@ function testAll(limit = Inf, writeJSON=true, writeHTML=false)
       continue
     end
 
+    if pkg_name != "SmoothingKernels"
+      continue
+    end
+
     # Run any preprocessing
     exceptions_before(pkg_name)
 
     # Run PackageEvaluator
-    features = evalPkg(pkg_name, true)  # add and remove it
+    try
+      features = evalPkg(pkg_name, true)  # add and remove it
+    catch
+      # Couldn't process package, about!
+      println("##### !!!!!! evalPkg failed")
+      return
+    end
 
     # Run any postprocessing
     exceptions_after(pkg_name)
