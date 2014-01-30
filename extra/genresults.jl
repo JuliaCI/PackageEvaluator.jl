@@ -22,6 +22,7 @@ function testAll(limit = Inf, writeJSON=true, writeHTML=false)
     # Check to see if already have JSON
     if writeJSON && !writeHTML && isfile(joinpath(Pkg.dir("PackageEvaluator"),"extra","$(pkg_name).json"))
       println("      ?????? Already have JSON, skipping")
+      continue
     end
 
     # Run any preprocessing
