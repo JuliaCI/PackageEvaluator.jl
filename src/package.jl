@@ -68,7 +68,7 @@ function guessLicense(features, filename)
     features[:LICENSE_EXISTS] = true
     features[:LICENSE] = "LGPL v2.1"
   # BSD
-  elseif ismatch(r"BSD", text)
+  elseif ismatch(r"bsd", text)
     features[:LICENSE_EXISTS] = true
     features[:LICENSE] = "BSD"
   # No license identified
@@ -130,8 +130,26 @@ function checkTesting(features, pkg_path, pkg_name)
       break
     end
   end
+  
+  # Do they have a .travis.yml file?
+  travis_file = joinpath(pkg_path, ".travis.yml")
+  features[:TEST_TRAVIS] = isfile(travis_file)
 
   features[:TEST_STATUS] = ""
+
+  # Are tests even meaningful?
+  features[:TEST_POSSIBLE] = true
+  features[:TEST_POSSIBLE] &= !(pkg_name == "Arduino")      # Reason: binaries
+  features[:TEST_POSSIBLE] &= !(pkg_name == "CPLEXLink")    # Reason: binaries
+  features[:TEST_POSSIBLE] &= !(pkg_name == "CUDA")         # Reason: binaries
+  features[:TEST_POSSIBLE] &= !(pkg_name == "ImageView")    # Reason: Tk
+  features[:TEST_POSSIBLE] &= !(pkg_name == "ProfileView")  # Reason: Tk
+  features[:TEST_POSSIBLE] &= !(pkg_name == "Tk")           # Reason: Tk
+  if !features[:TEST_POSSIBLE]
+    features[:TEST_STATUS] = "not_possible"
+    return
+  end
+  
   if features[:TEST_MASTERFILE] == ""
     # Couldn't find a master test file
     # See if "using" works
@@ -165,7 +183,4 @@ function checkTesting(features, pkg_path, pkg_name)
     end
   end
 
-  # Finally, do they have a .travis.yml file?
-  travis_file = joinpath(pkg_path, ".travis.yml")
-  features[:TEST_TRAVIS] = isfile(travis_file)
 end

@@ -27,6 +27,7 @@ function featuresToJSON(pkg_name, features)
     json_str = json_str * keyToJSON("version",  features[:VERSION])
     json_str = json_str * keyToJSON("license",  features[:LICENSE])
     json_str = json_str * keyToJSON("status",   features[:TEST_STATUS])
+    json_str = json_str * keyToJSON("possible", features[:TEST_POSSIBLE] ? "true" : "false")
     json_str = json_str * keyToJSON("details",  getDetailsString(pkg_name, features))
     json_str = json_str * keyToJSON("pkgreq",   features[:REQUIRE_VERSION] ? "true" : "false")
     json_str = json_str * keyToJSON("metareq",  features[:REQUIRES_OK] ? "true" : "false")
@@ -41,10 +42,15 @@ end
 # testing results (TEST_EXIST, TEST_STATUS, TEST_MASTERFILE)
 export getDetailsString
 function getDetailsString(pkg_name, features)
-  t_exist = features[:TEST_EXIST]
-  t_status = features[:TEST_STATUS]
-  t_master = features[:TEST_MASTERFILE]
+  t_exist     = features[:TEST_EXIST]
+  t_status    = features[:TEST_STATUS]
+  t_master    = features[:TEST_MASTERFILE]
+  t_possible  = features[:TEST_POSSIBLE]
   
+  if !(t_possible)
+    return "This package can't be automatically tested - see package's README."
+  end
+
   details = ""
   if t_exist && t_master == ""
     details = "Tests exist, no master file to run, tried 'using $pkg_name'"
@@ -68,5 +74,7 @@ function getDetailsString(pkg_name, features)
       details = string(details, ", no errors.")
     end
   end
+  
+
   return details
 end

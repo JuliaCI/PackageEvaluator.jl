@@ -98,7 +98,6 @@ end
 
 ###############################################################################
 # exceptions_before
-# exceptions_after
 # Any "special" testing commands to be done
 function exceptions_before(pkg_name)
   if pkg_name == "JuMP"
@@ -107,11 +106,14 @@ function exceptions_before(pkg_name)
   end
 end
 
+# exceptions_after
+# Any cleanup for packages that had exceptions
 function exceptions_after(pkg_name)
   if pkg_name == "JuMP"
     Pkg.rm("Cbc")
     Pkg.rm("Clp")
   end
 end
+
 
 testAll(2,true,false)
