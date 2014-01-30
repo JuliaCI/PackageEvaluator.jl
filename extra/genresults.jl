@@ -29,6 +29,7 @@ function testAll(limit = Inf, writeJSON=true, writeHTML=false)
     exceptions_before(pkg_name)
 
     # Run PackageEvaluator
+    features = nothing
     try
       features = evalPkg(pkg_name, true)  # add and remove it
     catch
