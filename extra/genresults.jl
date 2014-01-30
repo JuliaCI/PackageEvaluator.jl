@@ -19,13 +19,9 @@ function testAll(limit = Inf, writeJSON=true, writeHTML=false)
   for pkg_name in available_pkg
     println("##### Current package: $pkg_name")
 
-    # Check the exception list
-    if pkg_name == "MinimalPerfectHashes"
-      continue
-    end
-
-    if pkg_name != "SmoothingKernels"
-      continue
+    # Check to see if already have JSON
+    if writeJSON && !writeHTML && isfile(joinpath(Pkg.dir("PackageEvaluator"),"extra","$(pkg_name).json"))
+      println("      ?????? Already have JSON, skipping")
     end
 
     # Run any preprocessing
@@ -36,8 +32,8 @@ function testAll(limit = Inf, writeJSON=true, writeHTML=false)
       features = evalPkg(pkg_name, true)  # add and remove it
     catch
       # Couldn't process package, about!
-      println("##### !!!!!! evalPkg failed")
-      return
+      println("      !!!!!! evalPkg failed")
+      continue
     end
 
     # Run any postprocessing
