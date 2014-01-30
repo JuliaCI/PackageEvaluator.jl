@@ -1,0 +1,1 @@
+time julia genresults.jl 2>&1 | tee genresults_$(date '+%Y-%m-%d-%H').log

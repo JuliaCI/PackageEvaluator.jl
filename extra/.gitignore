@@ -1,2 +1,3 @@
 *.json
 testusing.jl
+genresults*.log
