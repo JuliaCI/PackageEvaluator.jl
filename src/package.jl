@@ -24,19 +24,22 @@ function checkLicense(features, pkg_path)
   features[:LICENSE_FILE] = ""
 
   # Test for some sort of license file first
-  possible_files = [joinpath(pkg_path, "LICENSE"),
-                    joinpath(pkg_path, "LICENSE.md"),
-                    joinpath(pkg_path, "LICENSE.txt"),
-                    joinpath(pkg_path, "README"),
-                    joinpath(pkg_path, "README.md"),
-                    joinpath(pkg_path, "README.txt"),
-                    joinpath(pkg_path, "COPYING"),
-                    joinpath(pkg_path, "COPYING.md"),
-                    joinpath(pkg_path, "COPYING.txt")]
+  possible_files = ["LICENSE",
+                    "LICENSE.md",
+                    "License.md",
+                    "LICENSE.txt",
+                    "README",
+                    "README.md",
+                    "README.txt",
+                    "COPYING",
+                    "COPYING.md",
+                    "COPYING.txt"]
   for filename in possible_files
-    if isfile(filename)
-      if guessLicense(features, filename)
+    fullfilename = joinpath(pkg_path, filename)
+    if isfile(fullfilename)
+      if guessLicense(features, fullfilename)
         # Stop once we identify a license  
+        features[:LICENSE_FILE] = filename
         return
       end
     end
@@ -48,7 +51,10 @@ function guessLicense(features, filename)
   text = lowercase(readall(filename))
 
   # MIT License
-  if ismatch(r"mit license", text)
+  if ismatch(r"mit license", text) ||
+     ismatch(r"mit expat license", text) ||
+     ismatch(r"mit \"expat\" license", text) ||
+     ismatch(r"permission is hereby granted, free of charge, to any person", text)
     features[:LICENSE_EXISTS] = true
     features[:LICENSE] = "MIT"
   # GPL v2
@@ -67,6 +73,10 @@ function guessLicense(features, filename)
          ismatch(r"gnu lesser general public license\s+version 2\.1", text)
     features[:LICENSE_EXISTS] = true
     features[:LICENSE] = "LGPL v2.1"
+  # LGPL v3.0
+  elseif ismatch(r"lgpl-3.0", text)
+    features[:LICENSE_EXISTS] = true
+    features[:LICENSE] = "LGPL v3.0"
   # BSD
   elseif ismatch(r"bsd", text)
     features[:LICENSE_EXISTS] = true
@@ -76,8 +86,6 @@ function guessLicense(features, filename)
     return false
   end
 
-  # Set the license type
-  features[:LICENSE_FILE] = filename
   return true
 end
 
@@ -142,7 +150,10 @@ function checkTesting(features, pkg_path, pkg_name)
   features[:TEST_POSSIBLE] &= !(pkg_name == "Arduino")      # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "CPLEXLink")    # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "CUDA")         # Reason: binaries
+  features[:TEST_POSSIBLE] &= !(pkg_name == "FITSIO")       # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "ImageView")    # Reason: Tk
+  features[:TEST_POSSIBLE] &= !(pkg_name == "MATLAB")       # Reason: MATLAB
+  features[:TEST_POSSIBLE] &= !(pkg_name == "MATLABCluster") # Reason: MATLAB
   features[:TEST_POSSIBLE] &= !(pkg_name == "ProfileView")  # Reason: Tk
   features[:TEST_POSSIBLE] &= !(pkg_name == "Tk")           # Reason: Tk
   if !features[:TEST_POSSIBLE]
