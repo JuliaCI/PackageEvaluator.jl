@@ -161,12 +161,14 @@ function checkTesting(features, pkg_path, pkg_name)
   # Are tests even meaningful?
   features[:TEST_POSSIBLE] = true
   features[:TEST_POSSIBLE] &= !(pkg_name == "Arduino")      # Reason: binaries
-  features[:TEST_POSSIBLE] &= !(pkg_name == "CPLEXLink")    # Reason: binaries
+  features[:TEST_POSSIBLE] &= !(pkg_name == "CPLEX")        # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "CUDA")         # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "FITSIO")       # Reason: binaries
+  features[:TEST_POSSIBLE] &= !(pkg_name == "Gaston")       # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "ImageView")    # Reason: Tk
   features[:TEST_POSSIBLE] &= !(pkg_name == "MATLAB")       # Reason: MATLAB
   features[:TEST_POSSIBLE] &= !(pkg_name == "MATLABCluster") # Reason: MATLAB
+  features[:TEST_POSSIBLE] &= !(pkg_name == "Mongo")        # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "ProfileView")  # Reason: Tk
   features[:TEST_POSSIBLE] &= !(pkg_name == "Tk")           # Reason: Tk
   if !features[:TEST_POSSIBLE]
