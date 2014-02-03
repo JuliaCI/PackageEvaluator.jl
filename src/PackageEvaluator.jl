@@ -36,6 +36,7 @@ function evalPkg(pkg, addremove=true)
   checkREQUIRE(features, pkg_path)
   checkLicense(features, pkg_path)
   checkTesting(features, pkg_path, pkg)
+  getInfo(features, pkg_path)
   
   # Metadata
   metadata_path = joinpath(ENV["HOME"],".julia","METADATA",pkg)

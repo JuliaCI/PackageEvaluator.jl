@@ -1,4 +1,17 @@
 ###############################################################################
+# General info, including the Git version
+function getInfo(features, pkg_path)
+  cd(pkg_path)
+  gitsha = ""
+  try
+    gitsha = readall(`git log -1 --format="%H"`)
+  catch
+    # NOP
+  end
+  features[:GITSHA] = gitsha
+end
+
+###############################################################################
 # REQUIRE file (the one in the root directory of the package itself)
 function checkREQUIRE(features, pkg_path)
   REQUIRE_path = joinpath(pkg_path, "REQUIRE")
