@@ -78,7 +78,8 @@ function guessLicense(features, filename)
   # GPL v3
   elseif ismatch(r"gpl version 3", text) ||
          ismatch(r"http://www.gnu.org/licenses/gpl-3.0.txt", text) ||
-         ismatch(r"gnu general public license\s+version 3", text)
+         ismatch(r"gnu general public license\s+version 3", text) ||
+         ismatch(r"gpl v3", text)
     features[:LICENSE_EXISTS] = true
     features[:LICENSE] = "GPL v3"
   # LGPL v2.1
