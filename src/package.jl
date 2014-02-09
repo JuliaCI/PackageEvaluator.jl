@@ -72,7 +72,8 @@ function guessLicense(features, filename)
     features[:LICENSE] = "MIT"
   # GPL v2
   elseif ismatch(r"gpl version 2", text) ||
-         ismatch(r"gnu general public license\s+version 2", text)
+         ismatch(r"gnu general public license\s+version 2", text) ||
+         ismatch(r"gnu general public license, version 2", text)
     features[:LICENSE_EXISTS] = true
     features[:LICENSE] = "GPL v2"
   # GPL v3
@@ -95,6 +96,14 @@ function guessLicense(features, filename)
   elseif ismatch(r"bsd", text)
     features[:LICENSE_EXISTS] = true
     features[:LICENSE] = "BSD"
+  # GNU Affero
+  elseif ismatch(r"gnu affero general public license", text)
+    features[:LICENSE_EXISTS] = true
+    features[:LICENSE] = "GNU Affero"
+  # Romantic WTF public license (!!) (see TOML.jl)
+  elseif ismatch(r"romantic wtf public license", text)
+    features[:LICENSE_EXISTS] = true
+    features[:LICENSE] = "Romantic WTF"
   # No license identified
   else
     return false
