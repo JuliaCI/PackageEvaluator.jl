@@ -161,6 +161,7 @@ function checkTesting(features, pkg_path, pkg_name)
   # Are tests even meaningful?
   features[:TEST_POSSIBLE] = true
   features[:TEST_POSSIBLE] &= !(pkg_name == "Arduino")      # Reason: binaries
+  features[:TEST_POSSIBLE] &= !(pkg_name == "Clang")        # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "CPLEX")        # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "CUDA")         # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "FITSIO")       # Reason: binaries
@@ -169,8 +170,16 @@ function checkTesting(features, pkg_path, pkg_name)
   features[:TEST_POSSIBLE] &= !(pkg_name == "MATLAB")       # Reason: MATLAB
   features[:TEST_POSSIBLE] &= !(pkg_name == "MATLABCluster") # Reason: MATLAB
   features[:TEST_POSSIBLE] &= !(pkg_name == "Mongo")        # Reason: binaries
+  features[:TEST_POSSIBLE] &= !(pkg_name == "Mongrel2")     # Reason: binaries
+  features[:TEST_POSSIBLE] &= !(pkg_name == "OpenGL")       # Reason: binaries
+  features[:TEST_POSSIBLE] &= !(pkg_name == "Pandas")       # Reason: python
   features[:TEST_POSSIBLE] &= !(pkg_name == "ProfileView")  # Reason: Tk
+  features[:TEST_POSSIBLE] &= !(pkg_name == "PyLexYacc")    # Reason: python
+  features[:TEST_POSSIBLE] &= !(pkg_name == "PyPlot")       # Reason: python
+  features[:TEST_POSSIBLE] &= !(pkg_name == "PySide")       # Reason: python
   features[:TEST_POSSIBLE] &= !(pkg_name == "Tk")           # Reason: Tk
+  features[:TEST_POSSIBLE] &= !(pkg_name == "Winston")      # Reason: Tk
+  
   if !features[:TEST_POSSIBLE]
     features[:TEST_STATUS] = "not_possible"
     return
