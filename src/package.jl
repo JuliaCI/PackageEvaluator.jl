@@ -152,7 +152,9 @@ function checkTesting(features, pkg_path, pkg_name)
     joinpath(pkg_path,          "tests.jl"),
     joinpath(pkg_path, "test",  "test.jl" ),
     joinpath(pkg_path, "tests", "test.jl" ),
-    joinpath(pkg_path,          "test.jl" )]
+    joinpath(pkg_path,          "test.jl" ),
+    joinpath(pkg_path, "test",  "$(pkg_name).jl"),
+    joinpath(pkg_path, "tests", "$(pkg_name).jl")]
   features[:TEST_MASTERFILE] = ""
   for filename in possible_files
     if isfile(filename)
