@@ -1,5 +1,5 @@
 # Set special .julia folder just for this run
-export JULIA_PKGDIR="~/pkgtest/.julia"
+export JULIA_PKGDIR="/home/idunning/pkgtest/.julia"
 # Make sure its totally empty
 rm -rf JULIA_PKGDIR
 # Initialize and install PackageEvaluator
