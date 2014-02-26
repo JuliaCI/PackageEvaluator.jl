@@ -139,7 +139,7 @@ if length(ARGS) != 2
 end
 # First argument: number of tests to run, -1 is all of them
 num_to_test = int(ARGS[1])
-if num_to_test == 1
+if num_to_test == -1
     num_to_test = Inf
 end
 # Second argument: output types: J, H, or JH
