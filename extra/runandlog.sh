@@ -3,9 +3,9 @@ export JULIA_PKGDIR="/home/idunning/pkgtest/.julia"
 # Make sure its totally empty
 rm -rf $JULIA_PKGDIR
 # Initialize and install PackageEvaluator
-julia -e 'Pkg.init(); Pkg.clone("https://github.com/IainNZ/PackageEvaluator.jl.git")'
+/home/idunning/julia/julia -e 'Pkg.init(); Pkg.clone("https://github.com/IainNZ/PackageEvaluator.jl.git")'
 # Run the tester on all packages (-1) and export JSON (J)
 # Log STDOUT and STDERR to a file, e.g. genresults_2014-02-25-22.log
-julia genresults.jl -1 J 2>&1 | tee genresults_$(date '+%Y-%m-%d-%H').log
+/home/idunning/julia/julia genresults.jl -1 J 2>&1 | tee genresults_$(date '+%Y-%m-%d-%H').log
 # Post .jsons to status.julialang.org
-julia postresults.jl
+/home/idunning/julia/julia postresults.jl

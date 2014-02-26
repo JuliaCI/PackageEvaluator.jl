@@ -39,7 +39,7 @@ function evalPkg(pkg, addremove=true)
   getInfo(features, pkg_path)
   
   # Metadata
-  metadata_path = joinpath(ENV["HOME"],".julia","v0.2","METADATA",pkg)
+  metadata_path = joinpath(Pkg.dir(),"METADATA",pkg)
   checkURL(features, metadata_path)
   checkDesc(features, metadata_path)
   checkRequire(features, metadata_path)
