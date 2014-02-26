@@ -1,4 +1,11 @@
-export JULIA_PKGDIR="/mnt/ram/.julia"
-rm -rf /mnt/ram/.julia
+# Set special .julia folder just for this run
+export JULIA_PKGDIR="~/pkgtest/.julia"
+# Make sure its totally empty
+rm -rf JULIA_PKGDIR
+# Initialize and install PackageEvaluator
 julia -e 'Pkg.init(); Pkg.clone("https://github.com/IainNZ/PackageEvaluator.jl.git")'
-time julia genresults.jl 2>&1 | tee genresults_$(date '+%Y-%m-%d-%H').log
+# Run the tester on all packages (-1) and export JSON (J)
+# Log STDOUT and STDERR to a file, e.g. genresults_2014-02-25-22.log
+julia genresults.jl -1 J 2>&1 | tee genresults_$(date '+%Y-%m-%d-%H').log
+# Post .jsons to status.julialang.org
+julia postresults.jl
