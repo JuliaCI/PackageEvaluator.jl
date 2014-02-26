@@ -195,6 +195,7 @@ function checkTesting(features, pkg_path, pkg_name)
   features[:TEST_POSSIBLE] &= !(pkg_name == "PyLexYacc")    # Reason: python
   features[:TEST_POSSIBLE] &= !(pkg_name == "PyPlot")       # Reason: python
   features[:TEST_POSSIBLE] &= !(pkg_name == "PySide")       # Reason: python
+  features[:TEST_POSSIBLE] &= !(pkg_name == "RdRand")       # Reason: needs latest Intel CPU
   features[:TEST_POSSIBLE] &= !(pkg_name == "SemidefiniteProgramming") # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Tk")           # Reason: Tk
   features[:TEST_POSSIBLE] &= !(pkg_name == "Winston")      # Reason: Tk
