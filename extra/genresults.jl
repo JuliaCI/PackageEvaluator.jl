@@ -112,27 +112,27 @@ end
 # Some packages require packages for testing, but don't explicitly depend on
 # them. Please submit PRs if this applies to your package
 ###############################################################################
+const EXCEPTIONS = ["JuMP" => ["Cbc","Clp"],
+                    "MathProgBase" => ["Cbc","Clp"],
+                    "Gadfly" => ["RDatasets", "Cairo"]]
+
 # exceptions_before
 # Any "special" testing commands to be done
 function exceptions_before(pkg_name)
-    if pkg_name == "JuMP"
-        Pkg.add("Cbc")
-        Pkg.add("Clp")
-    elseif pkg_name == "MathProgBase"
-	Pkg.add("Cbc")
-	Pkg.add("Clp")
+    if pkg_name in keys(EXCEPTIONS)
+        for pkg_dep in EXCEPTIONS[pkg_name]
+            Pkg.add(pkg_dep)
+        end
     end
 end
 
 # exceptions_after
 # Any cleanup for packages that had exceptions
 function exceptions_after(pkg_name)
-    if pkg_name == "JuMP"
-        Pkg.rm("Cbc")
-        Pkg.rm("Clp")
-    elseif pkg_name == "MathProgBase"
-	Pkg.rm("Cbc")
-	Pkg.rm("Clp")
+    if pkg_name in keys(EXCEPTIONS)
+        for pkg_dep in EXCEPTIONS[pkg_name]
+            Pkg.rm(pkg_dep)
+        end
     end
 end
 
