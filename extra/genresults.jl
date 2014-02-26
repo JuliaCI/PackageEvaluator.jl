@@ -2,9 +2,11 @@ using PackageEvaluator
 
 
 function testAll(limit, writeJSON, writeHTML)
+    
+    cur_dir = pwd()  # Can get lost a bit running tests
 
     if writeHTML
-        summary = open("index.html","w")
+        summary = open(joinpath(cur_dir,"index.html"),"w")
 
         # Setup the index file by copying in a header from a file in 
         # the extra/ folder
@@ -86,7 +88,7 @@ function testAll(limit, writeJSON, writeHTML)
         # WriteJSON
         if writeJSON
             json_str = featuresToJSON(pkg_name, features)
-            json_fp = open(joinpath(Pkg.dir("PackageEvaluator"),"extra","$(pkg_name).json"),"w")
+            json_fp = open(joinpath(cur_dir,"$(pkg_name).json"),"w")
             write(json_fp, json_str)
             close(json_fp)
         end
