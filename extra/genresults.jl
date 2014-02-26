@@ -118,6 +118,9 @@ function exceptions_before(pkg_name)
     if pkg_name == "JuMP"
         Pkg.add("Cbc")
         Pkg.add("Clp")
+    elseif pkg_name == "MathProgBase"
+	Pkg.add("Cbc")
+	Pkg.add("Clp")
     end
 end
 
@@ -127,6 +130,9 @@ function exceptions_after(pkg_name)
     if pkg_name == "JuMP"
         Pkg.rm("Cbc")
         Pkg.rm("Clp")
+    elseif pkg_name == "MathProgBase"
+	Pkg.rm("Cbc")
+	Pkg.rm("Clp")
     end
 end
 
