@@ -1,7 +1,7 @@
 # Set special .julia folder just for this run
 export JULIA_PKGDIR="/home/idunning/pkgtest/.julia"
 # Make sure its totally empty
-rm -rf JULIA_PKGDIR
+rm -rf $JULIA_PKGDIR
 # Initialize and install PackageEvaluator
 julia -e 'Pkg.init(); Pkg.clone("https://github.com/IainNZ/PackageEvaluator.jl.git")'
 # Run the tester on all packages (-1) and export JSON (J)
