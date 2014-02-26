@@ -163,6 +163,32 @@ function checkTesting(features, pkg_path, pkg_name)
       break
     end
   end
+
+  # If we can't find any master files, look to see if they have
+  # a single "obvious" test file.
+    if !features[:TEST_EXIST]
+        for test_folder in ["test", "tests"]
+            try
+                test_files = readdir(joinpath(pkg_path, test_folder))
+                jl_files = String[]
+                for file in test_files
+                    if contains(file, ".jl")
+                        push!(jl_files, file)
+                    end
+                end
+                if length(jl_files) == 1
+                    # Only one test file, yay
+                    features[:TEST_MASTERFILE] = joinpath(pkg_path, test_folder, jl_files[1])
+                    features[:TEST_EXIST] = true
+                end
+                break
+            catch
+                # Do nothing
+            end
+        end
+    end
+
+
   
   # Do they have a .travis.yml file?
   travis_file = joinpath(pkg_path, ".travis.yml")
