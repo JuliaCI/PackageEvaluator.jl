@@ -118,27 +118,6 @@ end
 function checkTesting(features, pkg_path, pkg_name)
   features[:TEST_EXIST] = false
 
-  # First of all, check for the existence of a test folder with Julia
-  # files in it
-  possible_folders = [joinpath(pkg_path, "test"),
-                      joinpath(pkg_path, "tests")]
-  for folder in possible_folders
-    try
-      # ls the folder
-      file_list = split(readall(`ls $folder`), "\n")
-      # if that didn't die, look through the files
-      for file in file_list
-        # Any Julia files in there?
-        if file[(end-2):(end)] == ".jl"
-          features[:TEST_EXIST] = true
-          break
-        end
-      end
-    catch
-      # No test folder at all
-    end
-  end
-
   # Look for a master test file
   possible_files = [
     joinpath(pkg_path, "test",  "runtests.jl"),
@@ -176,14 +155,16 @@ function checkTesting(features, pkg_path, pkg_name)
                         push!(jl_files, file)
                     end
                 end
+                if length(jl_files) > 0
+                    features[:TEST_EXIST] = true
+                end
                 if length(jl_files) == 1
                     # Only one test file, yay
-                    features[:TEST_MASTERFILE] = joinpath(pkg_path, test_folder, jl_files[1])
-                    features[:TEST_EXIST] = true
+                    features[:TEST_MASTERFILE] = joinpath(pkg_path, test_folder, jl_files[1]) 
                 end
                 break
             catch
-                # Do nothing
+                #println("Error on ", test_folder)
             end
         end
     end
