@@ -152,7 +152,9 @@ function checkTesting(features, pkg_path, pkg_name)
     joinpath(pkg_path,          "tests.jl"),
     joinpath(pkg_path, "test",  "test.jl" ),
     joinpath(pkg_path, "tests", "test.jl" ),
-    joinpath(pkg_path,          "test.jl" )]
+    joinpath(pkg_path,          "test.jl" ),
+    joinpath(pkg_path, "test",  "$(pkg_name).jl"),
+    joinpath(pkg_path, "tests", "$(pkg_name).jl")]
   features[:TEST_MASTERFILE] = ""
   for filename in possible_files
     if isfile(filename)
@@ -173,6 +175,7 @@ function checkTesting(features, pkg_path, pkg_name)
   features[:TEST_POSSIBLE] &= !(pkg_name == "Arduino")      # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Clang")        # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "CPLEX")        # Reason: binaries
+  features[:TEST_POSSIBLE] &= !(pkg_name == "CLFFT")        # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "CUDA")         # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "FITSIO")       # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Gaston")       # Reason: binaries
