@@ -124,4 +124,4 @@ function exceptions_after(pkg_name)
 end
 
 
-testAll(1,true,false)
+testAll(Inf,true,false)
