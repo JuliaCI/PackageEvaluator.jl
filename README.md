@@ -37,6 +37,7 @@ In the event none of those files exist, we look for a ``test`` or ``tests`` fold
 Licenses are searched for in the following files, in this order (stop once its found):
 
 * ``LICENSE, LICENSE.md, License.md, LICENSE.txt``
+* ``LICENCE, LICENCE.md, Licence.md``
 * ``README, README.md, README.txt``
 * ``COPYING, COPYING.md, COPYING.txt``
 
