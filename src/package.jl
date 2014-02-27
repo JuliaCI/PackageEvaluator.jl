@@ -40,6 +40,9 @@ function checkLicense(features, pkg_path)
   possible_files = ["LICENSE",
                     "LICENSE.md",
                     "License.md",
+                    "LICENCE",
+                    "LICENCE.md",
+                    "Licence.md",
                     "LICENSE.txt",
                     "README",
                     "README.md",
@@ -67,9 +70,7 @@ function guessLicense(features, filename)
   if ismatch(r"mit license", text) ||
      ismatch(r"mit expat license", text) ||
      ismatch(r"mit \"expat\" license", text) ||
-     ismatch(r"permission is hereby granted, free of charge, to any person", text) ||
-     ismatch(r"ermission is hereby granted, free of charge", text) ||
-     ismatch(r"without restriction, including without limitation", text)
+     ismatch(r"permission is hereby granted, free of charge,", text)
     features[:LICENSE_EXISTS] = true
     features[:LICENSE] = "MIT"
   # GPL v2
