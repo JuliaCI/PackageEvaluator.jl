@@ -67,7 +67,9 @@ function guessLicense(features, filename)
   if ismatch(r"mit license", text) ||
      ismatch(r"mit expat license", text) ||
      ismatch(r"mit \"expat\" license", text) ||
-     ismatch(r"permission is hereby granted, free of charge, to any person", text)
+     ismatch(r"permission is hereby granted, free of charge, to any person", text) ||
+     ismatch(r"ermission is hereby granted, free of charge", text) ||
+     ismatch(r"without restriction, including without limitation", text)
     features[:LICENSE_EXISTS] = true
     features[:LICENSE] = "MIT"
   # GPL v2
