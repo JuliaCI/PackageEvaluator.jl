@@ -3,6 +3,7 @@
 function getInfo(features, pkg_path)
   cd(pkg_path)
   gitsha = ""
+  gitdate = ""
   try
     gitlog = readall(`git log -1 --format="%H %ci"`)
     spl = split(gitlog, " ")
