@@ -22,19 +22,21 @@ end
 export featuresToJSON
 function featuresToJSON(pkg_name, features)
     json_str = "{\n"
-    json_str = json_str * keyToJSON("name",     pkg_name)
-    json_str = json_str * keyToJSON("url",      features[:URL])
-    json_str = json_str * keyToJSON("version",  features[:VERSION])
-    json_str = json_str * keyToJSON("gitsha",   chomp(features[:GITSHA]))
-    json_str = json_str * keyToJSON("license",  features[:LICENSE])
-    json_str = json_str * keyToJSON("licfile",  features[:LICENSE_FILE])
-    json_str = json_str * keyToJSON("status",   features[:TEST_STATUS])
-    json_str = json_str * keyToJSON("possible", features[:TEST_POSSIBLE] ? "true" : "false")
-    json_str = json_str * keyToJSON("details",  getDetailsString(pkg_name, features))
-    json_str = json_str * keyToJSON("pkgreq",   features[:REQUIRE_VERSION] ? "true" : "false")
-    json_str = json_str * keyToJSON("metareq",  features[:REQUIRES_OK] ? "true" : "false")
-    json_str = json_str * keyToJSON("travis",   features[:TEST_TRAVIS] ? "true" : "false", true)
-    json_str = json_str * "}"
+    json_str *= keyToJSON("jlver",    string(VERSION.major,".",VERSION.minor))
+    json_str *= keyToJSON("jlverfull",string(VERSION))
+    json_str *= keyToJSON("name",     pkg_name)
+    json_str *= keyToJSON("url",      features[:URL])
+    json_str *= keyToJSON("version",  features[:VERSION])
+    json_str *= keyToJSON("gitsha",   chomp(features[:GITSHA]))
+    json_str *= keyToJSON("license",  features[:LICENSE])
+    json_str *= keyToJSON("licfile",  features[:LICENSE_FILE])
+    json_str *= keyToJSON("status",   features[:TEST_STATUS])
+    json_str *= keyToJSON("possible", features[:TEST_POSSIBLE] ? "true" : "false")
+    json_str *= keyToJSON("details",  getDetailsString(pkg_name, features))
+    json_str *= keyToJSON("pkgreq",   features[:REQUIRE_VERSION] ? "true" : "false")
+    json_str *= keyToJSON("metareq",  features[:REQUIRES_OK] ? "true" : "false")
+    json_str *= keyToJSON("travis",   features[:TEST_TRAVIS] ? "true" : "false", true)
+    json_str *= "}"
     return json_str
 end
 
