@@ -53,8 +53,14 @@ function checkLicense(features, pkg_path)
   for filename in possible_files
     fullfilename = joinpath(pkg_path, filename)
     if isfile(fullfilename)
+      # If it isn't a README, then its probably a license file of some sort
+      # So at least we found a FILE if not the license
+      if !contains(filename, "README")
+        features[:LICENSE_FILE] = filename
+      end
       if guessLicense(features, fullfilename)
-        # Stop once we identify a license  
+        # Stop once we identify a license 
+        # Make sure to set license file again, in case of README...
         features[:LICENSE_FILE] = filename
         return
       end
