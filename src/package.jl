@@ -4,11 +4,15 @@ function getInfo(features, pkg_path)
   cd(pkg_path)
   gitsha = ""
   try
-    gitsha = readall(`git log -1 --format="%H"`)
+    gitlog = readall(`git log -1 --format="%H %ci"`)
+    spl = split(gitlog, " ")
+    gitsha = spl[1]
+    gitdate = string(spl[2]," ",spl[3]," ",spl[4])
   catch
     # NOP
   end
   features[:GITSHA] = gitsha
+  features[:GITDATE] = gitdate
 end
 
 ###############################################################################
