@@ -23,7 +23,7 @@ export featuresToJSON
 function featuresToJSON(pkg_name, features)
     json_str = "{\n"
     json_str *= keyToJSON("jlver",    string(VERSION.major,".",VERSION.minor))
-    json_str *= keyToJSON("jlverfull",string(VERSION))
+    json_str *= keyToJSON("jlcommit", features[:JLCOMMIT])
     json_str *= keyToJSON("name",     pkg_name)
     json_str *= keyToJSON("url",      features[:URL])
     json_str *= keyToJSON("version",  features[:VERSION])

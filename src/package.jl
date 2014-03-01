@@ -1,19 +1,27 @@
 ###############################################################################
-# General info, including the Git version
+# General info, including the Git version, date of last commit in the tagged
+# version, and the Julia version we are testing with right now
 function getInfo(features, pkg_path)
   cd(pkg_path)
   gitsha = ""
   gitdate = ""
+  jlsha = ""
   try
     gitlog = readall(`git log -1 --format="%H %ci"`)
     spl = split(gitlog, " ")
     gitsha = spl[1]
     gitdate = string(spl[2]," ",spl[3]," ",spl[4])
+    if VERSION.minor == 2
+        jlsha = Base.BUILD_INFO.commit
+    else
+        jlsha = Base.GIT_VERSION_INFO.commit
+    end
   catch
     # NOP
   end
   features[:GITSHA] = gitsha
   features[:GITDATE] = gitdate
+  features[:JLCOMMIT] = jlsha
 end
 
 ###############################################################################
