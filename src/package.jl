@@ -226,9 +226,11 @@ function checkTesting(features, pkg_path, pkg_name)
   features[:TEST_POSSIBLE] &= !(pkg_name == "PySide")       # Reason: python
   features[:TEST_POSSIBLE] &= !(pkg_name == "RdRand")       # Reason: needs latest Intel CPU
   features[:TEST_POSSIBLE] &= !(pkg_name == "SemidefiniteProgramming") # Reason: binaries
+  features[:TEST_POSSIBLE] &= !(pkg_name == "Sodium")       # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Tk")           # Reason: Tk
   features[:TEST_POSSIBLE] &= !(pkg_name == "Winston")      # Reason: Tk
   features[:TEST_POSSIBLE] &= !(pkg_name == "Vega")         # Reason: weird build
+  features[:TEST_POSSIBLE] &= !(pkg_name == "VML")          # Reason: binaries
   
   if !features[:TEST_POSSIBLE]
     features[:TEST_STATUS] = "not_possible"
