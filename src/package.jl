@@ -261,7 +261,7 @@ function checkTesting(features, pkg_path, pkg_name)
       # Move into the package directory in case tests rely on that
       # First saw in ASCIIPlots
       curdir = strip(readall(`pwd`))
-      cd(Pkg.dir(pkg_name))
+      cd(splitdir(features[:TEST_MASTERFILE])[1])
       testoutput = readall(`julia $(features[:TEST_MASTERFILE])`)
       cd(curdir)
       features[:TEST_STATUS] = "full_pass"
