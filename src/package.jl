@@ -11,7 +11,7 @@ function getInfo(features, pkg_path)
     spl = split(gitlog, " ")
     gitsha = spl[1]
     gitdate = string(spl[2]," ",spl[3]," ",spl[4])
-    if VERSION.minor == 2
+    if VERSION.minor == 2 && VERSION.major == 0
         jlsha = Base.BUILD_INFO.commit
     else
         jlsha = Base.GIT_VERSION_INFO.commit
