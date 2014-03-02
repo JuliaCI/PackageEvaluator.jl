@@ -211,6 +211,7 @@ function checkTesting(features, pkg_path, pkg_name)
   features[:TEST_POSSIBLE] &= !(pkg_name == "Gtk")          # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Gurobi")       # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "ImageView")    # Reason: Tk
+  features[:TEST_POSSIBLE] &= !(pkg_name == "MathProgBase") # Reason: binaries (for now)
   features[:TEST_POSSIBLE] &= !(pkg_name == "MATLAB")       # Reason: MATLAB
   features[:TEST_POSSIBLE] &= !(pkg_name == "MATLABCluster") # Reason: MATLAB
   features[:TEST_POSSIBLE] &= !(pkg_name == "Mongo")        # Reason: binaries

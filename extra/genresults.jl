@@ -112,7 +112,8 @@ end
 # Some packages require packages for testing, but don't explicitly depend on
 # them. Please submit PRs if this applies to your package
 ###############################################################################
-const EXCEPTIONS = ["JuMP" => ["Cbc","Clp"],
+const EXCEPTIONS = ["HTTPClient" => ["JSON"],
+                    "JuMP" => ["Cbc","Clp"],
                     "MathProgBase" => ["Cbc","Clp"],
                     "Gadfly" => ["RDatasets", "Cairo"]]
 
