@@ -3,7 +3,7 @@
 function checkURL(features, metadata_path)
   url_path = joinpath(metadata_path, "url")
   features[:URL_EXISTS] = isfile(url_path)
-  gitpath = readall(url_path)
+  gitpath = chomp(readall(url_path))
   # Remove starting git:// or https://
   if gitpath[1:3] == "git"
     gitpath = gitpath[7:(end-5)]
