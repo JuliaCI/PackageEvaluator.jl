@@ -262,12 +262,16 @@ function checkTesting(features, pkg_path, pkg_name)
       # First saw in ASCIIPlots
       curdir = strip(readall(`pwd`))
       cd(splitdir(features[:TEST_MASTERFILE])[1])
-      testoutput = readall(`julia $(features[:TEST_MASTERFILE])`)
+      # Use timeout to handle cases like the GeoIP bug
+      testoutput = readall(`timeout 300s julia $(features[:TEST_MASTERFILE])`)
       cd(curdir)
       features[:TEST_STATUS] = "full_pass"
-    catch
+    catch err
       # Has tests, and they failed
       features[:TEST_STATUS] = "full_fail"
+      if contains(err.msg, "[124]")
+        println("FAILED DUE TO TIMEOUT")
+      end
     end
   end
 
