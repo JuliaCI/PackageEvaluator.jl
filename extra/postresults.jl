@@ -35,9 +35,15 @@ for file in allfiles
         else
             json_dict["testlog"] = "No log! Please file issue."
         end 
-        response = post(URI("http://status.julialang.org/put/package"), JSON.json(json_dict), 
-json_head)
-        println(response)
+	try
+	    response = post(URI("http://status.julialang.org/put/package"), JSON.json(json_dict), json_head)
+            println(response)
+	catch
+            println("Failed to post $file, removing log")
+            json_dict["testlog"] = "Log error! Please file issue."
+	    response = post(URI("http://status.julialang.org/put/package"), JSON.json(json_dict), json_head)
+            println(response)
+        end
     end
 end
 
