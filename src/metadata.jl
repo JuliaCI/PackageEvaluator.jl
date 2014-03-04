@@ -6,9 +6,9 @@ function checkURL(features, metadata_path)
   gitpath = chomp(readall(url_path))
   # Remove starting git:// or https://
   if gitpath[1:3] == "git"
-    gitpath = gitpath[7:(end-5)]
+    gitpath = gitpath[7:(end-4)]
   elseif gitpath[1:5] == "https"
-    gitpath = gitpath[9:(end-5)]
+    gitpath = gitpath[9:(end-4)]
   end
   features[:URL] = string("http://",gitpath)
 end
