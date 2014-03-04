@@ -9,7 +9,7 @@ json_head["Content-Type"] = "application/json"
 allfiles = readdir()
 logfiles = Any[]
 for file in allfiles
-    if contains(file, "genresults_")
+    if contains(file, "pkgeval_")
         push!(logfiles,file)
     end
 end
