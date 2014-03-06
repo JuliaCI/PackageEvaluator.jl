@@ -28,7 +28,7 @@ echo "############# DONE WITH 0.2"
 
 # Now we need to switch to nightly
 # Script needs Python 2 and requests installed
-cd PKGTEST_DIR
+cd $PKGTEST_DIR
 git clone https://github.com/JuliaLang/julia.git
 cd julia
 export LASTGOODCOMMIT="$(python2 $PKGEVALEXTRA/get_last_good_commit.py)"

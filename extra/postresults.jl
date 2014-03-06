@@ -34,7 +34,10 @@ for file in allfiles
             json_dict["testlog"] = pkg_log[json_dict["name"]]
         else
             json_dict["testlog"] = "No log! Please file issue."
-        end 
+        end
+        js2 = open(file,"w")
+        print(js2, JSON.json(json_dict))
+        close(js2)
 	try
 	    response = post(URI("http://status.julialang.org/put/package"), JSON.json(json_dict), json_head)
             println(response)
