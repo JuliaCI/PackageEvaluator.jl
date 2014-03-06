@@ -30,6 +30,7 @@ function evalPkg(pkg, addremove=true)
   end
   
   features = Dict{Symbol,Any}()
+  features[:VERSION] = string(Pkg.installed(pkg))
 
   # Package
   pkg_path = Pkg.dir(pkg)
