@@ -55,7 +55,6 @@ for file in allfiles
         end
         first = false
         print(cat_fp, JSON.json(json_dict))
-        continue
 	try
 	    response = post(URI("http://status.julialang.org/put/package"), JSON.json(json_dict), json_head)
             println(response)
