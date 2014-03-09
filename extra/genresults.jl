@@ -115,7 +115,8 @@ end
 const EXCEPTIONS = ["HTTPClient" => ["JSON"],
                     "JuMP" => ["Cbc","Clp"],
                     "MathProgBase" => ["Cbc","Clp"],
-                    "Gadfly" => ["RDatasets", "Cairo"]]
+                    "Gadfly" => ["RDatasets", "Cairo"],
+                    "PLX" => ["BinDeps","MAT"]]
 
 # exceptions_before
 # Any "special" testing commands to be done
