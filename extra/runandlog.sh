@@ -1,3 +1,6 @@
+# For Java packages
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk/
+
 export PKGEVALEXTRA="/home/idunning/PackageEvaluator.jl/extra"
 cd $PKGEVALEXTRA
 
