@@ -114,11 +114,13 @@ end
 ###############################################################################
 const EXCEPTIONS = ["HTTPClient" => ["JSON"],
                     "JuMP" => ["Cbc","Clp"],
-                    "MathProgBase" => ["Cbc","Clp"],
+                    "MathProgBase" => ["Cbc", "Clp"],
                     "Gadfly" => ["RDatasets", "Cairo"],
-                    "PLX" => ["BinDeps","MAT"],
+                    "PLX" => ["BinDeps", "MAT"],
                     "TimeSeries" => ["Datetime", "FactCheck"],
-                    "MarketTechnicals" => ["Datetime", "FactCheck"]]
+                    "MarketTechnicals" => ["Datetime", "FactCheck"],
+                    "DecisionTree" => ["RDatasets"]
+                    ]
 
 # exceptions_before
 # Any "special" testing commands to be done
