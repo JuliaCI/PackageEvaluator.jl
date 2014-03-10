@@ -113,7 +113,7 @@ end
 # them. Please submit PRs if this applies to your package
 ###############################################################################
 const EXCEPTIONS = ["HTTPClient" => ["JSON"],
-                    "JuMP" => ["Cbc","Clp"],
+                    "JuMP" => ["Cbc","Clp","GLPKMathProgInterface"],
                     "MathProgBase" => ["Cbc", "Clp"],
                     "Gadfly" => ["RDatasets", "Cairo"],
                     "PLX" => ["BinDeps", "MAT"],
