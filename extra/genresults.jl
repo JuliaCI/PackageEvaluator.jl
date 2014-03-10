@@ -116,7 +116,9 @@ const EXCEPTIONS = ["HTTPClient" => ["JSON"],
                     "JuMP" => ["Cbc","Clp"],
                     "MathProgBase" => ["Cbc","Clp"],
                     "Gadfly" => ["RDatasets", "Cairo"],
-                    "PLX" => ["BinDeps","MAT"]]
+                    "PLX" => ["BinDeps","MAT"],
+                    "TimeSeries" => ["Datetime", "FactCheck"],
+                    "MarketTechnicals" => ["Datetime", "FactCheck"]]
 
 # exceptions_before
 # Any "special" testing commands to be done
@@ -125,6 +127,9 @@ function exceptions_before(pkg_name)
         for pkg_dep in EXCEPTIONS[pkg_name]
             Pkg.add(pkg_dep)
         end
+    end
+    if pkg_name == "TimeSeries" || pkg_name == "MarketTechnicals"  # SUPER HACKY
+        Pkg.clone("git://github.com/JuliaQuant/MarketData.jl.git")
     end
 end
 
