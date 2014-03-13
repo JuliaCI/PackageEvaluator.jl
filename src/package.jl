@@ -202,6 +202,7 @@ function checkTesting(features, pkg_path, pkg_name)
 
   # Are tests even meaningful?
   features[:TEST_POSSIBLE] = true
+  features[:TEST_POSSIBLE] &= !(pkg_name == "ApproxFun")    # Reason: Tk
   features[:TEST_POSSIBLE] &= !(pkg_name == "Arduino")      # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Clang")        # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "CPLEX")        # Reason: binaries
