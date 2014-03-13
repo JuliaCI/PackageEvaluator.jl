@@ -132,7 +132,9 @@ function exceptions_before(pkg_name)
         end
     end
     if pkg_name == "TimeSeries" || pkg_name == "MarketTechnicals"  # SUPER HACKY
-        Pkg.clone("git://github.com/JuliaQuant/MarketData.jl.git")
+        try
+            Pkg.clone("git://github.com/JuliaQuant/MarketData.jl.git")
+        end
     end
 end
 
