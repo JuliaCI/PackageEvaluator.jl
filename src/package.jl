@@ -139,6 +139,7 @@ end
 # Testing folder/files
 function checkTesting(features, pkg_path, pkg_name)
   features[:TEST_EXIST] = false
+  features[:EXP_NAMES] = ""
 
   # Look for a master test file
   possible_files = [
@@ -238,21 +239,23 @@ function checkTesting(features, pkg_path, pkg_name)
     return
   end
   
-  if features[:TEST_MASTERFILE] == ""
-    # Couldn't find a master test file
-    # See if "using" works
-    testoutput = ""
-    try
-      fp = open("testusing.jl","w")
-      write(fp, "using $pkg_name\n")
-      close(fp)
-      testoutput = readall(`julia testusing.jl`)
-      features[:TEST_STATUS] = "using_pass"
-    catch
-      # Didn't run without errors
-      features[:TEST_STATUS] = "using_fail"
-    end
-  else
+  # Not excluded. See if "using" works
+  testoutput = ""
+  try
+    fp = open("testusing.jl","w")
+    write(fp, "using $pkg_name; println(names($pkg_name))\n")
+    close(fp)
+    testoutput = readall(`timeout 300s julia testusing.jl`)
+    features[:TEST_STATUS] = "using_pass"
+    features[:EXP_NAMES] = chomp(testoutput)
+  catch
+    # Didn't run without errors, even if it has
+    # tests they are 100% guaranteed to fail
+    features[:TEST_STATUS] = "using_fail"
+    return
+  end
+
+  if features[:TEST_MASTERFILE] != ""
     # Found a master test file
     # Run it to see if it works
     # Run the tests to see how they go
