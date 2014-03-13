@@ -65,13 +65,15 @@ function getDetailsString(pkg_name, features)
     else
       details = string(details, ", no errors.")
     end
-  elseif t_exist && t_master != ""
+  elseif t_exist && t_master != "" && t_status != "using_fail"
     details = "Tests exist, ran 'julia $(splitdir(t_master)[2])'"
     if t_status == "full_fail"
       details = string(details, ", failed!")
     else
       details = string(details, ", passed!")
     end
+  elseif t_exist && t_master != "" && t_status == "using_fail"
+    details = "Tests exist, tried 'using $pkg_name', failed!")
   else
     details = "No tests, tried 'using $pkg_name'"
     if t_status == "using_fail"
