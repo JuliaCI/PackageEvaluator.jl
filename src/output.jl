@@ -73,7 +73,7 @@ function getDetailsString(pkg_name, features)
       details = string(details, ", passed!")
     end
   elseif t_exist && t_master != "" && t_status == "using_fail"
-    details = "Tests exist, tried 'using $pkg_name', failed!")
+    details = "Tests exist, tried 'using $pkg_name', failed!"
   else
     details = "No tests, tried 'using $pkg_name'"
     if t_status == "using_fail"
