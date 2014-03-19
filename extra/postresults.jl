@@ -41,9 +41,10 @@ function add_line!(pd::PackageData, line)
 end
 function compress_lines!(pd::PackageData)
     if length(pd.lines) > 25
-        pd.test_log = vcat(pd.lines[1:10], pd.lines[end-10:end])
+        pd.test_log = join(vcat(pd.lines[1:10], pd.lines[end-10:end]),"\n")
+    else
+        pd.test_log = join(pd.lines,"\n")
     end
-    pd.test_log = join(pd.test_log,"\n")
 end
 function print_deps(pd::PackageData, all_pkg, depth=0, done_already=nothing)
     # MESSED UP BECAUSE IT DOESN'T REFLECT JUST DIRECT DEPENDENCIES
@@ -136,7 +137,7 @@ for file in all_files
     json_str = readall(file)
     json_dict = JSON.parse(json_str)
     if json_dict["name"] in keys(pkg_log)
-        json_dict["testlog"] = pkg_log[json_dict["name"]]
+        json_dict["testlog"] = pkg_log[json_dict["name"]].test_log
     else
         json_dict["testlog"] = "No log! Please file issue."
     end
@@ -148,14 +149,19 @@ for file in all_files
 
     # Only post if the not disabled
     !do_post && continue 
+    println(file)
     try
         response = post(URI("http://status.julialang.org/put/package"), JSON.json(json_dict), json_head)
         println(response)
     catch
         println("Failed to post $file, removing test log")
+        println(json_dict["testlog"])
         json_dict["testlog"] = "Log error! Please file issue."
-        response = post(URI("http://status.julialang.org/put/package"), JSON.json(json_dict), json_head)
-        println(response)
+	println(JSON.json(json_dict))
+        try
+            response = post(URI("http://status.julialang.org/put/package"), JSON.json(json_dict), json_head)
+            println(response)
+        end
     end
 end
 
