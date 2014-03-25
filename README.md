@@ -1,7 +1,7 @@
 PackageEvaluator.jl
 ===================
 
-A package + extras that attempt to evaluate the state of individual packages as well as the status of the wider package ecosystem for [Julia](http://julialang.org).
+A package + extras that attempt to evaluate the state of individual packages as well as the status of the wider package ecosystem for [Julia](http://julialang.org). Developers, check the status of your packages [here](http://status.julialang.org/).
 
 ## The module
 
