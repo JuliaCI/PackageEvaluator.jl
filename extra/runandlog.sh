@@ -25,7 +25,7 @@ cd stable
 julia ../genresults.jl -1 J 2>&1 | tee pkgeval_$(date '+%Y-%m-%d-%H').log
 
 # Post .jsons to status.julialang.org
-julia ../postresults.jl
+julia ../postresults.jl nopost
 
 echo "############# DONE WITH 0.2"
 
@@ -50,5 +50,5 @@ cd nightly
 julia ../genresults.jl -1 J 2>&1 | tee pkgeval_$(date '+%Y-%m-%d-%H').log
 
 # Post .jsons to status.julialang.org
-julia ../postresults.jl
+julia ../postresults.jl nopost
 
