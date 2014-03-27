@@ -145,7 +145,7 @@ for file in all_files
     # Append the current JSON
     !first && print(cat_fp, ",")
     first = false
-    print(cat_fp, JSON.json(json_dict))
+    println(cat_fp, JSON.json(json_dict))
 
     # Only post if the not disabled
     !do_post && continue 
