@@ -77,8 +77,12 @@ end
 #############################################################################
 
 # Assume we running in a nuked package folder
-Pkg.add("Requests")
-using Requests
+Pkg.update()
+#Pkg.add("Requests")
+#Pkg.checkout("ICU")
+#Pkg.build("ICU")
+#using Requests
+Pkg.add("JSON")
 using JSON
 
 # Check whether we want to POST or not
@@ -150,19 +154,19 @@ for file in all_files
     # Only post if the not disabled
     !do_post && continue 
     println(file)
-    try
-        response = post(URI("http://status.julialang.org/put/package"), JSON.json(json_dict), json_head)
-        println(response)
-    catch
-        println("Failed to post $file, removing test log")
-        println(json_dict["testlog"])
-        json_dict["testlog"] = "Log error! Please file issue."
-	println(JSON.json(json_dict))
-        try
-            response = post(URI("http://status.julialang.org/put/package"), JSON.json(json_dict), json_head)
-            println(response)
-        end
-    end
+    #try
+    #    response = post(URI("http://status.julialang.org/put/package"), JSON.json(json_dict), json_head)
+    #    println(response)
+    #catch
+    #    println("Failed to post $file, removing test log")
+    #    println(json_dict["testlog"])
+    #    json_dict["testlog"] = "Log error! Please file issue."
+    #    println(JSON.json(json_dict))
+    #    try
+    #        response = post(URI("http://status.julialang.org/put/package"), JSON.json(json_dict), json_head)
+    #        println(response)
+    #    end
+    #end
 end
 
 #############################################################################
