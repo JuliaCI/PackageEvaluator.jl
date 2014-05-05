@@ -36,6 +36,7 @@ git clone https://github.com/JuliaLang/julia.git
 cd julia
 export LASTGOODCOMMIT="$(python2 $PKGEVALEXTRA/get_last_good_commit.py)"
 git checkout $LASTGOODCOMMIT
+echo "USE_SYSTEM_PCRE = 1" > Make.user
 make
 export PATH="$ORIGPATH:/home/idunning/pkgtest/julia"
 echo $PATH
