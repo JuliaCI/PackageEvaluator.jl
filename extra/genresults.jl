@@ -120,7 +120,8 @@ const EXCEPTIONS = ["HTTPClient" => ["JSON"],
                     "TimeSeries" => ["Datetime", "FactCheck"],
                     "MarketTechnicals" => ["Datetime", "FactCheck"],
                     "DecisionTree" => ["RDatasets"],
-                    "ExpressionUtils" => ["FactCheck"]
+                    "ExpressionUtils" => ["FactCheck"],
+                    "TimeSeries" => ["MarketData"]
                     ]
 
 # exceptions_before
