@@ -211,6 +211,7 @@ function checkTesting(features, pkg_path, pkg_name)
   features[:TEST_POSSIBLE] &= !(pkg_name == "Gaston")       # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Gtk")          # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Gurobi")       # Reason: binaries
+  features[:TEST_POSSIBLE] &= !(pkg_name == "Homebrew")     # Reason: OSX
   features[:TEST_POSSIBLE] &= !(pkg_name == "ImageView")    # Reason: Tk
   features[:TEST_POSSIBLE] &= !(pkg_name == "Mathematica")  # Reason: Mathematica
   features[:TEST_POSSIBLE] &= !(pkg_name == "MathProgBase") # Reason: binaries (for now)
@@ -230,6 +231,7 @@ function checkTesting(features, pkg_path, pkg_name)
   features[:TEST_POSSIBLE] &= !(pkg_name == "RdRand")       # Reason: needs latest Intel CPU
   features[:TEST_POSSIBLE] &= !(pkg_name == "SemidefiniteProgramming") # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Sodium")       # Reason: binaries
+  features[:TEST_POSSIBLE] &= !(pkg_name == "SymPy")        # Reason: python
   features[:TEST_POSSIBLE] &= !(pkg_name == "Tk")           # Reason: Tk
   features[:TEST_POSSIBLE] &= !(pkg_name == "Winston")      # Reason: Tk
   features[:TEST_POSSIBLE] &= !(pkg_name == "Vega")         # Reason: weird build
