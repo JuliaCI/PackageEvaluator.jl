@@ -40,8 +40,8 @@ function add_line!(pd::PackageData, line)
     end
 end
 function compress_lines!(pd::PackageData)
-    if length(pd.lines) > 25
-        pd.test_log = join(vcat(pd.lines[1:10], pd.lines[end-10:end]),"\n")
+    if length(pd.lines) > 55
+        pd.test_log = join(vcat(pd.lines[1:20],{"..truncated.."},pd.lines[end-30:end]),"\n")
     else
         pd.test_log = join(pd.lines,"\n")
     end
