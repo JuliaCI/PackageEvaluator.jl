@@ -121,7 +121,8 @@ const EXCEPTIONS = ["HTTPClient" => ["JSON"],
                     "MarketTechnicals" => ["Datetime", "FactCheck","MarketData"],
                     "DecisionTree" => ["RDatasets"],
                     "ExpressionUtils" => ["FactCheck"],
-                    "TimeSeries" => ["MarketData"]
+                    "TimeSeries" => ["MarketData"],
+                    "Synchrony" => ["CrossDecomposition"]
                     ]
 
 # exceptions_before
