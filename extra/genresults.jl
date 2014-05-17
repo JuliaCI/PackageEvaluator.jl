@@ -117,12 +117,12 @@ const EXCEPTIONS = ["HTTPClient" => ["JSON"],
                     "MathProgBase" => ["Cbc", "Clp"],
                     "Gadfly" => ["RDatasets", "Cairo"],
                     "PLX" => ["BinDeps", "MAT"],
-                    "TimeSeries" => ["Datetime", "FactCheck"],
+                    "TimeSeries" => ["Datetime", "FactCheck", "MarketData"],
                     "MarketTechnicals" => ["Datetime", "FactCheck","MarketData"],
                     "DecisionTree" => ["RDatasets"],
                     "ExpressionUtils" => ["FactCheck"],
-                    "TimeSeries" => ["MarketData"],
-                    "Synchrony" => ["CrossDecomposition"]
+                    "Synchrony" => ["CrossDecomposition"],
+                    "CRC" => ["Zlib"]
                     ]
 
 # exceptions_before
