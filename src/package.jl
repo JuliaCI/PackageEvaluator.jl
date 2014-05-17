@@ -209,6 +209,7 @@ function checkTesting(features, pkg_path, pkg_name)
   features[:TEST_POSSIBLE] &= !(pkg_name == "CLFFT")        # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "CUDA")         # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Gaston")       # Reason: binaries
+  features[:TEST_POSSIBLE] &= !(pkg_name == "GLFW")         # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Gtk")          # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Gurobi")       # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Homebrew")     # Reason: OSX
