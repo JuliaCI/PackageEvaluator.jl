@@ -118,7 +118,7 @@ const EXCEPTIONS = ["HTTPClient" => ["JSON"],
                     "Gadfly" => ["RDatasets", "Cairo"],
                     "PLX" => ["BinDeps", "MAT"],
                     "TimeSeries" => ["Datetime", "FactCheck"],
-                    "MarketTechnicals" => ["Datetime", "FactCheck"],
+                    "MarketTechnicals" => ["Datetime", "FactCheck","MarketData"],
                     "DecisionTree" => ["RDatasets"],
                     "ExpressionUtils" => ["FactCheck"],
                     "TimeSeries" => ["MarketData"]
