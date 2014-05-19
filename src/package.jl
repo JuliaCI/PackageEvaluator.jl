@@ -202,18 +202,18 @@ function checkTesting(features, pkg_path, pkg_name)
 
   # Are tests even meaningful?
   features[:TEST_POSSIBLE] = true
-  features[:TEST_POSSIBLE] &= !(pkg_name == "ApproxFun")    # Reason: Tk
+  #features[:TEST_POSSIBLE] &= !(pkg_name == "ApproxFun")    # Reason: Tk
   features[:TEST_POSSIBLE] &= !(pkg_name == "Arduino")      # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Clang")        # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "CPLEX")        # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "CLFFT")        # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "CUDA")         # Reason: binaries
-  features[:TEST_POSSIBLE] &= !(pkg_name == "Gaston")       # Reason: binaries
+  #features[:TEST_POSSIBLE] &= !(pkg_name == "Gaston")       # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "GLFW")         # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Gtk")          # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Gurobi")       # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Homebrew")     # Reason: OSX
-  features[:TEST_POSSIBLE] &= !(pkg_name == "ImageView")    # Reason: Tk
+  #features[:TEST_POSSIBLE] &= !(pkg_name == "ImageView")    # Reason: Tk
   features[:TEST_POSSIBLE] &= !(pkg_name == "Mathematica")  # Reason: Mathematica
   features[:TEST_POSSIBLE] &= !(pkg_name == "MathProgBase") # Reason: binaries (for now)
   features[:TEST_POSSIBLE] &= !(pkg_name == "MATLAB")       # Reason: MATLAB
@@ -224,7 +224,7 @@ function checkTesting(features, pkg_path, pkg_name)
   features[:TEST_POSSIBLE] &= !(pkg_name == "OpenCL")       # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "OpenGL")       # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Pandas")       # Reason: python
-  features[:TEST_POSSIBLE] &= !(pkg_name == "ProfileView")  # Reason: Tk
+  #features[:TEST_POSSIBLE] &= !(pkg_name == "ProfileView")  # Reason: Tk
   features[:TEST_POSSIBLE] &= !(pkg_name == "PyLexYacc")    # Reason: python
   features[:TEST_POSSIBLE] &= !(pkg_name == "PyPlot")       # Reason: python
   features[:TEST_POSSIBLE] &= !(pkg_name == "PySide")       # Reason: python
@@ -232,8 +232,8 @@ function checkTesting(features, pkg_path, pkg_name)
   features[:TEST_POSSIBLE] &= !(pkg_name == "SemidefiniteProgramming") # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Sodium")       # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "SymPy")        # Reason: python
-  features[:TEST_POSSIBLE] &= !(pkg_name == "Tk")           # Reason: Tk
-  features[:TEST_POSSIBLE] &= !(pkg_name == "Winston")      # Reason: Tk
+  #features[:TEST_POSSIBLE] &= !(pkg_name == "Tk")           # Reason: Tk
+  #features[:TEST_POSSIBLE] &= !(pkg_name == "Winston")      # Reason: Tk
   features[:TEST_POSSIBLE] &= !(pkg_name == "Vega")         # Reason: weird build
   features[:TEST_POSSIBLE] &= !(pkg_name == "VML")          # Reason: binaries
   
@@ -248,7 +248,7 @@ function checkTesting(features, pkg_path, pkg_name)
     fp = open("testusing.jl","w")
     write(fp, "using $pkg_name; println(names($pkg_name))\n")
     close(fp)
-    testoutput = readall(`timeout 300s julia testusing.jl`)
+    testoutput = readall(`timeout 300s xvfb-run julia testusing.jl`)
     features[:TEST_STATUS] = "using_pass"
     features[:EXP_NAMES] = chomp(testoutput)
   catch
@@ -269,7 +269,7 @@ function checkTesting(features, pkg_path, pkg_name)
       curdir = strip(readall(`pwd`))
       cd(splitdir(features[:TEST_MASTERFILE])[1])
       # Use timeout to handle cases like the GeoIP bug
-      testoutput = readall(`timeout 300s julia $(features[:TEST_MASTERFILE])`)
+      testoutput = readall(`timeout 300s xvfb-run julia $(features[:TEST_MASTERFILE])`)
       cd(curdir)
       features[:TEST_STATUS] = "full_pass"
     catch err
