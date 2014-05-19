@@ -225,7 +225,6 @@ function checkTesting(features, pkg_path, pkg_name)
   features[:TEST_POSSIBLE] &= !(pkg_name == "OpenGL")       # Reason: binaries
   features[:TEST_POSSIBLE] &= !(pkg_name == "Pandas")       # Reason: python
   features[:TEST_POSSIBLE] &= !(pkg_name == "ProfileView")  # Reason: Tk
-  features[:TEST_POSSIBLE] &= !(pkg_name == "PyCall")       # Reason: python
   features[:TEST_POSSIBLE] &= !(pkg_name == "PyLexYacc")    # Reason: python
   features[:TEST_POSSIBLE] &= !(pkg_name == "PyPlot")       # Reason: python
   features[:TEST_POSSIBLE] &= !(pkg_name == "PySide")       # Reason: python
