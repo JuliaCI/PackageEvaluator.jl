@@ -112,17 +112,18 @@ end
 # Some packages require packages for testing, but don't explicitly depend on
 # them. Please submit PRs if this applies to your package
 ###############################################################################
-const EXCEPTIONS = ["HTTPClient" => ["JSON"],
-                    "JuMP" => ["Cbc","Clp","GLPKMathProgInterface"],
-                    "MathProgBase" => ["Cbc", "Clp"],
-                    "Gadfly" => ["RDatasets", "Cairo"],
-                    "PLX" => ["BinDeps", "MAT"],
-                    "TimeSeries" => ["Datetime", "FactCheck", "MarketData"],
-                    "MarketTechnicals" => ["Datetime", "FactCheck","MarketData"],
+const EXCEPTIONS = ["CRC" => ["Zlib"],
                     "DecisionTree" => ["RDatasets"],
                     "ExpressionUtils" => ["FactCheck"],
+                    "Gadfly" => ["RDatasets", "Cairo"],
+                    "HTTPClient" => ["JSON"],
+                    "ImageView" => ["TestImages"],
+                    "JuMP" => ["Cbc","Clp","GLPKMathProgInterface"],
+                    "MarketTechnicals" => ["Datetime", "FactCheck","MarketData"],
+                    "MathProgBase" => ["Cbc", "Clp"],
+                    "PLX" => ["BinDeps", "MAT"],
                     "Synchrony" => ["CrossDecomposition"],
-                    "CRC" => ["Zlib"]
+                    "TimeSeries" => ["Datetime", "FactCheck", "MarketData"]
                     ]
 
 # exceptions_before
