@@ -250,7 +250,7 @@ function checkTesting(features, pkg_path, pkg_name)
     close(fp)
     testoutput = readall(`timeout 300s xvfb-run julia testusing.jl`)
     features[:TEST_STATUS] = "using_pass"
-    features[:EXP_NAMES] = chomp(testoutput)
+    features[:EXP_NAMES] = "" #chomp(testoutput)  disabled
   catch
     # Didn't run without errors, even if it has
     # tests they are 100% guaranteed to fail
