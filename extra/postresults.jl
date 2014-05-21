@@ -136,10 +136,13 @@ for file in all_files
     if !ismatch(r"json", file) || contains(file, "concat.json")
         continue
     end
+    println(file)
 
     # Load the JSON in and parse it so we can insert the test log
     json_str = readall(file)
+    println("  About to parse...")
     json_dict = JSON.parse(json_str)
+    println("  Done parsing")
     if json_dict["name"] in keys(pkg_log)
         json_dict["testlog"] = pkg_log[json_dict["name"]].test_log
     else
@@ -153,7 +156,6 @@ for file in all_files
 
     # Only post if the not disabled
     !do_post && continue 
-    println(file)
     #try
     #    response = post(URI("http://status.julialang.org/put/package"), JSON.json(json_dict), json_head)
     #    println(response)
