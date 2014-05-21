@@ -269,7 +269,7 @@ function checkTesting(features, pkg_path, pkg_name)
       curdir = strip(readall(`pwd`))
       cd(splitdir(features[:TEST_MASTERFILE])[1])
       # Use timeout to handle cases like the GeoIP bug
-      testoutput = readall(`timeout 300s xvfb-run julia $(features[:TEST_MASTERFILE])`)
+      testoutput = readall(`timeout 300s julia $(features[:TEST_MASTERFILE])`)
       cd(curdir)
       features[:TEST_STATUS] = "full_pass"
     catch err
