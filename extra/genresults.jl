@@ -28,21 +28,23 @@ function testAll(limit, writeJSON, writeHTML)
             continue
         end
 
-        # Run any preprocessing
-        exceptions_before(pkg_name)
-
+        
         # Run PackageEvaluator
         features = nothing
         try
-            features = evalPkg(pkg_name, true)  # add and remove it
+            # Run any preprocessing
+            exceptions_before(pkg_name)
+            # Add and remove it
+            features = evalPkg(pkg_name, true)
+            # Run any postprocessing
+            exceptions_after(pkg_name)
         catch
             # Couldn't process package, about!
             println("      !!!!!! evalPkg failed")
             continue
         end
 
-        # Run any postprocessing
-        exceptions_after(pkg_name)
+        
 
         # Write a row
         if writeHTML
