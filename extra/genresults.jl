@@ -124,7 +124,7 @@ const EXCEPTIONS = ["CRC" => ["Zlib"],
                     "MathProgBase" => ["Cbc", "Clp"],
                     "PLX" => ["BinDeps", "MAT"],
                     "Synchrony" => ["CrossDecomposition"],
-                    "TimeModels" => ["FactCheck"],
+                    "TimeModels" => ["FactCheck", "MarketData"],
                     "TimeSeries" => ["Datetime", "FactCheck", "MarketData"]
                     ]
 
