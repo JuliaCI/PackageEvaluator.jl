@@ -7,10 +7,12 @@ function getInfo(features, pkg_path)
   gitdate = ""
   jlsha = ""
   try
-    gitlog = readall(`git log -1 --format="%H %ci"`)
-    spl = split(gitlog, " ")
-    gitsha = spl[1]
+    # gitlog = "08ab40...c96c40 2014-05-22 17:17:40 -0400"
+    gitlog  = readall(`git log -1 --format="%H %ci"`)
+    spl     = split(gitlog, " ")
+    gitsha  = spl[1]
     gitdate = string(spl[2]," ",spl[3]," ",spl[4])
+    # Hack for running PkgEval on Julia 0.2
     if VERSION.minor == 2 && VERSION.major == 0
         jlsha = Base.BUILD_INFO.commit
     else
@@ -24,22 +26,6 @@ function getInfo(features, pkg_path)
   features[:JLCOMMIT] = jlsha
 end
 
-###############################################################################
-# REQUIRE file (the one in the root directory of the package itself)
-function checkREQUIRE(features, pkg_path)
-  REQUIRE_path = joinpath(pkg_path, "REQUIRE")
-  if isfile(REQUIRE_path)
-    # Exists
-    features[:REQUIRE_EXISTS] = true
-    # Does it specifiy a Julia dependency?
-    grep_result = readall(REQUIRE_path)
-    features[:REQUIRE_VERSION] = ismatch(r"julia", grep_result)
-  else
-    # Does not exist
-    features[:REQUIRE_EXISTS] = false
-    features[:REQUIRE_VERSION] = false
-  end
-end
 
 ###############################################################################
 # License file
