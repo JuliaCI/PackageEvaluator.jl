@@ -2,28 +2,28 @@
 # General info, including the Git version, date of last commit in the tagged
 # version, and the Julia version we are testing with right now
 function getInfo(features, pkg_path)
-  cd(pkg_path)
-  gitsha = ""
-  gitdate = ""
-  jlsha = ""
-  try
-    # gitlog = "08ab40...c96c40 2014-05-22 17:17:40 -0400"
-    gitlog  = readall(`git log -1 --format="%H %ci"`)
-    spl     = split(gitlog, " ")
-    gitsha  = spl[1]
-    gitdate = string(spl[2]," ",spl[3]," ",spl[4])
-    # Hack for running PkgEval on Julia 0.2
-    if VERSION.minor == 2 && VERSION.major == 0
-        jlsha = Base.BUILD_INFO.commit
-    else
-        jlsha = Base.GIT_VERSION_INFO.commit
+    cd(pkg_path)
+    gitsha  = ""
+    gitdate = ""
+    jlsha   = ""
+    try
+        # gitlog = "08ab40...c96c40 2014-05-22 17:17:40 -0400"
+        gitlog  = readall(`git log -1 --format="%H %ci"`)
+        spl     = split(gitlog, " ")
+        gitsha  = spl[1]
+        gitdate = string(spl[2]," ",spl[3]," ",spl[4])
+        # Hack for running PkgEval on Julia 0.2
+        if VERSION.minor == 2 && VERSION.major == 0
+            jlsha = Base.BUILD_INFO.commit
+        else
+            jlsha = Base.GIT_VERSION_INFO.commit
+        end
+    catch
+        # NOP
     end
-  catch
-    # NOP
-  end
-  features[:GITSHA] = gitsha
-  features[:GITDATE] = gitdate
-  features[:JLCOMMIT] = jlsha
+    features[:GITSHA]   = gitsha
+    features[:GITDATE]  = gitdate
+    features[:JLCOMMIT] = jlsha
 end
 
 
@@ -31,150 +31,79 @@ end
 # License file
 function checkLicense(features, pkg_path)
 
-  features[:LICENSE_EXISTS] = false
-  features[:LICENSE] = "Unknown"
-  features[:LICENSE_FILE] = ""
+    features[:LICENSE_EXISTS] = false
+    features[:LICENSE] = "Unknown"
+    features[:LICENSE_FILE] = ""
 
-  # Test for some sort of license file first
-  possible_files = ["LICENSE",
-                    "LICENSE.md",
-                    "License.md",
-                    "LICENCE",
-                    "LICENCE.md",
-                    "Licence.md",
-                    "LICENSE.txt",
-                    "README",
-                    "README.md",
-                    "README.txt",
-                    "COPYING",
-                    "COPYING.md",
-                    "COPYING.txt"]
-  for filename in possible_files
-    fullfilename = joinpath(pkg_path, filename)
-    if isfile(fullfilename)
-      # If it isn't a README, then its probably a license file of some sort
-      # So at least we found a FILE if not the license
-      if !contains(filename, "README")
-        features[:LICENSE_FILE] = filename
-      end
-      if guessLicense(features, fullfilename)
-        # Stop once we identify a license 
-        # Make sure to set license file again, in case of README...
-        features[:LICENSE_FILE] = filename
-        return
-      end
+    # Test for some sort of license file existense
+    for filename in LICFILES
+        fullfilename = joinpath(pkg_path, filename)
+        if isfile(fullfilename)
+            # If it isn't just a README, then its probably a license file
+            # of some sort. At least we found something if not the license
+            # itself.
+            if !contains(filename, "README")
+                features[:LICENSE_FILE] = filename
+            end
+            if guessLicense(features, fullfilename)
+                # Stop once we identify a license 
+                # Make sure to set license file again, in case of README...
+                features[:LICENSE_FILE] = filename
+                return
+            end
+        end
     end
-  end
 end
 
 function guessLicense(features, filename)
-  # Be greedy, read the whole file
-  text = lowercase(readall(filename))
+    # Be greedy, read the whole file
+    text = lowercase(readall(filename))
+    
+    for license in LICENSES
+        for regex in license[2]
+            if ismatch(regex, text)
+                features[:LICENSE_EXISTS] = true
+                features[:LICENSE] = license[1]
+                return true
+            end
+        end
+    end
 
-  # MIT License
-  if ismatch(r"mit license", text) ||
-     ismatch(r"mit expat license", text) ||
-     ismatch(r"mit \"expat\" license", text) ||
-     ismatch(r"permission is hereby granted, free of charge,", text)
-    features[:LICENSE_EXISTS] = true
-    features[:LICENSE] = "MIT"
-  # GPL v2
-  elseif ismatch(r"gpl version 2", text) ||
-         ismatch(r"gnu general public license\s+version 2", text) ||
-         ismatch(r"gnu general public license, version 2", text)
-    features[:LICENSE_EXISTS] = true
-    features[:LICENSE] = "GPL v2"
-  # GPL v3
-  elseif ismatch(r"gpl version 3", text) ||
-         ismatch(r"http://www.gnu.org/licenses/gpl-3.0.txt", text) ||
-         ismatch(r"gnu general public license\s+version 3", text) ||
-         ismatch(r"gpl v3", text)
-    features[:LICENSE_EXISTS] = true
-    features[:LICENSE] = "GPL v3"
-  # LGPL v2.1
-  elseif ismatch(r"lgpl version 2.1", text) ||
-         ismatch(r"gnu lesser general public license\s+version 2\.1", text)
-    features[:LICENSE_EXISTS] = true
-    features[:LICENSE] = "LGPL v2.1"
-  # LGPL v3.0
-  elseif ismatch(r"lgpl-3.0", text)
-    features[:LICENSE_EXISTS] = true
-    features[:LICENSE] = "LGPL v3.0"
-  # BSD
-  elseif ismatch(r"bsd", text)
-    features[:LICENSE_EXISTS] = true
-    features[:LICENSE] = "BSD"
-  # GNU Affero
-  elseif ismatch(r"gnu affero general public license", text)
-    features[:LICENSE_EXISTS] = true
-    features[:LICENSE] = "GNU Affero"
-  # Romantic WTF public license (!!) (see TOML.jl)
-  elseif ismatch(r"romantic wtf public license", text)
-    features[:LICENSE_EXISTS] = true
-    features[:LICENSE] = "Romantic WTF"
-  # No license identified
-  else
     return false
-  end
-
-  return true
 end
 
 
-###############################################################################
+#######################################################################
 # Testing folder/files
 function checkTesting(features, pkg_path, pkg_name)
-  features[:TEST_EXIST] = false
-  features[:EXP_NAMES] = ""
+    # Intialize to pessimistic defaults
+    features[:TEST_EXIST] = false
+    features[:TEST_MASTERFILE] = ""
 
-  # Look for a master test file
-  possible_files = [
-    joinpath(pkg_path, "test",  "runtests.jl"),
-    joinpath(pkg_path, "tests", "runtests.jl"),
-    joinpath(pkg_path,          "runtests.jl"),
-    joinpath(pkg_path, "test",  "run_tests.jl"),
-    joinpath(pkg_path, "tests", "run_tests.jl"),
-    joinpath(pkg_path,          "run_tests.jl"),
-    joinpath(pkg_path, "test",  "tests.jl"),
-    joinpath(pkg_path, "tests", "tests.jl"),
-    joinpath(pkg_path,          "tests.jl"),
-    joinpath(pkg_path, "test",  "test.jl" ),
-    joinpath(pkg_path, "tests", "test.jl" ),
-    joinpath(pkg_path,          "test.jl" ),
-    joinpath(pkg_path, "test",  "$(pkg_name).jl"),
-    joinpath(pkg_path, "tests", "$(pkg_name).jl")]
-  features[:TEST_MASTERFILE] = ""
-  for filename in possible_files
-    if isfile(filename)
-      features[:TEST_MASTERFILE] = filename
-      features[:TEST_EXIST] = true
-      break
+    # Look for a master test file
+    for root in ["test","tests",""]
+        for file in ["runtests", "run_tests", "tests", "test", pkg_name]
+            filename = joinpath(pkg_path,root,file)*".jl"
+            !isfile(filename) && continue
+            features[:TEST_MASTERFILE] = filename
+            features[:TEST_EXIST] = true
+            break
+        end
     end
-  end
 
-  # If we can't find any master files, look to see if they have
-  # a single "obvious" test file.
+    # If we can't find any master files, look to see if they have
+    # a single "obvious" test file that we can try to run.
     if !features[:TEST_EXIST]
         for test_folder in ["test", "tests"]
-            try
-                test_files = readdir(joinpath(pkg_path, test_folder))
-                jl_files = String[]
-                for file in test_files
-                    if contains(file, ".jl")
-                        push!(jl_files, file)
-                    end
-                end
-                if length(jl_files) > 0
-                    features[:TEST_EXIST] = true
-                end
-                if length(jl_files) == 1
-                    # Only one test file, yay
-                    features[:TEST_MASTERFILE] = joinpath(pkg_path, test_folder, jl_files[1]) 
-                end
-                break
-            catch
-                #println("Error on ", test_folder)
+            dir = joinpath(pkg_path, test_folder)
+            !isdir(dir) && continue
+            jl_files  = filter(x->contains(x,".jl"), readdir(dir))
+            features[:TEST_EXIST] = (length(jl_files) > 0)
+            if length(jl_files) == 1
+                # Only one test file, yay
+                features[:TEST_MASTERFILE] = joinpath(pkg_path, test_folder, jl_files[1])
             end
+            break
         end
     end
 
