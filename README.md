@@ -21,16 +21,13 @@ The "best version" is `test/runtests.jl`, and is called by `Pkg.test` as of Juli
 
 ### More information
 
-PackageEvaluator, as a module, exports two functions:
+PackageEvaluator, as a module, exports three functions:
 
 * `evalPkg(pkg, addremove=true)` - runs various tests on the package `pkg`, adding it first and removing it afterwards by default. Will return a dictionary of test results.
 * `featuresToJSON(pkg_name, features)` - return test results as a JSON string, given the dictionary produced by `evalPkg`.
+* `testAllPkgs(limit=Inf)` generates a JSON file for every package.
 
-These functions are used by the following set of scripts:
-
-* `genresults.jl` generates a JSON file for every package. Expects two command line arguments: number of packages to test (-1 for all) and a string, either J, H, or JH (J=JSON, H=HTML).
-* `runandlog.sh` runs the package evaluator in a seperate .julia, logs results, and then submits them all to status.julialang.org using...
-* `postresults.jl`
+Also, in `extra`, `runandlog.sh` runs the package evaluator in a seperate .julia, logs results, and then submits them all to status.julialang.org using`postresults.jl`
 
 
 

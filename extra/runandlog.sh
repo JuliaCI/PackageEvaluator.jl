@@ -22,7 +22,7 @@ julia -e 'Pkg.init(); Pkg.clone("https://github.com/IainNZ/PackageEvaluator.jl.g
 # Run the tester on all packages (-1) and export JSON (J)
 # Log STDOUT and STDERR to a file, e.g. genresults_2014-02-25-22.log
 cd stable
-julia ../genresults.jl -1 J 2>&1 | tee pkgeval_$(date '+%Y-%m-%d-%H').log
+julia -e 'using PackageEvaluator; testAllPkgs()' -1 J 2>&1 | tee pkgeval_$(date '+%Y-%m-%d-%H').log
 
 # Post .jsons to status.julialang.org
 julia ../postresults.jl
@@ -54,7 +54,7 @@ julia -e 'Pkg.init(); Pkg.clone("https://github.com/IainNZ/PackageEvaluator.jl.g
 # Run the tester on all packages (-1) and export JSON (J)
 # Log STDOUT and STDERR to a file, e.g. genresultsnightly_2014-02-25-22.log
 cd nightly
-julia ../genresults.jl -1 J 2>&1 | tee pkgeval_$(date '+%Y-%m-%d-%H').log
+julia -e 'using PackageEvaluator; testAllPkgs()' 2>&1 | tee pkgeval_$(date '+%Y-%m-%d-%H').log
 
 # Post .jsons to status.julialang.org
 julia ../postresults.jl

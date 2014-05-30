@@ -59,5 +59,36 @@ function featuresToJSON(pkg_name, features)
     return json_str
 end
 
+# testAllPkgs
+# Run evalPkg on all packages, and write a JSON for results of each
+export testAllPkgs
+function testAllPkgs(limit=Inf)
+    # Walk through each package in METADATA (assume updated)
+    available_pkg = Pkg.available()
+    done = 0
+    for pkg_name in available_pkg
+        println("##### Current package: $pkg_name")
+
+        features = nothing
+        try
+            deps = get(PackageEvaluator.EXCEPTIONS, pkg_name, {})
+            map(Pkg.add, deps)
+            features = evalPkg(pkg_name, true)  # addremove
+            map(Pkg.rm,  deps)
+        catch
+            println("      !!!!!! evalPkg failed")
+            continue
+        end
+
+        json_fp = open(joinpath(cur_dir,"$(pkg_name).json"),"w")
+        write(json_fp, featuresToJSON(pkg_name, features))
+        close(json_fp)
+
+        # Limit number of packages to test
+        done += 1 
+        done >= limit && break
+    end
+end
+
 #######################################################################
 end #module
