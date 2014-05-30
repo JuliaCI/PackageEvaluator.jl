@@ -63,6 +63,7 @@ end
 export testAllPkgs
 function testAllPkgs(limit=Inf)
     # Walk through each package in METADATA (assume updated)
+    cur_dir = pwd()
     available_pkg = Pkg.available()
     done = 0
     for pkg_name in available_pkg

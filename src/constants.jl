@@ -10,26 +10,26 @@ const LICENSES=[("MIT",[
                     r"mit license",
                     r"mit expat license",
                     r"mit \"expat\" license",
-                    r"permission is hereby granted, free of charge,"] =>,
+                    r"permission is hereby granted, free of charge,"]),
                 ("GPL v2",[
                     r"gpl version 2",
                     r"gnu general public license\s+version 2",
                     r"gnu general public license, version 2",
-                    r"free software foundation; either version 2"] =>,
+                    r"free software foundation; either version 2"]),
                 ("GPL v3",[
                     r"gpl version 3",
                     r"http://www.gnu.org/licenses/gpl-3.0.txt",
                     r"gnu general public license\s+version 3",
-                    r"gpl v3"] =>,
+                    r"gpl v3"]),
                 ("LGPL v2.1",[
                     r"lgpl version 2.1",
-                    r"gnu lesser general public license\s+version 2\.1"] =>,
+                    r"gnu lesser general public license\s+version 2\.1"]),
                 ("LGPL v3.0",[
                     r"lgpl-3.0"
-                    r"version 3 of the gnu lesser"] =>,
-                ("BSD",         [r"bsd"] =>,
-                ("GNU Affero",  [r"gnu affero general public license"] =>,
-                ("Romantic WTF",[r"romantic wtf public license"] =>
+                    r"version 3 of the gnu lesser"]),
+                ("BSD",         [r"bsd"]),
+                ("GNU Affero",  [r"gnu affero general public license"]),
+                ("Romantic WTF",[r"romantic wtf public license"])
                 ]
 
 # Possible locations of licenses
