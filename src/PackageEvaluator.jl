@@ -8,8 +8,7 @@
 module PackageEvaluator
 
 include("package.jl")
-include("output.jl")
-include("onstants.jl")
+include("constants.jl")
 
 # evalPkg
 # Performs all tests on a single package. Return dict. of test results.
