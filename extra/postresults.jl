@@ -11,10 +11,7 @@
 #    truncating if too long (e.g. due to binary build logs)
 # 3. Open & parse each output JSON file, jam the test log in
 # 4. Add the JSON string to a concatenated list of JSONs in concat.json
-# 5. POST the JSON to status.julialang.org
 #
-# Disable POSTing by adding the argument nopost, e.g. 
-#    julia postresults.jl nopost
 #
 #############################################################################
 
@@ -75,13 +72,8 @@ end
     
 
 #############################################################################
-
 # Assume we running in a nuked package folder
 Pkg.update()
-#Pkg.add("Requests")
-#Pkg.checkout("ICU")
-#Pkg.build("ICU")
-#using Requests
 Pkg.add("JSON")
 using JSON
 
@@ -118,12 +110,6 @@ for key in keys(pkg_log)
     compress_lines!(pkg_log[key])
 end
 
-#############################################################################
-## Dependency tree
-#############################################################################
-#print_deps(pkg_log["DataFrames"], pkg_log)
-#print_deps(pkg_log["Gadfly"], pkg_log)
-
 
 #############################################################################
 ## Concatenate and post JSONs
@@ -153,26 +139,8 @@ for file in all_files
     !first && print(cat_fp, ",")
     first = false
     println(cat_fp, JSON.json(json_dict))
-
-    # Only post if the not disabled
-    !do_post && continue 
-    #try
-    #    response = post(URI("http://status.julialang.org/put/package"), JSON.json(json_dict), json_head)
-    #    println(response)
-    #catch
-    #    println("Failed to post $file, removing test log")
-    #    println(json_dict["testlog"])
-    #    json_dict["testlog"] = "Log error! Please file issue."
-    #    println(JSON.json(json_dict))
-    #    try
-    #        response = post(URI("http://status.julialang.org/put/package"), JSON.json(json_dict), json_head)
-    #        println(response)
-    #    end
-    #end
 end
 
-#############################################################################
 ## Tidy up
-#############################################################################
 close(cat_fp)
-Pkg.rm("Requests")
+Pkg.rm("JSON")
