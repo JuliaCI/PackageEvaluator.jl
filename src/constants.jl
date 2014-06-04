@@ -46,6 +46,7 @@ const PKGOPTS= ["ApproxFun"     =>  :XVFB,
                 "Arduino"       =>  :BINARY,
                 "AudioIO"       =>  :BINARY,
                 "Clang"         =>  :BINARY,
+                "CommonCrawl"   =>  :BINARY,  # needs AWS auth, downloads a lot
                 "CPLEX"         =>  :BINARY,
                 "CLFFT"         =>  :BINARY,
                 "CUDA"          =>  :BINARY,
