@@ -66,6 +66,7 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
                 "Mongo"         =>  :BINARY,
                 "Mongrel2"      =>  :BINARY,
                 "Mosek"         =>  :BINARY,
+                "MPI"           =>  :BINARY,
                 "OpenCL"        =>  :BINARY,
                 "OpenGL"        =>  :BINARY,
                 "Pandas"        =>  :PYTHON,
