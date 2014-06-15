@@ -79,7 +79,9 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
                 "SemidefiniteProgramming" => :BINARY,
                 "Sodium"        =>  :BINARY,
                 "SymPy"         =>  :PYTHON,
+                "Thrift"        =>  :BINARY,
                 "Tk"            =>  :XVFB,
+                "Twitter"       =>  :BINARY, # need authentication
                 "Winston"       =>  :XVFB,
                 "Vega"          =>  :BINARY,
                 "VML"           =>  :BINARY]
