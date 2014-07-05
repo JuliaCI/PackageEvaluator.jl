@@ -5,6 +5,7 @@
 # Licensed under the MIT License
 #######################################################################
 
+#######################################################################
 # General info, including the Git version, date of last commit in 
 # the tagged version.
 function getInfo(features, pkg_path)
@@ -71,7 +72,7 @@ end
 
 #######################################################################
 # Testing folder/files
-function checkTesting(features, pkg_path, pkg_name)
+function checkTesting(features, pkg_path, pkg_name, installtestdeps)
     # Intialize to defaults
     features[:TEST_MASTERFILE] = ""
     features[:TEST_EXIST]      = false
@@ -105,7 +106,6 @@ function checkTesting(features, pkg_path, pkg_name)
         end
     end
   
-
     # Are tests even meaningful?
     if pkg_name in keys(PKGOPTS) && PKGOPTS[pkg_name] != :XVFB
         # They can't be run for some reason
@@ -113,9 +113,28 @@ function checkTesting(features, pkg_path, pkg_name)
         features[:TEST_STATUS]   = "not_possible"
         return
     end
-  
     
-    # Not excluded. See if "using" works
+    # Not exluded.
+    # Look for test/REQUIRE
+    REQUIRE_path = joinpath(pkg_path,"test","REQUIRE")
+    test_deps = {}
+    if isfile(REQUIRE_path)
+        fp = open(REQUIRE_path,"r")
+        for line in readlines(fp)
+            l = chomp(line)
+            length(l) == 0 && continue
+            l[1] == '#' && continue
+            contains(l, "julia") && continue
+            push!(test_deps, l)
+        end
+    end
+    manual_deps = get(PackageEvaluator.EXCEPTIONS, pkg_name, {})
+    deps = collect(Set([test_deps..., manual_deps...]))
+
+    # Install the deps
+    installtestdeps && map(Pkg.add, deps)
+
+    # See if "using" works
     testoutput = ""
     try
         fp = open("testusing.jl","w")
@@ -128,10 +147,18 @@ function checkTesting(features, pkg_path, pkg_name)
     catch
         # Didn't load without errors, even if it has tests they will fail
         features[:TEST_STATUS] = "using_fail"
+        readline()
+        # Tidy up deps
+        installtestdeps && map(Pkg.rm, deps)
         return
     end
 
-    features[:TEST_MASTERFILE] == "" && return
+    # No masterfile, give up
+    if features[:TEST_MASTERFILE] == ""
+        # Tidy up deps
+        installtestdeps && map(Pkg.rm, deps)
+        return
+    end
     
     # Found a master test file, run it to see if it works
     testoutput = ""
@@ -149,4 +176,7 @@ function checkTesting(features, pkg_path, pkg_name)
         features[:TEST_STATUS] = "full_fail"
         contains(err.msg, "[124]") && println("FAILED DUE TO TIMEOUT")
     end
+
+    # Tidy up deps
+    installtestdeps && map(Pkg.rm, deps)
 end
