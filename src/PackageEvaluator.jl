@@ -13,7 +13,7 @@ include("constants.jl")
 # evalPkg
 # Performs all tests on a single package. Return dict. of test results.
 export evalPkg
-function evalPkg(pkg::String; addremove=true, installtestdeps=true)
+function evalPkg(pkg::String, addremove=true)
     addremove && Pkg.add(pkg)  # Need to add Pkg first
   
     features = Dict{Symbol,Any}()
@@ -28,9 +28,9 @@ function evalPkg(pkg::String; addremove=true, installtestdeps=true)
 
     # Analyze package itself
     pkg_path = Pkg.dir(pkg)
-    getInfo(features, pkg_path)                             # General info (e.g. commit)
-    checkLicense(features, pkg_path)                        # Determine license
-    checkTesting(features, pkg_path, pkg, installtestdeps)  # Actually run packages
+    getInfo(features, pkg_path)             # General info (e.g. commit)
+    checkLicense(features, pkg_path)        # Determine license
+    checkTesting(features, pkg_path, pkg)   # Actually run packages
     
     addremove && Pkg.rm(pkg)  # Remove Pkg if necessary
 
@@ -71,7 +71,10 @@ function testAllPkgs(limit=Inf)
 
         features = nothing
         try
-            features = evalPkg(pkg_name, addremove=true)  # addremove
+            deps = get(PackageEvaluator.EXCEPTIONS, pkg_name, {})
+            map(Pkg.add, deps)
+            features = evalPkg(pkg_name, true)  # addremove
+            map(Pkg.rm,  deps)
         catch
             println("      !!!!!! evalPkg failed")
             continue
