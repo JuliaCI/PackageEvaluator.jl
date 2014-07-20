@@ -9,6 +9,7 @@ module PackageEvaluator
 
 include("package.jl")
 include("constants.jl")
+include("metatools.jl")
 
 # evalPkg
 # Performs all tests on a single package. Return dict. of test results.
