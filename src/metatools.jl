@@ -8,17 +8,18 @@
 # Tools for working with METADATA.jl
 #######################################################################
 
+export MetaTools
 module MetaTools
 
 #######################################################################
 # PkgMeta - represents a packages entry in METADATA.jl
 # PkgMetaVersion - represents a version of a package in METADATA.jl
-type PkgMetaVersion
+immutable PkgMetaVersion
     ver::VersionNumber
     sha::String
     requires::Vector{String}
 end
-type PkgMeta
+immutable PkgMeta
     name::String
     url::String
     versions::Vector{PkgMetaVersion}
@@ -33,7 +34,12 @@ Base.show(io::IO, pmv::PkgMetaVersion) = printer(io,pmv)
 
 function printer(io::IO, pm::PkgMeta)
     println(io, pm.name, "   ", pm.url)
-    map(println, pm.versions)
+    for v in pm.versions[1:end-1]
+        println(v)
+    end
+    if length(pm.versions) >= 1
+        print(pm.versions[end])
+    end
 end
 Base.print(io::IO, pm::PkgMeta) = printer(io,pm)
 Base.show(io::IO, pm::PkgMeta) = printer(io,pm)
@@ -52,6 +58,8 @@ Base.show(io::IO, pm::PkgMeta) = printer(io,pm)
 #     0.5.7,a8ae61,julia 0.3-,DataArrays,StatsBase 0.3.9+,GZip,Sort...
 #
 function get_pkg(meta_path::String, pkg_name::String)
+    !isdir(meta_path) && error("Couldn't find METADATA folder at $meta_path")
+
     pkg_path = joinpath(meta_path,pkg_name)
     !isdir(pkg_path) && error("Couldn't find $pkg_name at $pkg_path")
     
@@ -60,8 +68,7 @@ function get_pkg(meta_path::String, pkg_name::String)
     url = chomp(readall(url_path))
 
     vers_path = joinpath(pkg_path,"versions")
-    println(vers_path, "---", isdir(vers_path))
-    !isdir(pkg_path) &&
+    !isdir(vers_path) &&
         # No versions tagged
         return PkgMeta(pkg_name, url, PkgMetaVersion[])
     
@@ -82,7 +89,28 @@ function get_pkg(meta_path::String, pkg_name::String)
         end
         push!(vers,PkgMetaVersion(ver_num,sha,reqs))
     end
+    # Sort ascending by version number
+    sort!(vers, by=(v->v.ver))
     return PkgMeta(pkg_name, url, vers)
+end
+
+#######################################################################
+# get_all_pkg
+# Walks through the METADATA folder, returns a vector of PkgMetas
+# for every package found.
+function get_all_pkg(meta_path::String)
+    !isdir(meta_path) && error("Couldn't find METADATA folder at $meta_path")
+    
+    pkgs = PkgMeta[]
+    for fname in readdir(meta_path)
+        # Skip files
+        !isdir(joinpath(meta_path, fname)) && continue
+        # Skip "hidden" folders
+        (fname[1] == '.') && continue
+        push!(pkgs, get_pkg(meta_path, fname))
+    end
+
+    return pkgs
 end
 
 #######################################################################
@@ -118,162 +146,3 @@ function get_upper_limit(pkg::PkgMeta)
 end
 
 end  # module
-
-function load_first_degree()
-    first_degree = Dict()
-
-    cd("METADATA.jl")
-    for name in readdir()
-        (!isdir(name) || name[1] == '.') && continue
-        first_degree[name] = {}
-        cd(name)
-        if isdir("versions")
-            cd("versions")
-            vnum = sort(map(x->convert(VersionNumber,x), readdir()))
-            temp = IOBuffer(); print(temp,vnum[end])
-            max_vnum = takebuf_string(temp)
-            cd(max_vnum)
-            if isfile("requires")
-                open("requires","r") do fp
-                    for line in readlines(fp)
-                        push!(first_degree[name], chomp(line))
-                    end
-                end
-            end
-            cd("../..")
-        end
-        cd("..")
-    end
-    cd("..")
-    return first_degree
-end
-
-function clean_first_degree(first_degree)
-    function filt(dep)
-        contains(dep,"julia") && return false
-        return true
-    end
-    for name in keys(first_degree)
-        #println(first_degree[name])
-        clean = {}
-        for dep in first_degree[name]
-            contains(dep,"julia") && continue
-            length(dep) == 0 && continue
-            dep[1] == '#' && continue
-            s = split(dep," ")
-            if length(s) == 1
-                push!(clean,dep)
-            elseif s[1][1] == '@'
-                push!(clean,s[2])
-            else # trim version
-                push!(clean,s[1])
-            end
-        end
-        first_degree[name] = clean
-    end
-    return first_degree
-end
-
-function dump_all(first_degree)
-    numbered = Dict()
-    dep_on = Dict()
-
-    for key in keys(first_degree)
-        for dep in first_degree[key]
-            dep_on[dep] = true
-            dep_on[key] = true
-        end
-    end
-    i = 1
-    for key in keys(first_degree)
-        #!get(dep_on,key,false) && continue
-        numbered[key] = i
-        i+=1
-    end
-    N = i - 1
-    adj_matrix = zeros(Int, N, N)
-    names = ["" for i in 1:N]
-
-    fp = open("graph.txt","w")
-    for key in keys(first_degree)
-        #!get(dep_on,key,false) && continue
-        names[numbered[key]] = key
-        for dep in first_degree[key]
-            adj_matrix[numbered[key], numbered[dep]] = 1
-            #println(fp, numbered[key], " ", numbered[dep])
-        end
-    end
-    println(fp,",",join(names,","))
-    for i = 1:N
-        println(fp,names[i],",",join([string(adj_matrix[i,j]) for j in 1:N],","))
-    end
-    close(fp)
-end
-
-function make_tree(base, first_degree)
-    depth = Dict()
-
-    depth[base] = 0
-    cur_depth = 0
-    while true
-        added_new = false
-        for key in keys(first_degree)
-            if get(depth, key, -1) == cur_depth
-                #println(first_degree[key])
-                for dep in first_degree[key]
-                    if get(depth, dep, -1) == -1
-                        depth[dep] = cur_depth + 1
-                        added_new = true
-                    end
-                end
-            end
-        end
-        cur_depth += 1
-        !added_new && break
-    end
-
-    println(depth)
-
-    return depth
-end
-
-
-function dump_sub_tree(first_degree, include_in)
-    numbered = Dict()
-
-    i = 1
-    for key in keys(first_degree)
-        !(key in keys(include_in)) && continue
-        numbered[key] = i
-        i+=1
-    end
-    N = i - 1
-    adj_matrix = zeros(Int, N, N)
-    names = ["" for i in 1:N]
-
-    
-    for key in keys(first_degree)
-        !(key in keys(include_in)) && continue
-        names[numbered[key]] = key
-        for dep in first_degree[key]
-            adj_matrix[numbered[key], numbered[dep]] = 1
-        end
-    end
-
-    fp = open("graph_names.txt","w")
-    print(fp,join(names,"\n"))
-    close(fp)
-
-    fp = open("graph.txt","w")
-    for i = 1:N
-        println(fp, join([string(adj_matrix[i,j]) for j in 1:N],","))
-    end
-    close(fp)
-end
-
-
-#=
-first_degree = clean_first_degree(load_first_degree())
-gadfly_tree = make_tree("Gadfly", first_degree)
-dump_sub_tree(first_degree, gadfly_tree)
-=#
