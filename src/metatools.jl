@@ -123,8 +123,8 @@ function get_upper_limit(pkg::PkgMeta)
     upper = v"0.0.0"
     all_max = true
     for ver in pkg.versions
-        println(ver)
         julia_max_ver = v"0.0.0"
+        # Check if there is a Julia max version dependency
         for req in ver.requires
             !contains(req,"julia") && continue
             s = split(req," ")
@@ -132,11 +132,13 @@ function get_upper_limit(pkg::PkgMeta)
             julia_max_ver = convert(VersionNumber,s[3])
             break
         end
-        println(julia_max_ver, " ", all_max, " ", upper)
+        # If there wasn't, then at least one version will work on
+        # any Julia, so stop looking
         if julia_max_ver == v"0.0.0"
             all_max = false
             break
         else
+            # Only record the highest max version
             if julia_max_ver > upper
                 upper = julia_max_ver
             end

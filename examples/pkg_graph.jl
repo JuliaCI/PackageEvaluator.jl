@@ -105,12 +105,37 @@ function walk_graph_to_adj_matrix(graph, root_pkg)
     return adj_matrix, node_labels
 end
 
+
+#######################################################################
+# reverse_graph
+# Reverse the directed graph
+function reverse_graph(graph)
+    rev_graph = Dict()
+
+    for pkg in keys(graph)
+        if !(pkg in keys(rev_graph))
+            rev_graph[pkg] = {}
+        end
+        for req in graph[pkg]
+            if req in keys(rev_graph)
+                push!(rev_graph[req], pkg)
+            else
+                rev_graph[req] = {pkg}
+            end
+        end
+    end
+
+    return rev_graph
+end
+
 #######################################################################
 # plot_component
 # Extract the connected component from the METADATA dependency graph
 # and plot it.
 function plot_component(root_pkg)
     graph = build_graph()
+    # Optional: reverse
+    graph = reverse_graph(graph)
     adj_matrix, labels = walk_graph_to_adj_matrix(graph, root_pkg)
     loc_x, loc_y = layout_spring_adj(adj_matrix, C=1.0)
     draw_layout_adj(adj_matrix, loc_x, loc_y, labels=labels, filename="$(root_pkg).svg")

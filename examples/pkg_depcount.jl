@@ -46,6 +46,29 @@ function build_graph(pkgs)
 end
 
 #######################################################################
+# reverse_graph
+# Reverse the directed graph
+function reverse_graph(graph)
+    rev_graph = Dict()
+
+    for pkg in keys(graph)
+        if !(pkg in keys(rev_graph))
+            rev_graph[pkg] = {}
+        end
+        for req in graph[pkg]
+            if req in keys(rev_graph)
+                push!(rev_graph[req], pkg)
+            else
+                rev_graph[req] = {pkg}
+            end
+        end
+    end
+
+    return rev_graph
+end
+
+
+#######################################################################
 # walk_graph_to_adj_matrix
 # Starting from a specific package, walk the directed graph to 
 # extract the connected component defined by that package.
@@ -89,9 +112,22 @@ end
 
 pkgs = MetaTools.get_all_pkg(METAPATH)
 graph = build_graph(pkgs)
+# Optional: reverse graph
+graph = reverse_graph(graph)
+
+## See most connected
 sizepkg = [(walk_graph(graph, pkg.name),pkg.name) for pkg in pkgs]
 sort!(sizepkg,rev=true)
 for sz in sizepkg
     sz[1] == 1 && continue
     println(sz[2], "   ", sz[1])
 end
+
+## Analyze statistics
+sizes = [walk_graph(graph, pkg.name) for pkg in pkgs]
+filtsizes = {}
+for s in sizes
+    s == 1 && continue
+    push!(filtsizes, s-1)
+end
+println(median(filtsizes))
