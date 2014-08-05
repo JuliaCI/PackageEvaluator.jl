@@ -54,12 +54,11 @@ end
 export featuresToJSON
 function featuresToJSON(pkg_name, features)
     keyToJSON(key, value, last=false) = "  \"$key\": \"" *
-                                        replace(value, "\"", "\\\"") * 
+                                        value * 
                                         "\"$(!last?",":"")\n"
     json_str = "{\n"
     json_str *= keyToJSON("jlver",    string(VERSION.major,".",VERSION.minor))
     json_str *= keyToJSON("name",     pkg_name)
-    json_str *= keyToJSON("add_log",  features[:ADD_LOG])
     json_str *= keyToJSON("url",      features[:URL])
     json_str *= keyToJSON("version",  features[:VERSION])
     json_str *= keyToJSON("gitsha",   chomp(features[:GITSHA]))
@@ -67,8 +66,10 @@ function featuresToJSON(pkg_name, features)
     json_str *= keyToJSON("license",  features[:LICENSE])
     json_str *= keyToJSON("licfile",  features[:LICENSE_FILE])
     json_str *= keyToJSON("status",   features[:TEST_STATUS])
-    json_str *= keyToJSON("using_log",features[:TEST_USING_LOG])
-    json_str *= keyToJSON("full_log", features[:TEST_FULL_LOG])
+    json_str *= keyToJSON("log",      escape_string(build_log(pkg_name,
+                                                                features[:ADD_LOG],
+                                                                features[:TEST_USING_LOG],
+                                                                features[:TEST_FULL_LOG])))
     json_str *= keyToJSON("possible", features[:TEST_POSSIBLE] ? "true" : "false", true)
 
     json_str *= "}"

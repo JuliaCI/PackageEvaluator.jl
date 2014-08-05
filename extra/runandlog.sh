@@ -32,8 +32,6 @@ julia -e 'Pkg.init(); Pkg.clone("https://github.com/IainNZ/PackageEvaluator.jl.g
 # Run it, save results in stable/ folder
 cd stable
 julia -e 'using PackageEvaluator; testAllPkgs()'
-# Bundle into JSONs
-julia ../concat.jl
 echo "############# DONE STABLE"
 
 
@@ -68,6 +66,13 @@ julia -e 'Pkg.init(); Pkg.clone("https://github.com/IainNZ/PackageEvaluator.jl.g
 cd $PKGEVALEXTRA
 cd nightly
 julia -e 'using PackageEvaluator; testAllPkgs()'
-# Bundle into JSONs
-julia ../concat.jl
 echo "############# DONE NIGHTLY"
+
+
+#######################################################################
+# Bundle all results into one JSON
+#######################################################################
+echo "############# BUNDLING"
+cd ..
+julia concat.jl
+echo "############# DONE BUNDLING"
