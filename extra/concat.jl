@@ -1,8 +1,8 @@
 cat_fp = open("concat.json","w")
 first = true
-for file in all_files
+for file in readdir()
     (!ismatch(r"json", file) || contains(file, "concat.json")) && continue
-    
+
     !first && print(cat_fp, ",")
     first = false
     println(cat_fp, readall(file))
