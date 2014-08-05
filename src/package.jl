@@ -8,7 +8,6 @@
 # General info, including the Git version, date of last commit in 
 # the tagged version.
 function getInfo(features, pkg_path)
-    cd(pkg_path)
     features[:GITSHA]  = ""
     features[:GITDATE] = ""
     try
@@ -71,12 +70,14 @@ end
 
 #######################################################################
 # Testing folder/files
-function checkTesting(features, pkg_path, pkg_name)
+function checkTesting(features, pkg_path, pkg_name, usetimeout)
     # Intialize to defaults
     features[:TEST_MASTERFILE] = ""
     features[:TEST_EXIST]      = false
     features[:TEST_POSSIBLE]   = true
     features[:TEST_STATUS]     = ""
+    features[:TEST_USING_LOG]  = "using test not run"
+    features[:TEST_FULL_LOG]   = "no tests to run"
 
     # Look for a master test file
     for root in ["test","tests",""]
@@ -116,37 +117,68 @@ function checkTesting(features, pkg_path, pkg_name)
   
     
     # Not excluded. See if "using" works
-    testoutput = ""
-    try
-        fp = open("testusing.jl","w")
-        write(fp, "using $pkg_name")
-        close(fp)
-        testoutput = get(PKGOPTS, pkg_name, :NORMAL) == :XVFB ? 
-                        readall(`xvfb-run timeout 300s julia testusing.jl`) :
-                        readall(         `timeout 300s julia testusing.jl`)
+    # Create a simple test file
+    fp = open("testusing.jl","w")
+    write(fp, "using $pkg_name")
+    close(fp)
+    # Create a file to hold output
+    log_name = "$(pkg_name)_using.log"
+    log, ok = "", true
+    if get(PKGOPTS, pkg_name, :NORMAL) == :XVFB
+        if usetimeout
+            log, ok = run_cap_all(`xvfb-run timeout 300s julia testusing.jl`,log_name)
+        else
+            log, ok = run_cap_all(             `xvfb-run julia testusing.jl`,log_name)
+        end
+    else
+        if usetimeout
+            log, ok = run_cap_all(         `timeout 300s julia testusing.jl`,log_name)
+        else
+            log, ok = run_cap_all(                      `julia testusing.jl`,log_name)
+        end
+    end
+    features[:TEST_USING_LOG] = log
+    # Check exit code
+    if ok
         features[:TEST_STATUS] = "using_pass"
-    catch
+    else
         # Didn't load without errors, even if it has tests they will fail
         features[:TEST_STATUS] = "using_fail"
         return
     end
 
+    # No test masterfile to run means there is nothing more we can do
     features[:TEST_MASTERFILE] == "" && return
     
     # Found a master test file, run it to see if it works
-    testoutput = ""
-    try
-        # Change to pkg dir in case tests expect that
-        old_dir = pwd()
-        cd(splitdir(features[:TEST_MASTERFILE])[1])
-        testoutput = get(PKGOPTS, pkg_name, :NORMAL) == :XVFB ? 
-                        readall(`xvfb-run timeout 300s julia $(features[:TEST_MASTERFILE])`) :
-                        readall(         `timeout 300s julia $(features[:TEST_MASTERFILE])`)
-        cd(old_dir)
+    # Change to pkg dir in case tests expect that
+    old_dir = pwd()
+    cd(splitdir(features[:TEST_MASTERFILE])[1])
+    # Create a file to hold output
+    log_name = "$(pkg_name)_test.log"
+    log, ok = "", true
+    if get(PKGOPTS, pkg_name, :NORMAL) == :XVFB
+        if usetimeout
+            log, ok = run_cap_all(`xvfb-run timeout 300s julia $(features[:TEST_MASTERFILE])`,log_name)
+        else
+            log, ok = run_cap_all(             `xvfb-run julia $(features[:TEST_MASTERFILE])`,log_name)
+        end
+    else
+        if usetimeout
+            log, ok = run_cap_all(         `timeout 300s julia $(features[:TEST_MASTERFILE])`,log_name)
+        else
+            log, ok = run_cap_all(                      `julia $(features[:TEST_MASTERFILE])`,log_name)
+        end
+    end
+    features[:TEST_FULL_LOG] = log
+    # Check exit code
+    if ok
         features[:TEST_STATUS] = "full_pass"
-    catch err
+    else
         # Has tests, and they failed
         features[:TEST_STATUS] = "full_fail"
-        contains(err.msg, "[124]") && println("FAILED DUE TO TIMEOUT")
+        if contains(features[:TEST_FULL_LOG], "[124]")
+            features[:TEST_FULL_LOG] *= "FAILED DUE TO TIMEOUT"
+        end
     end
 end
