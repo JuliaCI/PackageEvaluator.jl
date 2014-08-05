@@ -1,7 +1,7 @@
 PackageEvaluator.jl
 ===================
 
-A package + extras that attempt to evaluate the state of individual packages as well as the status of the wider package ecosystem for [Julia](http://julialang.org). Check the status of packages at the [new package listing](http://iainnz.github.io/packages.julialang.org/).
+A package + extras that attempt to evaluate the state of individual packages as well as the status of the wider package ecosystem for [Julia](http://julialang.org). Check the status of packages at the [package listing](http://pkg.julialang.org/).
 
 **Exceptions** for packages that can't/shouldn't be tested are in `src/constants.jl`. Open issue/file a PR if you want to add/remove a package.
 
@@ -23,4 +23,4 @@ PackageEvaluator, as a module, exports three functions:
 * `featuresToJSON(pkg_name, features)` - return test results as a JSON string, given the dictionary produced by `evalPkg`.
 * `testAllPkgs(limit=Inf)` generates a JSON file for every package.
 
-Also, in `extra`, `runandlog.sh` runs the package evaluator in a seperate .julia, logs results.
+Also, in `extra`, `runandlog.sh` runs the package evaluator in a seperate .julia, saves results.
