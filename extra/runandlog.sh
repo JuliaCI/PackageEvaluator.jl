@@ -17,17 +17,16 @@ export JULIA_PKGDIR="${PKGTEST_DIR}/.julia"
 # Make sure test directory is totally empty
 rm -rf $PKGTEST_DIR
 mkdir $PKGTEST_DIR
-# The nightly Julia directory
-export NIGHTLY_DIR="${TESTHOME}/julia03"
+# The Julia directories
+export STABLE_DIR="${TESTHOME}/julia03"
+export NIGHTLY_DIR="${TESTHOME}/julia04"
 
 #######################################################################
-# JULIA STABLE (version 0.2.1)
-# Binary path: ${TESTHOME}/julia02           (not compiled nightly)
-# Packages in: ${PKGTEST_DIR}/v0.2
+# JULIA STABLE (not compiled nightly)
 #######################################################################
 echo "############# STARTING STABLE"
 # Install PackageEvaluator
-export PATH="${ORIGPATH}:${TESTHOME}/julia02"
+export PATH="${ORIGPATH}:${STABLE_DIR}"
 julia -e 'Pkg.init(); Pkg.clone("https://github.com/IainNZ/PackageEvaluator.jl.git")'
 # Run it, save results in stable/ folder
 cd stable
@@ -36,9 +35,7 @@ echo "############# DONE STABLE"
 
 
 #######################################################################
-# JULIA NIGHTLY (version 0.3-pre)
-# Binary path: ${TESTHOME}/julia03           (compiled nightly)
-# Packages in: ${PKGTEST_DIR}/v0.3
+# JULIA NIGHTLY (compiled nightly)
 #######################################################################
 # Download Julia master
 rm -rf $NIGHTLY_DIR
