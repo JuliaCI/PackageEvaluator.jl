@@ -45,17 +45,16 @@ git clone https://github.com/JuliaLang/julia.git .
 # Checkout last working commit
 export LASTGOODCOMMIT="$(python2 ${PKGEVALEXTRA}/get_last_good_commit.py)"
 git checkout $LASTGOODCOMMIT
-# Fix for this specific Arch machine
-echo "USE_SYSTEM_PCRE = 1" > Make.user
 # Try more than once if it fails to build (not sure if this works)
-make
+make -j 8
 if [[ ! -f "./julia" ]]; then 
   make distcleanall
+  make -j 8
 fi
 if [[ ! -f "./julia" ]]; then 
   make distcleanall
+  make -j 8
 fi
-
 echo "############# STARTING NIGHTLY"
 # Install PackageEvaluator
 export PATH="${ORIGPATH}:${NIGHTLY_DIR}"
