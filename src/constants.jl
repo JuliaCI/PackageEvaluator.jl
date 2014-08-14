@@ -76,6 +76,7 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
                 "PyPlot"        =>  :PYTHON,
                 "PySide"        =>  :PYTHON,
                 "RdRand"        =>  :BINARY, # Needs latest Intel CPU
+                "REPLCompletions" => :DEP,  # Deprecated, just throws error
                 "SDL"           =>  :BINARY,
                 "SemidefiniteProgramming" => :BINARY,
                 "Sodium"        =>  :BINARY,
