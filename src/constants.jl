@@ -85,7 +85,8 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
                 "Twitter"       =>  :BINARY, # need authentication
                 "Winston"       =>  :XVFB,
                 "Vega"          =>  :BINARY,
-                "VML"           =>  :BINARY]
+                "VML"           =>  :BINARY,
+                "YT"            =>  :PYTHON]
 
 # Some packages have testing-only dependencies
 # Long-term this should be handled by the test/REQUIRE file
