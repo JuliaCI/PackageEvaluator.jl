@@ -119,6 +119,7 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout)
     # Not excluded. See if "using" works
     # Create a simple test file
     fp = open("testusing.jl","w")
+    write(fp, "versioninfo()\n")
     write(fp, "using $pkg_name")
     close(fp)
     # Create a file to hold output
