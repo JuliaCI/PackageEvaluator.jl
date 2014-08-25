@@ -46,14 +46,14 @@ git clone https://github.com/JuliaLang/julia.git .
 export LASTGOODCOMMIT="$(python2 ${PKGEVALEXTRA}/get_last_good_commit.py)"
 git checkout $LASTGOODCOMMIT
 # Try more than once if it fails to build (not sure if this works)
-make -j 8
+make
 if [[ ! -f "./julia" ]]; then 
   make distcleanall
-  make -j 8
+  make
 fi
 if [[ ! -f "./julia" ]]; then 
   make distcleanall
-  make -j 8
+  make
 fi
 echo "############# STARTING NIGHTLY"
 # Install PackageEvaluator
