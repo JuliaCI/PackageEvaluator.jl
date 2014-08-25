@@ -70,6 +70,7 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
                 "MPI"           =>  :BINARY,
                 "OpenCL"        =>  :BINARY,
                 "OpenGL"        =>  :BINARY,
+                "OpenStreetMap" =>  :XVFB,
                 "Pandas"        =>  :PYTHON,
                 "ProfileView"   =>  :XVFB,
                 "PyLexYacc"     =>  :PYTHON,
