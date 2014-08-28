@@ -44,7 +44,6 @@ const LICFILES=["LICENSE", "LICENSE.md", "License.md", "LICENSE.txt",
 # PYTHON = requires a Python package
 const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we also exclude
                 "Arduino"       =>  :BINARY,
-                "AudioIO"       =>  :BINARY,
                 "Clang"         =>  :BINARY,
                 "CommonCrawl"   =>  :BINARY,  # needs AWS auth, downloads a lot
                 "CPLEX"         =>  :BINARY,
