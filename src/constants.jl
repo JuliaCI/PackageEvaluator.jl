@@ -93,14 +93,10 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
 
 # Some packages have testing-only dependencies
 # Long-term this should be handled by the test/REQUIRE file
-const EXCEPTIONS = ["BSplines"          => ["Winston"],
-                    "CRC"               => ["Zlib"],
-                    "DecisionTree"      => ["RDatasets"],
+const EXCEPTIONS = ["DecisionTree"      => ["RDatasets"],
                     "ExpressionUtils"   => ["FactCheck"],
                     "FunctionalUtils"   => ["FactCheck"],
                     "Gadfly"            => ["RDatasets", "Cairo"],
-                    "GLM"               => ["DataFrames"],
-                    "GraphLayout"       => ["Compose"],
                     "HTTPClient"        => ["JSON"],
                     "ImageView"         => ["TestImages"],
                     "JuMP"              => ["Cbc","Clp","GLPKMathProgInterface"],
