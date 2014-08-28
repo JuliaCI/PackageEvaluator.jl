@@ -1,6 +1,9 @@
 PackageEvaluator.jl
 ===================
 
+[![Build Status](https://travis-ci.org/IainNZ/PackageEvaluator.jl.svg?branch=master)](https://travis-ci.org/IainNZ/PackageEvaluator.jl)
+[![Coverage Status](https://img.shields.io/coveralls/IainNZ/PackageEvaluator.jl.svg)](https://coveralls.io/r/IainNZ/PackageEvaluator.jl)
+
 A package + extras that attempt to evaluate the state of individual packages as well as the status of the wider package ecosystem for [Julia](http://julialang.org). Check the status of packages at the [package listing](http://pkg.julialang.org/).
 
 **Exceptions** for packages that can't/shouldn't be tested are in `src/constants.jl`. Open issue/file a PR if you want to add/remove a package.
