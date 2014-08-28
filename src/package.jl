@@ -80,12 +80,14 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout)
     features[:TEST_FULL_LOG]   = "no tests to run"
 
     # Look for a master test file
+    pkg_dot_test_capable = false
     for root in ["test","tests",""]
         for file in ["runtests", "run_tests", "tests", "test", pkg_name]
             filename = joinpath(pkg_path,root,file)*".jl"
             !isfile(filename) && continue
             features[:TEST_MASTERFILE] = filename
             features[:TEST_EXIST] = true
+            pkg_dot_test_capable = (file == "runtests")
             break
         end
     end
@@ -167,15 +169,31 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout)
     log, ok = "", true
     if get(PKGOPTS, pkg_name, :NORMAL) == :XVFB
         if usetimeout
-            log, ok = run_cap_all(`xvfb-run timeout 300s julia $(features[:TEST_MASTERFILE])`,log_name)
+            if pkg_dot_test_capable
+                log, ok = run_cap_all(`xvfb-run timeout 300s julia -e 'Pkg.test("$(pkg_name)")'`,log_name)
+            else
+                log, ok = run_cap_all(`xvfb-run timeout 300s julia $(features[:TEST_MASTERFILE])`,log_name)
+            end
         else
-            log, ok = run_cap_all(             `xvfb-run julia $(features[:TEST_MASTERFILE])`,log_name)
+            if pkg_dot_test_capable
+                log, ok = run_cap_all(             `xvfb-run julia -e 'Pkg.test("$(pkg_name)")'`,log_name)
+            else
+                log, ok = run_cap_all(             `xvfb-run julia $(features[:TEST_MASTERFILE])`,log_name)
+            end
         end
     else
         if usetimeout
-            log, ok = run_cap_all(         `timeout 300s julia $(features[:TEST_MASTERFILE])`,log_name)
+            if pkg_dot_test_capable
+                log, ok = run_cap_all(         `timeout 300s julia -e 'Pkg.test("$(pkg_name)")'`,log_name)
+            else
+                log, ok = run_cap_all(         `timeout 300s julia $(features[:TEST_MASTERFILE])`,log_name)
+            end
         else
-            log, ok = run_cap_all(                      `julia $(features[:TEST_MASTERFILE])`,log_name)
+            if pkg_dot_test_capable
+                log, ok = run_cap_all(                      `julia -e 'Pkg.test("$(pkg_name)")'`,log_name)
+            else
+                log, ok = run_cap_all(                      `julia $(features[:TEST_MASTERFILE])`,log_name)
+            end
         end
     end
     features[:TEST_FULL_LOG] = log
