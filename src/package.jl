@@ -87,7 +87,7 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout)
             !isfile(filename) && continue
             features[:TEST_MASTERFILE] = filename
             features[:TEST_EXIST] = true
-            pkg_dot_test_capable = (file == "runtests")
+            pkg_dot_test_capable = (file == "runtests" && root == "test")
             break
         end
     end
