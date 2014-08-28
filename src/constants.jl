@@ -55,6 +55,7 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
                 "Gtk"           =>  :XVFB,
                 "Gurobi"        =>  :BINARY,
                 "Homebrew"      =>  :OSX,
+                "IJulia"        =>  :PYTHON,
                 "ImageView"     =>  :XVFB,
                 "LibGit2"       =>  :BINARY,
                 "LibTrading"    =>  :BINARY,

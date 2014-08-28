@@ -141,6 +141,13 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout)
     features[:TEST_USING_LOG] = log
     # Check exit code
     if ok
+        # Check for weird edge case where package has build error
+        # but using doesn't fail. This was observed in IJulia.
+        if contains(features[:ADD_LOG], "had build errors")
+            features[:TEST_USING_LOG] *= "... but failing due to build errors."
+            features[:TEST_STATUS] = "using_fail"
+            return
+        end
         features[:TEST_STATUS] = "using_pass"
     else
         # Didn't load without errors, even if it has tests they will fail
