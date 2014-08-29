@@ -46,6 +46,7 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
                 "Arduino"       =>  :BINARY,
                 "Clang"         =>  :BINARY,
                 "CommonCrawl"   =>  :BINARY,  # needs AWS auth, downloads a lot
+                "CoreNLP"       =>  :PYTHON,
                 "CPLEX"         =>  :BINARY,
                 "CLFFT"         =>  :BINARY,
                 "CUDA"          =>  :BINARY,
