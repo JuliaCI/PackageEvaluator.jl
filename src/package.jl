@@ -122,7 +122,10 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout)
     # Create a simple test file
     fp = open("testusing.jl","w")
     write(fp, "versioninfo()\n")
-    write(fp, "using $pkg_name")
+    # Hack: JLDArchives doesn't have a src/ folder - but does have useful tests to
+    # be run by PkgEval. So we'll do-nothing for that package and any others like
+    # it by checking if their src/ folder exists
+    isdir(joinpath(pkg_path,"src")) && write(fp, "using $pkg_name")
     close(fp)
     # Create a file to hold output
     log_name = "$(pkg_name)_using.log"
