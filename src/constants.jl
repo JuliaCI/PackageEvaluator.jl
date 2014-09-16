@@ -51,6 +51,12 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
                 "CLFFT"         =>  :BINARY,
                 "CUDA"          =>  :BINARY,
                 "Gaston"        =>  :BINARY,  # No Gnuplot on che
+                
+                "GLAbstraction" =>  :XVFB,
+                "GLPlot"        =>  :XVFB,
+                "GLText"        =>  :XVFB,
+                "GLWindow"      =>  :XVFB,
+                
                 "GLFW"          =>  :XVFB,
                 "Gtk"           =>  :XVFB,
                 "Gurobi"        =>  :BINARY,
@@ -65,6 +71,7 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
                 "MATLAB"        =>  :BINARY,
                 "MATLABCluster" =>  :BINARY,
                 "Memcache"      =>  :BINARY,
+                "ModernGL"      =>  :XVFB,
                 "MolecularDynamics" => :BINARY,
                 "Mongo"         =>  :BINARY,
                 "Mongrel2"      =>  :BINARY,
