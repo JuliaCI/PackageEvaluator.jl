@@ -19,8 +19,8 @@ end
 function build_log(pkg_name, add_log, using_log, full_log)
     function trunc_section(s)
         l = split(s,"\n")
-        if length(l) >= 55
-            return join(vcat(l[1:20],{"... truncated ..."},l[end-30:end]),"\n")
+        if length(l) >= 75
+            return join(vcat(l[1:20],{"... truncated ..."},l[end-50:end]),"\n")
         end
         return s
     end
