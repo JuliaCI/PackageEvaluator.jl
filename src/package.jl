@@ -174,9 +174,9 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout)
     if get(PKGOPTS, pkg_name, :NORMAL) == :XVFB
         if usetimeout
             if pkg_dot_test_capable
-                log, ok = run_cap_all(`xvfb-run timeout 300s julia -e $pkg_test`,log_name)
+                log, ok = run_cap_all(`xvfb-run timeout 600s julia -e $pkg_test`,log_name)
             else
-                log, ok = run_cap_all(`xvfb-run timeout 300s julia $(features[:TEST_MASTERFILE])`,log_name)
+                log, ok = run_cap_all(`xvfb-run timeout 600s julia $(features[:TEST_MASTERFILE])`,log_name)
             end
         else
             if pkg_dot_test_capable
@@ -188,9 +188,9 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout)
     else
         if usetimeout
             if pkg_dot_test_capable
-                log, ok = run_cap_all(         `timeout 300s julia -e $pkg_test`,log_name)
+                log, ok = run_cap_all(         `timeout 600s julia -e $pkg_test`,log_name)
             else
-                log, ok = run_cap_all(         `timeout 300s julia $(features[:TEST_MASTERFILE])`,log_name)
+                log, ok = run_cap_all(         `timeout 600s julia $(features[:TEST_MASTERFILE])`,log_name)
             end
         else
             if pkg_dot_test_capable
