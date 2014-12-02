@@ -73,7 +73,6 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
                 "MathProgBase"  =>  :BINARY,
                 "MATLAB"        =>  :BINARY,
                 "MATLABCluster" =>  :BINARY,
-                "MeCab"         =>  :BINARY,
                 "Memcache"      =>  :BINARY,
                 "ModernGL"      =>  :XVFB,
                 "MolecularDynamics" => :BINARY,
