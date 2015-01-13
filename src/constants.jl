@@ -80,6 +80,7 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
                 "Mongrel2"      =>  :BINARY,
                 "Mosek"         =>  :BINARY,
                 "MPI"           =>  :BINARY,
+                "Neovim"        =>  :BINARY,
                 "NIDAQ"         =>  :BINARY,
                 "OpenCL"        =>  :BINARY,
                 "OpenGL"        =>  :BINARY,
@@ -98,6 +99,7 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
                 "Thrift"        =>  :BINARY,
                 "Tk"            =>  :XVFB,
                 "Twitter"       =>  :BINARY, # need authentication
+                "Watcher"       =>  :BINARY, # using it runs forever watching changes etc
                 "Winston"       =>  :XVFB,
                 "Vega"          =>  :BINARY,
                 "VML"           =>  :BINARY,
