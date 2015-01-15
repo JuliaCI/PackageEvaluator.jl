@@ -58,6 +58,7 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
                 "GLWindow"      =>  :XVFB,
                 
                 "GLFW"          =>  :XVFB,
+                "GR"            =>  :BINARY,
                 "Gtk"           =>  :XVFB,
                 "Gurobi"        =>  :BINARY,
                 "Homebrew"      =>  :OSX,
@@ -108,14 +109,5 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
 # Some packages have testing-only dependencies
 # Long-term this should be handled by the test/REQUIRE file
 const EXCEPTIONS = ["DecisionTree"      => ["RDatasets"],
-                    "ExpressionUtils"   => ["FactCheck"],
-                    "FunctionalUtils"   => ["FactCheck"],
-                    "HTTPClient"        => ["JSON"],
-                    "JuMP"              => ["Cbc","Clp","GLPKMathProgInterface"],
-                    "MarketTechnicals"  => ["Datetime", "FactCheck","MarketData"],
-                    "MarketData"        => ["FactCheck"],
-                    "PLX"               => ["BinDeps", "MAT"],
-                    "Synchrony"         => ["CrossDecomposition"],
-                    "TimeModels"        => ["FactCheck", "MarketData"],
-                    "TimeSeries"        => ["Datetime", "FactCheck", "MarketData"]
+                    "HTTPClient"        => ["JSON"]
                     ]
