@@ -10,6 +10,4 @@ ArgParse_results = evalPkg("HttpCommon",usetimeout=false)
 @test ArgParse_results[:LICENSE_FILE] == "LICENSE.txt"
 
 ASCIIPlots_results = evalPkg("ASCIIPlots",usetimeout=false)
-@test ASCIIPlots_results[:TEST_STATUS] == "full_pass"
-
-testAllPkgs(limit=5,usetimeout=false)
+@test ASCIIPlots_results[:TEST_STATUS] == "full_pass(
