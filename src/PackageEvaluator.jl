@@ -14,10 +14,10 @@ include("util.jl")
 
 import JSON
 
-# evalPkg
+# eval_pkg
 # Performs all tests on a single package.
-export evalPkg
-function evalPkg(   pkg::String;
+export eval_pkg
+function eval_pkg(  pkg::String;
                     # Whether the package should be added be trying to test it
                     addremove=true,
                     # Whether to use a timeout on the test
@@ -46,7 +46,7 @@ function evalPkg(   pkg::String;
                          "Pkg.init(); Pkg.add(\"$pkg\")"
         end
         features[:ADD_LOG], ok =
-            run_cap_all(`$juliapath -e $jl_cmd_arg`, "$(pkg)_add.log")
+            run_cap_all(`$juliapath -e $jl_cmd_arg`, "PKGEVAL_$(pkg)_add.log")
         !ok && print_with_color(:yellow, "PKGEVAL: Installation failed!\n")
     else
         print_with_color(:yellow, "PKGEVAL: Skipping installation\n")
@@ -83,38 +83,25 @@ function evalPkg(   pkg::String;
     end
 
     # Produce a JSON if requested
-    if asjson
-        featuresToJSON(pkg, features, jsonpath)
-    end
+    asjson && featuresToJSON(pkg, features, jsonpath)
 
     return features
 end
 
+export eval_pkgs
+function eval_pkgs(;# DEBUG: limit number of packages evaluated
+                    limit=-1,
+                    # All other options passed through to eval_pkg
+                    options...)
 
-# featuresToJSON
-# Takes test results and formats them as a JSON string
-function featuresToJSON(pkg_name, features, jsonpath)
-    output_dict = {
-        "jlver"             => string(VERSION.major,".",VERSION.minor),
-        "name"              => pkg_name,
-        "url"               => features[:URL],
-        "version"           => features[:VERSION],
-        "gitsha"            => chomp(features[:GITSHA]),
-        "gitdate"           => chomp(features[:GITDATE]),
-        "license"           => features[:LICENSE],
-        "licfile"           => features[:LICENSE_FILE],
-        "status"            => features[:TEST_STATUS],
-        "log"               => build_log(pkg_name,  features[:ADD_LOG],
-                                                    features[:TEST_USING_LOG],
-                                                    features[:TEST_FULL_LOG]),
-        "possible"          => features[:TEST_POSSIBLE] ? "true" : "false"
-    }
-    j_path = joinpath(jsonpath,pkg_name*".json")
-    print_with_color(:yellow, "PKGEVAL: Creating JSON file $j_path\n")
-    fp = open(j_path,"w")
-    JSON.print(fp, output_dict)
-    close(fp)
+    # Walk through each package in METADATA
+    pkg_names = Pkg.available()
+    limit != -1 && (pkg_names = pkg_names[1:limit])
+    for pkg_name in pkg_names
+        print_with_color(:magenta, "PKGEVAL: Attempting to evaluate $pkg_name\n")
+        eval_pkg(pkg_name; options...)
+    end
 end
 
 
-end #module
+end

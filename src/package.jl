@@ -129,6 +129,7 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout, juliapath, julia
             end
             break
         end
+        features[:TEST_MASTERFILE] != "" &&
         print_with_color(:yellow, """PKGEVAL: Unsure about test file, guessed:
                                               $(features[:TEST_MASTERFILE])\n""")
     end
