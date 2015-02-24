@@ -27,7 +27,6 @@ apt-get --yes --force-yes install julia
 
 # Install and run PackageEvaluator
 julia -e 'Pkg.init(); Pkg.clone("https://github.com/IainNZ/PackageEvaluator.jl.git")'
-julia -e 'Pkg.checkout("PackageEvaluator","rewrite")'
 if [ "$1" == "release" ]
 then
     rm -rf /vagrant/release
