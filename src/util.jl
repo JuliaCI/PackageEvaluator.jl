@@ -33,3 +33,29 @@ function build_log(pkg_name, add_log, using_log, full_log)
     log_str *= "\n>>> end of log"
     return log_str
 end
+
+
+# featuresToJSON
+# Takes test results and formats them as a JSON string
+function featuresToJSON(pkg_name, features, jsonpath)
+    output_dict = {
+        "jlver"             => string(VERSION.major,".",VERSION.minor),
+        "name"              => pkg_name,
+        "url"               => features[:URL],
+        "version"           => features[:VERSION],
+        "gitsha"            => chomp(features[:GITSHA]),
+        "gitdate"           => chomp(features[:GITDATE]),
+        "license"           => features[:LICENSE],
+        "licfile"           => features[:LICENSE_FILE],
+        "status"            => features[:TEST_STATUS],
+        "log"               => build_log(pkg_name,  features[:ADD_LOG],
+                                                    features[:TEST_USING_LOG],
+                                                    features[:TEST_FULL_LOG]),
+        "possible"          => features[:TEST_POSSIBLE] ? "true" : "false"
+    }
+    j_path = joinpath(jsonpath,pkg_name*".json")
+    print_with_color(:yellow, "PKGEVAL: Creating JSON file $j_path\n")
+    fp = open(j_path,"w")
+    JSON.print(fp, output_dict)
+    close(fp)
+end

@@ -1,7 +1,7 @@
 #######################################################################
 # PackageEvaluator
 # https://github.com/IainNZ/PackageEvaluator.jl
-# (c) Iain Dunning 2014
+# (c) Iain Dunning 2015
 # Licensed under the MIT License
 #######################################################################
 
@@ -27,9 +27,8 @@ const LICENSES=[("MIT",[
                 ("LGPL v3.0",[
                     r"lgpl-3.0"
                     r"version 3 of the gnu lesser"]),
-                ("BSD",         [r"bsd"]),
-                ("GNU Affero",  [r"gnu affero general public license"]),
-                ("Romantic WTF",[r"romantic wtf public license"])
+                ("BSD",         [r"bsd", r"promote products derived from this software"]),
+                ("GNU Affero",  [r"gnu affero general public license"])
                 ]
 
 # Possible locations of licenses
@@ -107,9 +106,3 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
                 "Vega"          =>  :BINARY,
                 "VML"           =>  :BINARY,
                 "YT"            =>  :PYTHON]
-
-# Some packages have testing-only dependencies
-# Long-term this should be handled by the test/REQUIRE file
-const EXCEPTIONS = ["DecisionTree"      => ["RDatasets"],
-                    "HTTPClient"        => ["JSON"]
-                    ]

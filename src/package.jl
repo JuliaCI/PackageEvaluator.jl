@@ -1,13 +1,29 @@
 #######################################################################
 # PackageEvaluator
 # https://github.com/IainNZ/PackageEvaluator.jl
-# (c) Iain Dunning 2014
+# (c) Iain Dunning 2015
 # Licensed under the MIT License
 #######################################################################
 
+# On Linux systems there is a timeout program available (or one that
+# can be installed easily). OSX doesn't come with one, but we can do
+# brew install coreutils
+# to get it (albeit with a different name)
+const TIMEOUTPATH = @osx? "gtimeout" : "timeout"
+
 # General info, including the Git version, date of last commit in 
 # the tagged version.
-function getInfo(features, pkg_path)
+function getInfo(features, pkg, pkg_path)
+    url_path = joinpath(Pkg.dir(),"METADATA",pkg,"url")
+    url      = chomp(readall(url_path))
+    url      = (url[1:3] == "git")   ? url[7:(end-4)] :
+               (url[1:5] == "https") ? url[9:(end-4)] : ""
+    features[:URL]     = string("http://", url)
+    features[:VERSION] = string(Pkg.installed(pkg))
+
+    cur_dir  = pwd()
+    cd(pkg_path)
+
     features[:GITSHA]  = ""
     features[:GITDATE] = ""
     try
@@ -17,15 +33,16 @@ function getInfo(features, pkg_path)
         features[:GITSHA]  = spl[1]
         features[:GITDATE] = string(spl[2]," ",spl[3]," ",spl[4])
     catch
-        # NOP
+        # Just leave blank
     end
+
+    cd(cur_dir)
 end
 
 
 #######################################################################
 # License file
 function checkLicense(features, pkg_path)
-
     features[:LICENSE_EXISTS] = false
     features[:LICENSE]        = "Unknown"
     features[:LICENSE_FILE]   = ""
@@ -70,7 +87,7 @@ end
 
 #######################################################################
 # Testing folder/files
-function checkTesting(features, pkg_path, pkg_name, usetimeout)
+function checkTesting(features, pkg_path, pkg_name, usetimeout, juliapath, juliapkg, pkg_root)
     # Intialize to defaults
     features[:TEST_MASTERFILE] = ""
     features[:TEST_EXIST]      = false
@@ -79,7 +96,8 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout)
     features[:TEST_USING_LOG]  = "using test not run"
     features[:TEST_FULL_LOG]   = "no tests to run"
 
-    # Look for a master test file
+    # Look for a master test file. Hopefully this will be test/runtests.jl
+    # so we can use Pkg.test. Otherwise we'll have to guess and hope for best
     pkg_dot_test_capable = false
     for root in ["test","tests",""]
         for file in ["runtests", "run_tests", "tests", "test", pkg_name]
@@ -91,6 +109,11 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout)
             break
         end
     end
+    features[:TEST_EXIST] && !pkg_dot_test_capable &&
+        print_with_color(:yellow, """PKGEVAL: Found a master test file:
+                                              $(features[:TEST_MASTERFILE])\n""")
+    pkg_dot_test_capable &&
+        print_with_color(:yellow, "PKGEVAL: Package can be tested with Pkg.test\n")
 
     # If we can't find any master files, look to see if they have
     # a single "obvious" test file that we can try to run.
@@ -106,12 +129,16 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout)
             end
             break
         end
+        features[:TEST_MASTERFILE] != "" &&
+        print_with_color(:yellow, """PKGEVAL: Unsure about test file, guessed:
+                                              $(features[:TEST_MASTERFILE])\n""")
     end
-  
+
 
     # Are tests even meaningful?
     if pkg_name in keys(PKGOPTS) && PKGOPTS[pkg_name] != :XVFB
         # They can't be run for some reason
+        print_with_color(:yellow, "PKGEVAL: Cannot run tests, code: $(PKGOPTS[pkg_name])\n")
         features[:TEST_POSSIBLE] = false
         features[:TEST_STATUS]   = "not_possible"
         return
@@ -120,95 +147,100 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout)
     
     # Not excluded. See if "using" works
     # Create a simple test file
-    fp = open("testusing.jl","w")
+    using_path = "PKGEVAL_$(pkg_name)_using.jl"
+    fp = open(using_path,"w")
     write(fp, "versioninfo()\n")
+    if juliapkg != nothing
+        write(fp, "ENV[\"JULIA_PKGDIR\"] = \"$(pkg_root)\"\n")
+        write(fp, "println(Pkg.dir(\"$pkg_name\"))\n")
+    end
     # Hack: JLDArchives doesn't have a src/ folder - but does have useful tests to
     # be run by PkgEval. So we'll do-nothing for that package and any others like
     # it by checking if their src/ folder exists
     isdir(joinpath(pkg_path,"src")) && write(fp, "using $pkg_name")
     close(fp)
     # Create a file to hold output
-    log_name = "$(pkg_name)_using.log"
+    log_name = "PKGEVAL_$(pkg_name)_using.log"
     log, ok = "", true
+    print_with_color(:yellow, "PKGEVAL: Trying to load package with `using`\n")
     if get(PKGOPTS, pkg_name, :NORMAL) == :XVFB
         if usetimeout
-            log, ok = run_cap_all(`xvfb-run timeout 300s julia testusing.jl`,log_name)
+            log, ok = run_cap_all(`xvfb-run $TIMEOUTPATH 300s $juliapath $using_path`,log_name)
         else
-            log, ok = run_cap_all(             `xvfb-run julia testusing.jl`,log_name)
+            log, ok = run_cap_all(                  `xvfb-run $juliapath $using_path`,log_name)
         end
     else
         if usetimeout
-            log, ok = run_cap_all(         `timeout 300s julia testusing.jl`,log_name)
+            log, ok = run_cap_all(         `$TIMEOUTPATH 300s $juliapath $using_path`,log_name)
         else
-            log, ok = run_cap_all(                      `julia testusing.jl`,log_name)
+            log, ok = run_cap_all(                           `$juliapath $using_path`,log_name)
         end
     end
     features[:TEST_USING_LOG] = log
     # Check exit code
     if ok
         # Check for weird edge case where package has build error
-        # but using doesn't fail. This was observed in IJulia.
+        # but using doesn't fail. This was observed in IJulia first.
         if contains(features[:ADD_LOG], "had build errors")
             features[:TEST_USING_LOG] *= "... but failing due to build errors."
             features[:TEST_STATUS] = "using_fail"
+            print_with_color(:yellow, "PKGEVAL: Package seems to have had build errors\n")
             return
         end
         features[:TEST_STATUS] = "using_pass"
+        print_with_color(:yellow, "PKGEVAL: Package can be loaded\n")
     else
         # Didn't load without errors, even if it has tests they will fail
         features[:TEST_STATUS] = "using_fail"
+        print_with_color(:yellow, "PKGEVAL: Package cannot be loaded\n")
         return
     end
 
     # No test masterfile to run means there is nothing more we can do
-    features[:TEST_MASTERFILE] == "" && return
+    if features[:TEST_MASTERFILE] == ""
+        print_with_color(:yellow, "PKGEVAL: No test script found, so cannot proceed\n")
+        return
+    end
     
     # Found a master test file, run it to see if it works
     # Change to pkg dir in case tests expect that
     old_dir = pwd()
     cd(splitdir(features[:TEST_MASTERFILE])[1])
     # Create a file to hold output
-    log_name = "$(pkg_name)_test.log"
+    log_name = "PKGEVAL_$(pkg_name)_test.log"
     log, ok = "", true
-    pkg_test = "Pkg.test(\"$(pkg_name)\")"
+    pkg_test = pkg_dot_test_capable ? "Pkg.test(\"$(pkg_name)\")" :
+                                      "include(\"$(features[:TEST_MASTERFILE])\")"
+    pkg_test = "ENV[\"JULIA_PKGDIR\"] = \"$(pkg_root)\"; " * pkg_test
     if get(PKGOPTS, pkg_name, :NORMAL) == :XVFB
+        print_with_color(:yellow, "PKGEVAL: Running '$(pkg_test)' with framebuffer\n")
         if usetimeout
-            if pkg_dot_test_capable
-                log, ok = run_cap_all(`xvfb-run timeout 600s julia -e $pkg_test`,log_name)
-            else
-                log, ok = run_cap_all(`xvfb-run timeout 600s julia $(features[:TEST_MASTERFILE])`,log_name)
-            end
+            log, ok = run_cap_all(`xvfb-run $TIMEOUTPATH 600s $juliapath -e $pkg_test`,log_name)
         else
-            if pkg_dot_test_capable
-                log, ok = run_cap_all(             `xvfb-run julia -e $pkg_test`,log_name)
-            else
-                log, ok = run_cap_all(             `xvfb-run julia $(features[:TEST_MASTERFILE])`,log_name)
-            end
+            log, ok = run_cap_all(                  `xvfb-run $juliapath -e $pkg_test`,log_name)
         end
     else
+        print_with_color(:yellow, "PKGEVAL: Running '$(pkg_test)'\n")
         if usetimeout
-            if pkg_dot_test_capable
-                log, ok = run_cap_all(         `timeout 600s julia -e $pkg_test`,log_name)
-            else
-                log, ok = run_cap_all(         `timeout 600s julia $(features[:TEST_MASTERFILE])`,log_name)
-            end
+            log, ok = run_cap_all(         `$TIMEOUTPATH 600s $juliapath -e $pkg_test`,log_name)
         else
-            if pkg_dot_test_capable
-                log, ok = run_cap_all(                      `julia -e $pkg_test`,log_name)
-            else
-                log, ok = run_cap_all(                      `julia $(features[:TEST_MASTERFILE])`,log_name)
-            end
+            log, ok = run_cap_all(                           `$juliapath -e $pkg_test`,log_name)
         end
     end
     features[:TEST_FULL_LOG] = log
     # Check exit code
     if ok
         features[:TEST_STATUS] = "full_pass"
+        print_with_color(:yellow, "PKGEVAL: Test pass!\n")
     else
         # Has tests, and they failed
         features[:TEST_STATUS] = "full_fail"
         if contains(features[:TEST_FULL_LOG], "[124]")
             features[:TEST_FULL_LOG] *= "FAILED DUE TO TIMEOUT"
+            print_with_color(:yellow, "PKGEVAL: Test timeout!\n")
+        else
+            print_with_color(:yellow, "PKGEVAL: Test failed!\n")
         end
     end
+    cd(old_dir)
 end
