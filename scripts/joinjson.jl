@@ -9,6 +9,6 @@ for file in readdir(ARGS[1])
 end
 
 # Then write them all to one big file
-cat_fp = open("$(ARGS[1]).json","w")
-println(cat_fp, "[",join(x,","),"]")
+cat_fp = open("$(ARGS[2]).json","w")
+println(cat_fp, "[",join(raw_files,","),"]")
 close(cat_fp)

@@ -25,17 +25,19 @@ apt-get --yes --force-yes install julia
 #export JAVA_HOME="/usr/lib/jvm/java-7-openjdk/"
 
 # Install and run PackageEvaluator
-julia --color -e 'Pkg.init(); Pkg.clone("https://github.com/IainNZ/PackageEvaluator.jl.git")'
-julia --color -e 'Pkg.checkout("PackageEvaluator","rewrite")'
+julia -e 'Pkg.init(); Pkg.clone("https://github.com/IainNZ/PackageEvaluator.jl.git")'
+julia -e 'Pkg.checkout("PackageEvaluator","rewrite")'
 if [ "$1" == "release" ]
 then
+    rm -rf /vagrant/release
     mkdir /vagrant/release
     cd /vagrant/release
 else
+    rm -rf /vagrant/nightly
     mkdir /vagrant/nightly
     cd /vagrant/nightly
 fi
-julia --color -e 'using PackageEvaluator; eval_pkgs(limit=5,juliapkg="./",jsonpath="./")'
+julia -e 'using PackageEvaluator; eval_pkgs(limit=5,juliapkg="./",jsonpath="./")'
 
 # Bundle results together
 if [ "$1" == "release" ]
