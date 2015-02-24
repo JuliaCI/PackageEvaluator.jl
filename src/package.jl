@@ -19,7 +19,6 @@ function getInfo(features, pkg, pkg_path)
     url      = (url[1:3] == "git")   ? url[7:(end-4)] :
                (url[1:5] == "https") ? url[9:(end-4)] : ""
     features[:URL]     = string("http://", url)
-    features[:VERSION] = string(Pkg.installed(pkg))
 
     cur_dir  = pwd()
     cd(pkg_path)
@@ -191,6 +190,7 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout, juliapath, julia
             print_with_color(:yellow, "PKGEVAL: No exported names found")
         else
             features[:EXP_NAMES] = filter(x->length(x)>0,map(chomp,split(s[2],"\n")))
+            features[:TEST_USING_LOG] = s[1]
             print_with_color(:yellow, "PKGEVAL: Found $(length(features[:EXP_NAMES])) names")
         end
 

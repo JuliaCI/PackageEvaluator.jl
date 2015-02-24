@@ -62,10 +62,11 @@ function eval_pkg(  pkg::String;
 
     # Find where the package is and go there
     jl_cmd_arg  = (juliapkg != nothing) ? "ENV[\"JULIA_PKGDIR\"] = \"$(juliapkg)\"; Pkg.init();" : ""
-    jl_cmd_arg *= "println(Pkg.dir()); print(Pkg.dir(\"$pkg\"))"
+    jl_cmd_arg *= "println(Pkg.dir()); println(Pkg.dir(\"$pkg\")); print(Pkg.installed(\"$pkg\"))"
     pkg_info = readall(`$juliapath -e $jl_cmd_arg`)
     pkg_root = split(pkg_info,"\n")[1]
     pkg_path = split(pkg_info,"\n")[2]
+    features[:VERSION] = split(pkg_info,"\n")[3]
     print_with_color(:yellow, "PKGEVAL: Package path is $pkg_path\n")
 
     # Get package information
