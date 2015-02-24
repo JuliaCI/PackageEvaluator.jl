@@ -38,7 +38,7 @@ else
     mkdir /vagrant/nightly
     cd /vagrant/nightly
 fi
-julia -e 'using PackageEvaluator; eval_pkgs(limit=5,juliapkg="./",jsonpath="./")'
+julia -e 'using PackageEvaluator; eval_pkgs(juliapkg="./",jsonpath="./")'
 
 # Bundle results together
 if [ "$1" == "release" ]
