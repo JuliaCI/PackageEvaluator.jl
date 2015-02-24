@@ -50,7 +50,7 @@ function eval_pkg(  pkg::String;
         if !ok
             print_with_color(:yellow, "PKGEVAL: Installation failed!\n")
             # Was it a build problem, or was it a can't-install-at-all problem?
-            if contiains(features[:ADD_LOG], "can't be installed because it has no versions")
+            if contains(features[:ADD_LOG], "can't be installed because it has no versions")
                 print_with_color(:yellow, "PKGEVAL: $pkg can't be installed, aborting\n")
                 return features
             end
