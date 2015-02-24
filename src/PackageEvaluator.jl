@@ -54,12 +54,8 @@ function evalPkg(   pkg::String;
     end
 
     # Find where the package is and go there
-    if juliapkg == nothing
-        jl_cmd_arg = "println(Pkg.dir(\"$pkg\"))"
-    else
-        jl_cmd_arg = "ENV[\"JULIA_PKGDIR\"] = \"$(juliapkg)\";" *
-                     "Pkg.init(); println(Pkg.dir()); print(Pkg.dir(\"$pkg\"))"
-    end
+    jl_cmd_arg  = (juliapkg == nothing) ? "ENV[\"JULIA_PKGDIR\"] = \"$(juliapkg)\"; Pkg.init();" : ""
+    jl_cmd_arg *= "println(Pkg.dir()); print(Pkg.dir(\"$pkg\"))"
     pkg_info = readall(`$juliapath -e $jl_cmd_arg`)
     pkg_root = split(pkg_info,"\n")[1]
     pkg_path = split(pkg_info,"\n")[2]
