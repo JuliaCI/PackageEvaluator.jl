@@ -30,4 +30,4 @@ nightly
 EOF
 
 # OK, we're done! Teardown VMs
-vagrant -f destroy
+vagrant destroy -f
