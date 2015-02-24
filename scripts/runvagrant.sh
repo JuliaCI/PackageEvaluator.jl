@@ -6,7 +6,7 @@
 # Licensed under the MIT License
 #######################################################################
 # This script launches the Vagrant VMs in parallel, because all the
-# work happens during provisioning.
+# work happens during provisioning. Afterwards, it tears them down.
 # Based off of
 #  http://server.dzone.com/articles/parallel-provisioning-speeding
 

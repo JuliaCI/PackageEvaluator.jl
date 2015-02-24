@@ -5,8 +5,9 @@
 # (c) Iain Dunning 2015
 # Licensed under the MIT License
 #######################################################################
-# This script file sets up the environment for running PkgEval, then
-# runs it to produce the JSON result files.
+# This script file is the provisioning script run by Vagrant after
+# the VM is created. It sets up the environment for running PkgEval,
+# then runs it to produce the JSON result files.
 
 # Install Julia and make result folders
 if [ "$1" == "release" ]
