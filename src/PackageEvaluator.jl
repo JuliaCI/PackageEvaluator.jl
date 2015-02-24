@@ -47,7 +47,14 @@ function eval_pkg(  pkg::String;
         end
         features[:ADD_LOG], ok =
             run_cap_all(`$juliapath -e $jl_cmd_arg`, "PKGEVAL_$(pkg)_add.log")
-        !ok && print_with_color(:yellow, "PKGEVAL: Installation failed!\n")
+        if !ok
+            print_with_color(:yellow, "PKGEVAL: Installation failed!\n")
+            # Was it a build problem, or was it a can't-install-at-all problem?
+            if contiains(features[:ADD_LOG], "can't be installed because it has no versions")
+                print_with_color(:yellow, "PKGEVAL: $pkg can't be installed, aborting\n")
+                return features
+            end
+        end
     else
         print_with_color(:yellow, "PKGEVAL: Skipping installation\n")
         features[:ADD_LOG] = "Did not add package first"

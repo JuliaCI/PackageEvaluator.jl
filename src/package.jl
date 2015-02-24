@@ -157,7 +157,11 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout, juliapath, julia
     # Hack: JLDArchives doesn't have a src/ folder - but does have useful tests to
     # be run by PkgEval. So we'll do-nothing for that package and any others like
     # it by checking if their src/ folder exists
-    isdir(joinpath(pkg_path,"src")) && write(fp, "using $pkg_name")
+    if isdir(joinpath(pkg_path,"src"))
+        write(fp, "using $pkg_name\n")
+        write(fp, "println(\"=*=PKGEVAL=*=\")\n")
+        write(fp, "map(x->println(\"$(pkg_name).\",x), names($(pkg_name)))")
+    end
     close(fp)
     # Create a file to hold output
     log_name = "PKGEVAL_$(pkg_name)_using.log"
@@ -177,8 +181,19 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout, juliapath, julia
         end
     end
     features[:TEST_USING_LOG] = log
+    features[:EXP_NAMES] = {}
     # Check exit code
     if ok
+        # Extract exported names
+        s = split(log, "=*=PKGEVAL=*=")
+        if length(s) == 1
+            # Then it didn't appear
+            print_with_color(:yellow, "PKGEVAL: No exported names found")
+        else
+            features[:EXP_NAMES] = filter(x->length(x)>0,map(chomp,split(s[2],"\n")))
+            print_with_color(:yellow, "PKGEVAL: Found $(length(features[:EXP_NAMES])) names")
+        end
+
         # Check for weird edge case where package has build error
         # but using doesn't fail. This was observed in IJulia first.
         if contains(features[:ADD_LOG], "had build errors")

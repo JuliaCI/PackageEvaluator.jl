@@ -48,6 +48,7 @@ function featuresToJSON(pkg_name, features, jsonpath)
         "license"           => features[:LICENSE],
         "licfile"           => features[:LICENSE_FILE],
         "status"            => features[:TEST_STATUS],
+        "expnames"          => features[:EXP_NAMES],
         "log"               => build_log(pkg_name,  features[:ADD_LOG],
                                                     features[:TEST_USING_LOG],
                                                     features[:TEST_FULL_LOG]),
