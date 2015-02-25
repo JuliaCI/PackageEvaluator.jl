@@ -191,7 +191,7 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout, juliapath, julia
         else
             features[:EXP_NAMES] = filter(x->length(x)>0,map(chomp,split(s[2],"\n")))
             features[:TEST_USING_LOG] = s[1]
-            print_with_color(:yellow, "PKGEVAL: Found $(length(features[:EXP_NAMES])) names")
+            print_with_color(:yellow, "PKGEVAL: Found $(length(features[:EXP_NAMES])) names\n")
         end
 
         # Check for weird edge case where package has build error

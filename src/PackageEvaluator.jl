@@ -36,15 +36,17 @@ function eval_pkg(  pkg::String;
     # Initialize feature dictionary
     features = Dict{Symbol,Any}()
 
+    # Expand out path
+    juliapkg  = abspath(juliapkg)
+
     # Add package, if needed, and log adding it
     if addremove
         print_with_color(:yellow, "PKGEVAL: Installing $pkg\n")
-        if juliapkg == nothing
-            jl_cmd_arg = "Pkg.add(\"$pkg\")"
-        else
+        if juliapkg != nothing
             jl_cmd_arg = "ENV[\"JULIA_PKGDIR\"] = \"$(juliapkg)\";" *
-                         "Pkg.init(); Pkg.add(\"$pkg\")"
+                         "Pkg.init();"
         end
+        jl_cmd_arg *= "Pkg.add(\"$pkg\")"
         features[:ADD_LOG], ok =
             run_cap_all(`$juliapath -e $jl_cmd_arg`, "PKGEVAL_$(pkg)_add.log")
         if !ok
