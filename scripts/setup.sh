@@ -33,6 +33,7 @@ apt-get update
 apt-get --yes --force-yes install julia
 
 # Install any dependencies
+sudo apt-get install xvfb
 
 # For Java packages
 #export JAVA_HOME="/usr/lib/jvm/java-7-openjdk/"
