@@ -99,17 +99,32 @@ function eval_pkg(  pkg::String;
 end
 
 export eval_pkgs
-function eval_pkgs(;# DEBUG: limit number of packages evaluated
+function eval_pkgs(;# To parallelize runs, we support running
+                    # either even- or odd-numbered packages, or all
+                    subset=:all,
+                    # DEBUG: limit number of packages evaluated
                     limit=-1,
                     # All other options passed through to eval_pkg
                     options...)
-
+    print_with_color(:magenta, "PKGEVAL: eval_pkgs(subset=$subset)\n")
     # Walk through each package in METADATA
     pkg_names = Pkg.available()
     limit != -1 && (pkg_names = pkg_names[1:limit])
-    for pkg_name in pkg_names
+    for (i,pkg_name) in enumerate(pkg_names)
+        if subset != :all
+            if subset == :even && isodd(i)
+                continue
+            elseif subset == :odd && iseven(i)
+                continue
+            end
+        end
         print_with_color(:magenta, "PKGEVAL: Attempting to evaluate $pkg_name\n")
-        eval_pkg(pkg_name; options...)
+        try
+            eval_pkg(pkg_name; options...)
+        catch e
+            print_with_color(:magenta, "PKGEVAL: Uncaught exception with eval_pkg($pkg_name)\n")
+            dump(e)
+        end
     end
 end
 

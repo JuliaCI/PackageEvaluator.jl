@@ -4,11 +4,31 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/trusty64"
 
+  # TWO WAY PARALLEL OPTION
+
   config.vm.define :release do |release|
-    config.vm.provision :shell, path: "setup.sh", args: ["release"], keep_color: true
+    config.vm.provision :shell, path: "setup.sh", args: ["release", ":all"], keep_color: true
   end
 
   config.vm.define :nightly do |nightly|
-    config.vm.provision :shell, path: "setup.sh", args: ["nightly"], keep_color: true
+    config.vm.provision :shell, path: "setup.sh", args: ["nightly",":all"], keep_color: true
   end
+
+
+  # FOUR WAY PARALLEL OPTION
+
+  config.vm.define :releaseeven do |releaseeven|
+    config.vm.provision :shell, path: "setup.sh", args: ["release", ":even"], keep_color: true
+  end
+  config.vm.define :releaseodd do |releaseodd|
+    config.vm.provision :shell, path: "setup.sh", args: ["release", ":odd"], keep_color: true
+  end
+
+  config.vm.define :nightlyeven do |nightlyeven|
+    config.vm.provision :shell, path: "setup.sh", args: ["nightly",":even"], keep_color: true
+  end
+  config.vm.define :nightlyodd do |nightlyodd|
+    config.vm.provision :shell, path: "setup.sh", args: ["nightly",":odd"], keep_color: true
+  end
+
 end
