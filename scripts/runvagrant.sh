@@ -28,9 +28,9 @@ then
 
     # Provision in parallel
     cat <<EOF | parallel_provision
-    release
-    nightly
-    EOF
+release
+nightly
+EOF
 
 else
     vagrant up --no-provision releaseeven
@@ -40,11 +40,12 @@ else
 
     # Provision in parallel
     cat <<EOF | parallel_provision
-    releaseeven
-    releaseodd
-    nightlyeven
-    nightlyodd
-    EOF
+releaseeven
+releaseodd
+nightlyeven
+nightlyodd
+EOF
+
 fi
 
 # OK, we're done! Teardown VMs

@@ -39,7 +39,7 @@ sudo apt-get install xvfb
 #export JAVA_HOME="/usr/lib/jvm/java-7-openjdk/"
 
 # Install and run PackageEvaluator
-julia -e 'Pkg.init(); Pkg.clone("https://github.com/IainNZ/PackageEvaluator.jl.git")'
+julia -e "Pkg.init(); Pkg.clone(\"https://github.com/IainNZ/PackageEvaluator.jl.git\")"
 if [ "$1" == "release" ]
 then
     rm -rf /vagrant/release
@@ -50,7 +50,7 @@ else
     mkdir /vagrant/nightly
     cd /vagrant/nightly
 fi
-julia -e 'using PackageEvaluator; eval_pkgs(subset=$1,juliapkg="./",jsonpath="./")'
+julia -e "using PackageEvaluator; eval_pkgs(subset=${2},juliapkg=\"./\",jsonpath=\"./\")"
 
 # Bundle results together
 if [ "$1" == "release" ]
