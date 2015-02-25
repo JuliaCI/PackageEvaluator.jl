@@ -9,6 +9,18 @@
 # the VM is created. It sets up the environment for running PkgEval,
 # then runs it to produce the JSON result files.
 
+# Accept all apt-gets
+# This is an attempt to deal with BinDeps packages trying to
+# install dependencies with apt-get
+# Otherwise seem to get things like
+#   After this operation, 6,203 kB of additional disk space will be used.
+#    Do you want to continue? [Y/n] Abort.
+# appearing in output.
+cat >/etc/apt/apt.conf.d/pkgevalforceyes <<EOL
+APT::Get::Assume-Yes "true";
+APT::Get::force-yes "true";
+EOL
+
 # Install Julia and make result folders
 if [ "$1" == "release" ]
 then
@@ -37,7 +49,8 @@ else
     mkdir /vagrant/nightly
     cd /vagrant/nightly
 fi
-julia -e 'using PackageEvaluator; eval_pkgs(juliapkg="./",jsonpath="./")'
+#julia -e 'using PackageEvaluator; eval_pkgs(juliapkg="./",jsonpath="./")'
+julia -e 'using PackageEvaluator; eval_pkg("Tk",juliapkg="./",jsonpath="./")'
 
 # Bundle results together
 if [ "$1" == "release" ]
