@@ -49,6 +49,7 @@ function eval_pkg(  pkg::String;
             println(fp, "Pkg.init()")
         end
         println(fp, "Pkg.add(\"$pkg\")")
+        close(fp)
         features[:ADD_LOG], ok =
             run_cap_all(`$juliapath $add_path`, "PKGEVAL_$(pkg)_add.log")
         if !ok
