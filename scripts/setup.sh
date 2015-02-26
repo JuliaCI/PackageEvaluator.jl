@@ -21,45 +21,56 @@
 #   After this operation, 6,203 kB of additional disk space will be used.
 #    Do you want to continue? [Y/n] Abort.
 # appearing in output.
-sudo su
-cat >/etc/apt/apt.conf.d/pkgevalforceyes <<EOL
-APT::Get::Assume-Yes "true";
-APT::Get::force-yes "true";
-EOL
+sudo su -c 'echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/pkgevalforceyes'
+sudo su -c 'echo "APT::Get::force-yes \"true\";" >> /etc/apt/apt.conf.d/pkgevalforceyes'
+#cat /etc/apt/apt.conf.d/pkgevalforceyes  # DEBUG
 
-# Install Julia and make result folders
+
+# Install Julia
 if [ "$1" == "release" ]
 then
-    add-apt-repository ppa:staticfloat/juliareleases
+    sudo add-apt-repository ppa:staticfloat/juliareleases
 else
-    add-apt-repository ppa:staticfloat/julianightlies
+    sudo add-apt-repository ppa:staticfloat/julianightlies
 fi
-add-apt-repository ppa:staticfloat/julia-deps
-apt-get update
-apt-get install julia
-
+sudo add-apt-repository ppa:staticfloat/julia-deps
+sudo apt-get update
+echo "About to install Julia ${1}"
+sudo apt-get install julia
+echo "Julia installed!"
 
 # Install any dependencies
-apt-get install xvfb
+sudo apt-get install xvfb
+# Cairo.jl
+#sudo apt-get install libcairo2 libfontconfig1 libpango1.0-0 libglib2.0-0 libpng12-0 libpixman-1-0 gettext
+# Images.jl
+#sudo apt-get install libmagickwand5
+# AudioIO.jl
+#sudo apt-get install portaudio19-dev
+#sudo apt-get install libsndfile1-dev
+
 #export JAVA_HOME="/usr/lib/jvm/java-7-openjdk/"
-exit  # from su
+
 
 # Install PackageEvaluator
 julia -e "Pkg.init(); Pkg.clone(\"https://github.com/IainNZ/PackageEvaluator.jl.git\")"
 
-
-# Run package evaluator
+# Run PackageEvaluator
 # We'll tee to dummy file to swallow any error
 if [ "$2" == "release" ]
 then
     rm -rf /vagrant/release
     mkdir /vagrant/release
     cd /vagrant/release
-    for f in /root/.julia/v0.3/METADATA/*;
-    do
-        pkgname=$(basename "$f")
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
-    done
+    #julia -e "run( `julia -e 'Pkg.add(\"Cairo\")' ` )"
+    #julia -e "using PackageEvaluator; eval_pkg(\"Cairo\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+    #julia -e "using PackageEvaluator; eval_pkg(\"ICU\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+    julia -e "using PackageEvaluator; eval_pkg(\"Images\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+    #for f in /root/.julia/v0.3/METADATA/*;
+    #do
+    #    pkgname=$(basename "$f")
+    #    julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+    #done
 elif [ "$2" == "releaseAL" ]
 then
     rm -rf /vagrant/releaseAL
@@ -125,25 +136,27 @@ fi
 
 
 # Bundle results together
+echo "Bundling results"
+cd /vagrant/
 if [ "$2" == "release" ]
 then
-    julia /root/.julia/v0.3/PackageEvaluator/scripts/joinjson.jl /vagrant/release release
+    julia /home/vagrant/.julia/v0.3/PackageEvaluator/scripts/joinjson.jl /vagrant/release release
 elif [ "$2" == "releaseAL" ]
 then
-    julia /root/.julia/v0.3/PackageEvaluator/scripts/joinjson.jl /vagrant/releaseAL releaseAL
+    julia /home/vagrant/.julia/v0.3/PackageEvaluator/scripts/joinjson.jl /vagrant/releaseAL releaseAL
 elif [ "$2" == "releaseMZ" ]
 then
-    julia /root/.julia/v0.3/PackageEvaluator/scripts/joinjson.jl /vagrant/releaseMZ releaseMZ
+    julia /home/vagrant/.julia/v0.3/PackageEvaluator/scripts/joinjson.jl /vagrant/releaseMZ releaseMZ
 
 elif [ "$2" == "nightly" ]
 then
-    julia /root/.julia/v0.4/PackageEvaluator/scripts/joinjson.jl /vagrant/nightly nightly
+    julia /home/vagrant/.julia/v0.4/PackageEvaluator/scripts/joinjson.jl /vagrant/nightly nightly
 elif [ "$2" == "nightlyAL" ]
 then
-    julia /root/.julia/v0.4/PackageEvaluator/scripts/joinjson.jl /vagrant/nightlyAL nightlyAL
+    julia /home/vagrant/.julia/v0.4/PackageEvaluator/scripts/joinjson.jl /vagrant/nightlyAL nightlyAL
 elif [ "$2" == "nightlyMZ" ]
 then
-    julia /root/.julia/v0.4/PackageEvaluator/scripts/joinjson.jl /vagrant/nightlyMZ nightlyMZ
+    julia /home/vagrant/.julia/v0.4/PackageEvaluator/scripts/joinjson.jl /vagrant/nightlyMZ nightlyMZ
 fi
 
 echo "Finished normally! $1  $2"

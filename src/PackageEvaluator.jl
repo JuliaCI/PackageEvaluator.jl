@@ -42,13 +42,15 @@ function eval_pkg(  pkg::String;
     # Add package, if needed, and log adding it
     if addremove
         print_with_color(:yellow, "PKGEVAL: Installing $pkg\n")
+        add_path = "PKGEVAL_$(pkg_name)_add.jl"
+        fp = open(add_path,"w")
         if juliapkg != nothing
-            jl_cmd_arg = "ENV[\"JULIA_PKGDIR\"] = \"$(juliapkg)\";" *
-                         "Pkg.init();"
+            println(fp, "ENV[\"JULIA_PKGDIR\"] = \"$(juliapkg)\"")
+            println(fp, "Pkg.init()")
         end
-        jl_cmd_arg *= "Pkg.add(\"$pkg\")"
+        println(fp, "Pkg.add(\"$pkg\")")
         features[:ADD_LOG], ok =
-            run_cap_all(`$juliapath -e $jl_cmd_arg`, "PKGEVAL_$(pkg)_add.log")
+            run_cap_all(`$juliapath $add_path`, "PKGEVAL_$(pkg)_add.log")
         if !ok
             print_with_color(:yellow, "PKGEVAL: Installation failed!\n")
             # Was it a build problem, or was it a can't-install-at-all problem?
