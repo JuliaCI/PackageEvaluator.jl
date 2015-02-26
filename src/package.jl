@@ -86,7 +86,7 @@ end
 
 #######################################################################
 # Testing folder/files
-function checkTesting(features, pkg_path, pkg_name, usetimeout, juliapath, juliapkg, pkg_root)
+function checkTesting(features, pkg_path, pkg_name, usetimeout, juliapath, juliapkg)
     # Intialize to defaults
     features[:TEST_MASTERFILE] = ""
     features[:TEST_EXIST]      = false
@@ -150,7 +150,7 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout, juliapath, julia
     fp = open(using_path,"w")
     write(fp, "versioninfo()\n")
     if juliapkg != nothing
-        write(fp, "ENV[\"JULIA_PKGDIR\"] = \"$(pkg_root)\"\n")
+        write(fp, "ENV[\"JULIA_PKGDIR\"] = \"$(juliapkg)\"\n")
         write(fp, "println(Pkg.dir(\"$pkg_name\"))\n")
     end
     # Hack: JLDArchives doesn't have a src/ folder - but does have useful tests to
@@ -226,7 +226,7 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout, juliapath, julia
     log, ok = "", true
     pkg_test = pkg_dot_test_capable ? "Pkg.test(\"$(pkg_name)\")" :
                                       "include(\"$(features[:TEST_MASTERFILE])\")"
-    pkg_test = "ENV[\"JULIA_PKGDIR\"] = \"$(pkg_root)\"; " * pkg_test
+    pkg_test = "ENV[\"JULIA_PKGDIR\"] = \"$(juliapkg)\"; " * pkg_test
     if get(PKGOPTS, pkg_name, :NORMAL) == :XVFB
         print_with_color(:yellow, "PKGEVAL: Running '$(pkg_test)' with framebuffer\n")
         if usetimeout

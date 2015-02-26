@@ -4,31 +4,40 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/trusty64"
 
+  # JUST SETUP - NO RUN
+  config.vm.define :releasesetup do |releasesetup|
+    config.vm.provision :shell, path: "setup.sh", args: ["release", "donothing"], keep_color: true, privileged: false
+  end
+
+  config.vm.define :nightlysetup do |nightlysetup|
+    config.vm.provision :shell, path: "setup.sh", args: ["nightly", "donothing"], keep_color: true, privileged: false
+  end
+
   # TWO WAY PARALLEL OPTION
 
   config.vm.define :release do |release|
-    config.vm.provision :shell, path: "setup.sh", args: ["release", "release"], keep_color: true
+    config.vm.provision :shell, path: "setup.sh", args: ["release", "release"], keep_color: true, privileged: false
   end
 
   config.vm.define :nightly do |nightly|
-    config.vm.provision :shell, path: "setup.sh", args: ["nightly","nightly"], keep_color: true
+    config.vm.provision :shell, path: "setup.sh", args: ["nightly","nightly"], keep_color: true, privileged: false
   end
 
 
   # FOUR WAY PARALLEL OPTION
 
   config.vm.define :releaseAL do |releaseAL|
-    config.vm.provision :shell, path: "setup.sh", args: ["release", "releaseAL"], keep_color: true
+    config.vm.provision :shell, path: "setup.sh", args: ["release", "releaseAL"], keep_color: true, privileged: false
   end
   config.vm.define :releaseMZ do |releaseMZ|
-    config.vm.provision :shell, path: "setup.sh", args: ["release", "releaseMZ"], keep_color: true
+    config.vm.provision :shell, path: "setup.sh", args: ["release", "releaseMZ"], keep_color: true, privileged: false
   end
 
   config.vm.define :nightlyAL do |nightlyAL|
-    config.vm.provision :shell, path: "setup.sh", args: ["nightly","nightlyAL"], keep_color: true
+    config.vm.provision :shell, path: "setup.sh", args: ["nightly","nightlyAL"], keep_color: true, privileged: false
   end
   config.vm.define :nightlyMZ do |nightlyMZ|
-    config.vm.provision :shell, path: "setup.sh", args: ["nightly","nightlyMZ"], keep_color: true
+    config.vm.provision :shell, path: "setup.sh", args: ["nightly","nightlyMZ"], keep_color: true, privileged: false
   end
 
 end

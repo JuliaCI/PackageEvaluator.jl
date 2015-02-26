@@ -21,11 +21,11 @@
 #   After this operation, 6,203 kB of additional disk space will be used.
 #    Do you want to continue? [Y/n] Abort.
 # appearing in output.
+sudo su
 cat >/etc/apt/apt.conf.d/pkgevalforceyes <<EOL
 APT::Get::Assume-Yes "true";
 APT::Get::force-yes "true";
 EOL
-
 
 # Install Julia and make result folders
 if [ "$1" == "release" ]
@@ -36,13 +36,13 @@ else
 fi
 add-apt-repository ppa:staticfloat/julia-deps
 apt-get update
-apt-get --yes --force-yes install julia
+apt-get install julia
 
 
 # Install any dependencies
-sudo apt-get install xvfb
+apt-get install xvfb
 #export JAVA_HOME="/usr/lib/jvm/java-7-openjdk/"
-
+exit  # from su
 
 # Install PackageEvaluator
 julia -e "Pkg.init(); Pkg.clone(\"https://github.com/IainNZ/PackageEvaluator.jl.git\")"

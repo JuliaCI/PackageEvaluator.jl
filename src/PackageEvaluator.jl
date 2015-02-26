@@ -37,7 +37,7 @@ function eval_pkg(  pkg::String;
     features = Dict{Symbol,Any}()
 
     # Expand out path
-    juliapkg  = abspath(juliapkg)
+    juliapkg = (juliapkg == nothing) ? Pkg.dir() : abspath(juliapkg)
 
     # Add package, if needed, and log adding it
     if addremove
@@ -78,7 +78,7 @@ function eval_pkg(  pkg::String;
 
     # Actually run the tests
     print_with_color(:yellow, "PKGEVAL: Attempting to run tests\n")
-    checkTesting(features, pkg_path, pkg, usetimeout, juliapath, juliapkg, pkg_root)
+    checkTesting(features, pkg_path, pkg, usetimeout, juliapath, juliapkg)
 
     # Remove Pkg if requested
     if addremove
