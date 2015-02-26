@@ -7,11 +7,11 @@ Vagrant.configure("2") do |config|
   # TWO WAY PARALLEL OPTION
 
   config.vm.define :release do |release|
-    config.vm.provision :shell, path: "setup.sh", args: ["release", ":all"], keep_color: true
+    config.vm.provision :shell, path: "setup.sh", args: ["release", "release"], keep_color: true
   end
 
   config.vm.define :nightly do |nightly|
-    config.vm.provision :shell, path: "setup.sh", args: ["nightly",":all"], keep_color: true
+    config.vm.provision :shell, path: "setup.sh", args: ["nightly","nightly"], keep_color: true
   end
 
 

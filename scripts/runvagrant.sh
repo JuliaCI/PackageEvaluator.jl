@@ -33,17 +33,17 @@ nightly
 EOF
 
 else
-    vagrant up --no-provision releaseeven
-    vagrant up --no-provision releaseodd
-    vagrant up --no-provision nightlyeven
-    vagrant up --no-provision nightlyodd
+    vagrant up --no-provision releaseAL
+    vagrant up --no-provision releaseMZ
+    vagrant up --no-provision nightlyAL
+    vagrant up --no-provision nightlyMZ
 
     # Provision in parallel
     cat <<EOF | parallel_provision
-releaseeven
-releaseodd
-nightlyeven
-nightlyodd
+releaseAL
+releaseMZ
+nightlyAL
+nightlyMZ
 EOF
 
 fi

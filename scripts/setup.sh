@@ -72,9 +72,9 @@ then
     done
 elif [ "$2" == "releaseMZ" ]
 then
-    rm -rf /vagrant/releaseAL
-    mkdir /vagrant/releaseAL
-    cd /vagrant/releaseAL
+    rm -rf /vagrant/releaseMZ
+    mkdir /vagrant/releaseMZ
+    cd /vagrant/releaseMZ
     for f in /root/.julia/v0.3/METADATA/[M-Z]*;
     do
         pkgname=$(basename "$f")
