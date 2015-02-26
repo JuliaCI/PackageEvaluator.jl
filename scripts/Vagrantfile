@@ -17,18 +17,18 @@ Vagrant.configure("2") do |config|
 
   # FOUR WAY PARALLEL OPTION
 
-  config.vm.define :releaseeven do |releaseeven|
-    config.vm.provision :shell, path: "setup.sh", args: ["release", ":even"], keep_color: true
+  config.vm.define :releaseAL do |releaseAL|
+    config.vm.provision :shell, path: "setup.sh", args: ["release", "releaseAL"], keep_color: true
   end
-  config.vm.define :releaseodd do |releaseodd|
-    config.vm.provision :shell, path: "setup.sh", args: ["release", ":odd"], keep_color: true
+  config.vm.define :releaseMZ do |releaseMZ|
+    config.vm.provision :shell, path: "setup.sh", args: ["release", "releaseMZ"], keep_color: true
   end
 
-  config.vm.define :nightlyeven do |nightlyeven|
-    config.vm.provision :shell, path: "setup.sh", args: ["nightly",":even"], keep_color: true
+  config.vm.define :nightlyAL do |nightlyAL|
+    config.vm.provision :shell, path: "setup.sh", args: ["nightly","nightlyAL"], keep_color: true
   end
-  config.vm.define :nightlyodd do |nightlyodd|
-    config.vm.provision :shell, path: "setup.sh", args: ["nightly",":odd"], keep_color: true
+  config.vm.define :nightlyMZ do |nightlyMZ|
+    config.vm.provision :shell, path: "setup.sh", args: ["nightly","nightlyMZ"], keep_color: true
   end
 
 end
