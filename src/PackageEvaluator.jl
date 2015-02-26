@@ -42,7 +42,7 @@ function eval_pkg(  pkg::String;
     # Add package, if needed, and log adding it
     if addremove
         print_with_color(:yellow, "PKGEVAL: Installing $pkg\n")
-        add_path = "PKGEVAL_$(pkg_name)_add.jl"
+        add_path = "PKGEVAL_$(pkg)_add.jl"
         fp = open(add_path,"w")
         if juliapkg != nothing
             println(fp, "ENV[\"JULIA_PKGDIR\"] = \"$(juliapkg)\"")

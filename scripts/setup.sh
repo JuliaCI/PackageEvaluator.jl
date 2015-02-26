@@ -63,8 +63,8 @@ then
     mkdir /vagrant/release
     cd /vagrant/release
     #julia -e "run( `julia -e 'Pkg.add(\"Cairo\")' ` )"
-    #julia -e "using PackageEvaluator; eval_pkg(\"Cairo\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
-    #julia -e "using PackageEvaluator; eval_pkg(\"ICU\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+    julia -e "using PackageEvaluator; eval_pkg(\"Cairo\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+    julia -e "using PackageEvaluator; eval_pkg(\"ICU\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
     julia -e "using PackageEvaluator; eval_pkg(\"Images\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
     #for f in /root/.julia/v0.3/METADATA/*;
     #do
