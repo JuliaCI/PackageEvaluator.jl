@@ -17,7 +17,7 @@ parallel_provision() {
     while read box; do
         echo "Provisioning '$box'. Output will be in: $box.out.txt" 1>&2
         echo $box
-    done | xargs -P 2 -I"BOXNAME" \
+    done | xargs -P 4 -I"BOXNAME" \
         sh -c 'vagrant provision BOXNAME >BOXNAME.out.txt 2>&1 || echo "Error Occurred: BOXNAME"'
 }
 

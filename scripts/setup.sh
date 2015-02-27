@@ -11,47 +11,52 @@
 
 # Commandline arguments
 # 1: The Julia version: release | nightly
-# 2: The test set to run: release | nightly | releaseAL | releaseMZ | nightlyAL | nightlyMZ
+# 2: The test set to run: release | releaseAL | releaseMZ |
+#                         nightly | nightlyAL | nightlyMZ
 #######################################################################
 
+#######################################################################
 # Accept all apt-gets
-# This is an attempt to deal with BinDeps packages trying to
-# install dependencies with apt-get
-# Otherwise seem to get things like
-#   After this operation, 6,203 kB of additional disk space will be used.
-#    Do you want to continue? [Y/n] Abort.
-# appearing in output.
+# This is an attempt to deal with BinDeps packages trying to install
+# dependencies with apt-get and asking for permissions. Normally we
+# could pass a --yes argument to avoid this, but there isn't a way to
+# do that with BinDpes. We can actually do a global override, which
+# is what we do here. Since we are piping stuff into a file, the
+# easiest way to sudo the whole thing is to do it in this style.
 sudo su -c 'echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/pkgevalforceyes'
 sudo su -c 'echo "APT::Get::force-yes \"true\";" >> /etc/apt/apt.conf.d/pkgevalforceyes'
-#cat /etc/apt/apt.conf.d/pkgevalforceyes  # DEBUG
+# Uncomment following line to check it did indeed work
+#cat /etc/apt/apt.conf.d/pkgevalforceyes
 
-
-# Install Julia
+#######################################################################
+# Install Julia and upgrade installation
+sudo apt-get update    # Pull in latest versions
+sudo apt-get upgrade   # Upgrade system packages
+# Use first argument to distinguish between the versions
 if [ "$1" == "release" ]
 then
-    sudo add-apt-repository ppa:staticfloat/juliareleases
+    wget -O julia03.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.3/julia-0.3.6-linux-x86_64.tar.gz
+    tar -zxvf julia03.tar.gz
+    export PATH="${PATH}:/home/vagrant/julia03/bin/"
 else
-    sudo add-apt-repository ppa:staticfloat/julianightlies
+    wget -O julia04.tar.gz https://status.julialang.org/download/linux-x86_64
+    tar -zxvf julia04.tar.gz
+    export PATH="${PATH}:/home/vagrant/julia04/bin/"
 fi
-sudo add-apt-repository ppa:staticfloat/julia-deps
-sudo apt-get update
-echo "About to install Julia ${1}"
-sudo apt-get install julia
-echo "Julia installed!"
 
-# Install any dependencies
+#######################################################################
+# Install any dependencies that aren't handled by BinDeps
+# Somethings can't be or don't make sense to be installed by BinDeps,
+# so we will do them manually. Package maintainers can submit PRs to
+# extend this list as needed.
+# Need git of course, doesn't come by default
+sudo apt-get install git
+# Need X virtual frame buffer for many packages
 sudo apt-get install xvfb
-# Cairo.jl
-#sudo apt-get install libcairo2 libfontconfig1 libpango1.0-0 libglib2.0-0 libpng12-0 libpixman-1-0 gettext
-# Images.jl
-#sudo apt-get install libmagickwand5
-# AudioIO.jl
-#sudo apt-get install portaudio19-dev
-#sudo apt-get install libsndfile1-dev
 
 #export JAVA_HOME="/usr/lib/jvm/java-7-openjdk/"
 
-
+#######################################################################
 # Install PackageEvaluator
 julia -e "Pkg.init(); Pkg.clone(\"https://github.com/IainNZ/PackageEvaluator.jl.git\")"
 
@@ -62,15 +67,11 @@ then
     rm -rf /vagrant/release
     mkdir /vagrant/release
     cd /vagrant/release
-    #julia -e "run( `julia -e 'Pkg.add(\"Cairo\")' ` )"
-    julia -e "using PackageEvaluator; eval_pkg(\"Cairo\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
-    julia -e "using PackageEvaluator; eval_pkg(\"ICU\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
-    julia -e "using PackageEvaluator; eval_pkg(\"Images\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
-    #for f in /root/.julia/v0.3/METADATA/*;
-    #do
-    #    pkgname=$(basename "$f")
-    #    julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
-    #done
+    for f in /root/.julia/v0.3/METADATA/*;
+    do
+        pkgname=$(basename "$f")
+        julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+    done
 elif [ "$2" == "releaseAL" ]
 then
     rm -rf /vagrant/releaseAL
@@ -79,7 +80,7 @@ then
     for f in /root/.julia/v0.3/METADATA/[A-L]*;
     do
         pkgname=$(basename "$f")
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
     done
 elif [ "$2" == "releaseMZ" ]
 then
@@ -89,12 +90,12 @@ then
     for f in /root/.julia/v0.3/METADATA/[M-Z]*;
     do
         pkgname=$(basename "$f")
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
     done
     for f in /root/.julia/v0.3/METADATA/[a-z]*;
     do
         pkgname=$(basename "$f")
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
     done
 
 elif [ "$2" == "nightly" ]
@@ -105,7 +106,7 @@ then
     for f in /root/.julia/v0.4/METADATA/*;
     do
         pkgname=$(basename "$f")
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
     done
 elif [ "$2" == "nightlyAL" ]
 then
@@ -115,7 +116,7 @@ then
     for f in /root/.julia/v0.4/METADATA/[A-L]*;
     do
         pkgname=$(basename "$f")
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
     done
 elif [ "$2" == "nightlyMZ" ]
 then
@@ -125,12 +126,12 @@ then
     for f in /root/.julia/v0.4/METADATA/[M-Z]*;
     do
         pkgname=$(basename "$f")
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
     done
     for f in /root/.julia/v0.4/METADATA/[a-z]*;
     do
         pkgname=$(basename "$f")
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
     done
 fi
 
