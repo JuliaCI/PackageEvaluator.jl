@@ -36,11 +36,13 @@ sudo apt-get upgrade   # Upgrade system packages
 if [ "$1" == "release" ]
 then
     wget -O julia03.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.3/julia-0.3.6-linux-x86_64.tar.gz
-    tar -zxvf julia03.tar.gz
+    mkdir julia03
+    tar -zxvf julia03.tar.gz -C ./julia03 --strip-components=1
     export PATH="${PATH}:/home/vagrant/julia03/bin/"
 else
     wget -O julia04.tar.gz https://status.julialang.org/download/linux-x86_64
-    tar -zxvf julia04.tar.gz
+    mkdir julia04
+    tar -zxvf julia04.tar.gz -C ./julia04 --strip-components=1
     export PATH="${PATH}:/home/vagrant/julia04/bin/"
 fi
 
@@ -67,7 +69,7 @@ then
     rm -rf /vagrant/release
     mkdir /vagrant/release
     cd /vagrant/release
-    for f in /root/.julia/v0.3/METADATA/*;
+    for f in /home/vagrant/.julia/v0.3/METADATA/*;
     do
         pkgname=$(basename "$f")
         julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
@@ -77,7 +79,7 @@ then
     rm -rf /vagrant/releaseAL
     mkdir /vagrant/releaseAL
     cd /vagrant/releaseAL
-    for f in /root/.julia/v0.3/METADATA/[A-L]*;
+    for f in /home/vagrant/.julia/v0.3/METADATA/[A-L]*;
     do
         pkgname=$(basename "$f")
         julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
@@ -87,7 +89,7 @@ then
     rm -rf /vagrant/releaseMZ
     mkdir /vagrant/releaseMZ
     cd /vagrant/releaseMZ
-    for f in /root/.julia/v0.3/METADATA/[M-Z]*;
+    for f in /home/vagrant/.julia/v0.3/METADATA/[M-Z]*;
     do
         pkgname=$(basename "$f")
         julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
@@ -103,7 +105,7 @@ then
     rm -rf /vagrant/nightly
     mkdir /vagrant/nightly
     cd /vagrant/nightly
-    for f in /root/.julia/v0.4/METADATA/*;
+    for f in /home/vagrant/.julia/v0.4/METADATA/*;
     do
         pkgname=$(basename "$f")
         julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
@@ -113,7 +115,7 @@ then
     rm -rf /vagrant/nightlyAL
     mkdir /vagrant/nightlyAL
     cd /vagrant/nightlyAL
-    for f in /root/.julia/v0.4/METADATA/[A-L]*;
+    for f in /home/vagrant/.julia/v0.4/METADATA/[A-L]*;
     do
         pkgname=$(basename "$f")
         julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
@@ -123,12 +125,12 @@ then
     rm -rf /vagrant/nightlyMZ
     mkdir /vagrant/nightlyMZ
     cd /vagrant/nightlyMZ
-    for f in /root/.julia/v0.4/METADATA/[M-Z]*;
+    for f in /home/vagrant/.julia/v0.4/METADATA/[M-Z]*;
     do
         pkgname=$(basename "$f")
         julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
     done
-    for f in /root/.julia/v0.4/METADATA/[a-z]*;
+    for f in /home/vagrant/.julia/v0.4/METADATA/[a-z]*;
     do
         pkgname=$(basename "$f")
         julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
