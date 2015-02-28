@@ -5,7 +5,7 @@ PackageEvaluator
 
 **The script**: a [Vagrant](https://www.vagrantup.com/) configuration and provisioning script that evaluates all Julia packages on stable and nightly versions of Julia. These tests are performed on an Ubuntu 12.04 LTS virtual machine, and the results are used for the [Julia package listing](http://pkg.julialang.org/).
 
-## "My package is failing tests! Why is it doing that?"
+## "My package is failing tests!"
 
 Possible reasons include:
 
