@@ -5,6 +5,10 @@ Vagrant.configure("2") do |config|
   #config.vm.box = "ubuntu/trusty64"
   config.vm.box = "ubuntu/precise64"
 
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 1024
+  end
+
   # JUST SETUP - NO RUN
   config.vm.define :releasesetup do |releasesetup|
     config.vm.provision :shell, path: "setup.sh", args: ["release", "donothing"], keep_color: true, privileged: false
