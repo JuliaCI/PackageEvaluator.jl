@@ -76,7 +76,7 @@ then
     for f in /home/vagrant/.julia/v0.3/METADATA/*;
     do
         pkgname=$(basename "$f")
-        JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
+        JULIA_PKGDIR="/vagrant/$2" timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
         julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
         JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.rm(\"${pkgname}\")"
     done
@@ -85,7 +85,7 @@ then
     for f in /home/vagrant/.julia/v0.3/METADATA/[A-L]*;
     do
         pkgname=$(basename "$f")
-        JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
+        JULIA_PKGDIR="/vagrant/$2" timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
         julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
         JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.rm(\"${pkgname}\")"
     done
@@ -94,7 +94,7 @@ then
     for f in /home/vagrant/.julia/v0.3/METADATA/[M-Z]*;
     do
         pkgname=$(basename "$f")
-        JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
+        JULIA_PKGDIR="/vagrant/$2" timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
         julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
         JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.rm(\"${pkgname}\")"
     done
@@ -104,7 +104,7 @@ then
     for f in /home/vagrant/.julia/v0.4/METADATA/*;
     do
         pkgname=$(basename "$f")
-        JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
+        JULIA_PKGDIR="/vagrant/$2" timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
         julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
         JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.rm(\"${pkgname}\")"
     done
@@ -113,7 +113,7 @@ then
     for f in /home/vagrant/.julia/v0.4/METADATA/[A-L]*;
     do
         pkgname=$(basename "$f")
-        JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
+        JULIA_PKGDIR="/vagrant/$2" timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
         julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
         JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.rm(\"${pkgname}\")"
     done
@@ -122,7 +122,7 @@ then
     for f in /home/vagrant/.julia/v0.4/METADATA/[M-Z]*;
     do
         pkgname=$(basename "$f")
-        JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
+        JULIA_PKGDIR="/vagrant/$2" timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
         julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
         JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.rm(\"${pkgname}\")"
     done
