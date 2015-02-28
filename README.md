@@ -22,3 +22,15 @@ Possible reasons include:
 * **Something else**. You'll probably need to check manually on the testing VM. See next section.
 
 (**Licenses** are searched for in the files listed in [`src/constants.jl`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/src/constants.jl). The goal is to support a variety of licenses. If your license isn't detected, please file a pull request with detection logic.)
+
+## Using Vagrant and PackageEvaluator
+
+* [Vagrant](https://www.vagrantup.com/) is a tool for creating and managing virtual machines.
+* The configuration of the virtual machine, including the operating system use, live in the [`Vagrantfile`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/scripts/Vagrantfile).
+* When the virtual machine(s) are launched with `vagrant up`, a *provisioning script* called [`setup.sh`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/scripts/setup.sh) is run.
+* This script takes two arguments: the first is the version of Julia to use, and the second is the subset of packages to run.
+* The arguments are determined by the configurations in the `Vagrantfile`. In particular:
+ * `releasesetup` and `releasenightly` just set up the machine with Julia and the same dependencies that PackageEvaluator uses. **Use, e.g. `vagrant up releasesetup; vagrant ssh releasesetup` to debug why a pacakge is failing.**
+ * `release` and `nightly` do the setup and evaluate all the packages.
+ * `releaseAL`, `releaseMZ`, `nightlyAL`, `nightlyMZ` evaluate only packages with names beginning with those letters.
+* PackageEvaluator runs all the last four configurations in parallel, using `runvagrant.sh`.
