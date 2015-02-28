@@ -3,7 +3,7 @@ PackageEvaluator
 
 **The package**: a [Julia](http://julialang.org) package exporting the function `eval_pkg` that gathers some basic information about a package and attempts to run its tests (or the next best thing), then spits the results to a JSON.
 
-**The script**: a [Vagrant](https://www.vagrantup.com/) configuration and provisioning script that are set up to evaluate all Julia packages on stable and nightly versions of Julia, for use on the [Julia package listing](http://pkg.julialang.org/).
+**The script**: a [Vagrant](https://www.vagrantup.com/) configuration and provisioning script that evaluates all Julia packages on stable and nightly versions of Julia. These tests are performed on an Ubuntu 12.04 LTS virtual machine, and the results are used for the [Julia package listing](http://pkg.julialang.org/).
 
 ## "My package is failing tests! Why is it doing that?"
 
