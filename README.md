@@ -18,6 +18,7 @@ Possible reasons include:
 * **Your testing process relies on random numbers**. Please make sure you set a seed or use appropriate tolerances if you rely on random numbers in your tests.
 * **Your package relies on X running**. It may be possible to get your package working through the magic of `xvfb`. Please submit a pull request adding a line to [`src/constants.jl`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/src/constants.jl) that specifies that your package needs to be run with `xvfb` active.
 * **Your package's tests or installation take too long**. There is a time limit of 10 minutes for installation, and a seperate 10 minute time limit for testing. You can either reduce your testing time, or exclude your package from testing.
+* **Your package requires too much memory**. The VMs only have 1 GB of RAM. You can either reduce your testing time, or exclude your package from testing.
 * **Your tests aren't being found / wrong test file is being run**. TThe preferred option is that `test/runtests.jl` exists, and then PackageEvaluator will use `Pkg.test`. Some older packages don't implement this, so files are heuristically identified. See [`src/package.jl`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/src/package.jl) for the logic used, or preferably just update your package.
 * **Something else**. You'll probably need to check manually on the testing VM. See next section.
 
