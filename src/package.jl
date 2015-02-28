@@ -86,7 +86,7 @@ end
 
 #######################################################################
 # Testing folder/files
-function checkTesting(features, pkg_path, pkg_name, usetimeout, juliapath, juliapkg)
+function checkTesting(features, pkg_path, pkg_name, usetimeout, juliapkg)
     # Intialize to defaults
     features[:TEST_MASTERFILE] = ""
     features[:TEST_EXIST]      = false
@@ -168,15 +168,15 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout, juliapath, julia
     print_with_color(:yellow, "PKGEVAL: Trying to load package with `using`\n")
     if get(PKGOPTS, pkg_name, :NORMAL) == :XVFB
         if usetimeout
-            log, ok = run_cap_all(`xvfb-run $TIMEOUTPATH 300s $juliapath $using_path`,log_name)
+            log, ok = run_cap_all(`xvfb-run $TIMEOUTPATH 300s julia $using_path`,log_name)
         else
-            log, ok = run_cap_all(                  `xvfb-run $juliapath $using_path`,log_name)
+            log, ok = run_cap_all(                  `xvfb-run julia $using_path`,log_name)
         end
     else
         if usetimeout
-            log, ok = run_cap_all(         `$TIMEOUTPATH 300s $juliapath $using_path`,log_name)
+            log, ok = run_cap_all(         `$TIMEOUTPATH 300s julia $using_path`,log_name)
         else
-            log, ok = run_cap_all(                           `$juliapath $using_path`,log_name)
+            log, ok = run_cap_all(                           `julia $using_path`,log_name)
         end
     end
     features[:TEST_USING_LOG] = log
@@ -230,16 +230,16 @@ function checkTesting(features, pkg_path, pkg_name, usetimeout, juliapath, julia
     if get(PKGOPTS, pkg_name, :NORMAL) == :XVFB
         print_with_color(:yellow, "PKGEVAL: Running '$(pkg_test)' with framebuffer\n")
         if usetimeout
-            log, ok = run_cap_all(`xvfb-run $TIMEOUTPATH 600s $juliapath -e $pkg_test`,log_name)
+            log, ok = run_cap_all(`xvfb-run $TIMEOUTPATH 600s julia -e $pkg_test`,log_name)
         else
-            log, ok = run_cap_all(                  `xvfb-run $juliapath -e $pkg_test`,log_name)
+            log, ok = run_cap_all(                  `xvfb-run julia -e $pkg_test`,log_name)
         end
     else
         print_with_color(:yellow, "PKGEVAL: Running '$(pkg_test)'\n")
         if usetimeout
-            log, ok = run_cap_all(         `$TIMEOUTPATH 600s $juliapath -e $pkg_test`,log_name)
+            log, ok = run_cap_all(         `$TIMEOUTPATH 600s julia -e $pkg_test`,log_name)
         else
-            log, ok = run_cap_all(                           `$juliapath -e $pkg_test`,log_name)
+            log, ok = run_cap_all(                           `julia -e $pkg_test`,log_name)
         end
     end
     features[:TEST_FULL_LOG] = log

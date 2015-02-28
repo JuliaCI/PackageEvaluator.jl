@@ -24,4 +24,4 @@ The best case scenario is that `test/runtests.jl` exists, and then PackageEvalua
 
 ## The Package
 
-`PackageEvaluator`, as a module, exports two functions: `eval_pkg`, and `eval_pkgs`. They are well documented in `src/PackageEvaluator.jl`.
+`PackageEvaluator`, as a module, exports one function: `eval_pkg`. It is well documented in `src/PackageEvaluator.jl`.

@@ -55,8 +55,10 @@ fi
 sudo apt-get install git
 # Need X virtual frame buffer for many packages
 sudo apt-get install xvfb
-
-#export JAVA_HOME="/usr/lib/jvm/java-7-openjdk/"
+# Need GMP for e.g. GLPK, why not get some PCRE too
+sudo apt-get install libpcre3-dev libgmp-dev 
+# Set Java path for e.g. Taro
+export JAVA_HOME="/usr/lib/jvm/java-7-openjdk/"
 
 #######################################################################
 # Install PackageEvaluator
@@ -64,76 +66,64 @@ julia -e "Pkg.init(); Pkg.clone(\"https://github.com/IainNZ/PackageEvaluator.jl.
 
 # Run PackageEvaluator
 # We'll tee to dummy file to swallow any error
+rm -rf /vagrant/$2
+mkdir /vagrant/$2
+cd /vagrant/$2
+JULIA_PKGDIR="./" julia -e "Pkg.init(); println(Pkg.dir())"
 if [ "$2" == "release" ]
 then
-    rm -rf /vagrant/release
-    mkdir /vagrant/release
-    cd /vagrant/release
     for f in /home/vagrant/.julia/v0.3/METADATA/*;
     do
         pkgname=$(basename "$f")
-        julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR="./" julia -e "Pkg.add(\"${pkgname}\")"
+        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR="./" julia -e "Pkg.rm(\"${pkgname}\")"
     done
 elif [ "$2" == "releaseAL" ]
 then
-    rm -rf /vagrant/releaseAL
-    mkdir /vagrant/releaseAL
-    cd /vagrant/releaseAL
     for f in /home/vagrant/.julia/v0.3/METADATA/[A-L]*;
     do
         pkgname=$(basename "$f")
-        julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR="./" julia -e "Pkg.add(\"${pkgname}\")"
+        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR="./" julia -e "Pkg.rm(\"${pkgname}\")"
     done
 elif [ "$2" == "releaseMZ" ]
 then
-    rm -rf /vagrant/releaseMZ
-    mkdir /vagrant/releaseMZ
-    cd /vagrant/releaseMZ
     for f in /home/vagrant/.julia/v0.3/METADATA/[M-Z]*;
     do
         pkgname=$(basename "$f")
-        julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
-    done
-    for f in /root/.julia/v0.3/METADATA/[a-z]*;
-    do
-        pkgname=$(basename "$f")
-        julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR="./" julia -e "Pkg.add(\"${pkgname}\")"
+        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR="./" julia -e "Pkg.rm(\"${pkgname}\")"
     done
 
 elif [ "$2" == "nightly" ]
 then
-    rm -rf /vagrant/nightly
-    mkdir /vagrant/nightly
-    cd /vagrant/nightly
     for f in /home/vagrant/.julia/v0.4/METADATA/*;
     do
         pkgname=$(basename "$f")
-        julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR="./" julia -e "Pkg.add(\"${pkgname}\")"
+        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR="./" julia -e "Pkg.rm(\"${pkgname}\")"
     done
 elif [ "$2" == "nightlyAL" ]
 then
-    rm -rf /vagrant/nightlyAL
-    mkdir /vagrant/nightlyAL
-    cd /vagrant/nightlyAL
     for f in /home/vagrant/.julia/v0.4/METADATA/[A-L]*;
     do
         pkgname=$(basename "$f")
-        julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR="./" julia -e "Pkg.add(\"${pkgname}\")"
+        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR="./" julia -e "Pkg.rm(\"${pkgname}\")"
     done
 elif [ "$2" == "nightlyMZ" ]
 then
-    rm -rf /vagrant/nightlyMZ
-    mkdir /vagrant/nightlyMZ
-    cd /vagrant/nightlyMZ
     for f in /home/vagrant/.julia/v0.4/METADATA/[M-Z]*;
     do
         pkgname=$(basename "$f")
-        julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
-    done
-    for f in /home/vagrant/.julia/v0.4/METADATA/[a-z]*;
-    do
-        pkgname=$(basename "$f")
-        julia-debug -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR="./" julia -e "Pkg.add(\"${pkgname}\")"
+        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR="./" julia -e "Pkg.rm(\"${pkgname}\")"
     done
 fi
 
@@ -141,25 +131,7 @@ fi
 # Bundle results together
 echo "Bundling results"
 cd /vagrant/
-if [ "$2" == "release" ]
-then
-    julia /home/vagrant/.julia/v0.3/PackageEvaluator/scripts/joinjson.jl /vagrant/release release
-elif [ "$2" == "releaseAL" ]
-then
-    julia /home/vagrant/.julia/v0.3/PackageEvaluator/scripts/joinjson.jl /vagrant/releaseAL releaseAL
-elif [ "$2" == "releaseMZ" ]
-then
-    julia /home/vagrant/.julia/v0.3/PackageEvaluator/scripts/joinjson.jl /vagrant/releaseMZ releaseMZ
+julia /home/vagrant/.julia/v0.3/PackageEvaluator/scripts/joinjson.jl /vagrant/$2 $2
 
-elif [ "$2" == "nightly" ]
-then
-    julia /home/vagrant/.julia/v0.4/PackageEvaluator/scripts/joinjson.jl /vagrant/nightly nightly
-elif [ "$2" == "nightlyAL" ]
-then
-    julia /home/vagrant/.julia/v0.4/PackageEvaluator/scripts/joinjson.jl /vagrant/nightlyAL nightlyAL
-elif [ "$2" == "nightlyMZ" ]
-then
-    julia /home/vagrant/.julia/v0.4/PackageEvaluator/scripts/joinjson.jl /vagrant/nightlyMZ nightlyMZ
-fi
 
 echo "Finished normally! $1  $2"
