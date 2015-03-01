@@ -30,9 +30,9 @@ sudo su -c 'echo "APT::Get::force-yes \"true\";" >> /etc/apt/apt.conf.d/pkgevalf
 #cat /etc/apt/apt.conf.d/pkgevalforceyes
 
 #######################################################################
-# Install Julia and upgrade installation
-#sudo apt-get update    # Pull in latest versions
-#sudo apt-get upgrade   # Upgrade system packages
+# Upgrade installation and install Julia and 
+sudo apt-get update    # Pull in latest versions
+sudo apt-get upgrade   # Upgrade system packages
 # Use first argument to distinguish between the versions
 if [ "$1" == "release" ]
 then
@@ -40,11 +40,15 @@ then
     mkdir julia03
     tar -zxvf julia03.tar.gz -C ./julia03 --strip-components=1
     export PATH="${PATH}:/home/vagrant/julia03/bin/"
+    # Retain PATH to make it easier to use VM for debugging
+    echo "export PATH=\"\${PATH}:/home/vagrant/julia03/bin/\"" >> /home/vagrant/.profile
 else
     wget -O julia04.tar.gz https://status.julialang.org/download/linux-x86_64
     mkdir julia04
     tar -zxvf julia04.tar.gz -C ./julia04 --strip-components=1
     export PATH="${PATH}:/home/vagrant/julia04/bin/"
+    # Retain PATH to make it easier to use VM for debugging
+    echo "export PATH=\"\${PATH}:/home/vagrant/julia04/bin/\"" >> /home/vagrant/.profile
 fi
 
 #######################################################################
@@ -58,8 +62,14 @@ sudo apt-get install git
 sudo apt-get install xvfb
 # Need GMP for e.g. GLPK, why not get some PCRE too
 sudo apt-get install libpcre3-dev libgmp-dev 
-# Set Java path for e.g. Taro
-export JAVA_HOME="/usr/lib/jvm/java-7-openjdk/"
+# Need gfortran for e.g. GLMNet.jl, Ipopt.jl, KernSmooth.jl...
+sudo apt-get install gfortran
+# Need unzip for e.g. Blink.jl, FLANN.jl
+sudo apt-get install unzip
+# Need cmake for e.g. GLFW.jl, Metis.jl
+sudo apt-get install cmake
+# Install R for e.g. Rif.jl, RCall.jl
+sudo apt-get install r-base r-base-dev 
 
 #######################################################################
 # Install PackageEvaluator
