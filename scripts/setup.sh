@@ -132,7 +132,12 @@ fi
 # Bundle results together
 echo "Bundling results"
 cd /vagrant/
-julia /home/vagrant/.julia/v0.3/PackageEvaluator/scripts/joinjson.jl /vagrant/$2 $2
+if [ "$1" == "release" ]
+then
+    julia /home/vagrant/.julia/v0.3/PackageEvaluator/scripts/joinjson.jl /vagrant/$2 $2
+else
+    julia /home/vagrant/.julia/v0.4/PackageEvaluator/scripts/joinjson.jl /vagrant/$2 $2
+fi
 
 
 echo "Finished normally! $1  $2"
