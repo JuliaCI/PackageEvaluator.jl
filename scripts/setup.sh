@@ -70,6 +70,15 @@ sudo apt-get install unzip
 sudo apt-get install cmake
 # Install R for e.g. Rif.jl, RCall.jl
 sudo apt-get install r-base r-base-dev 
+# Install Java for e.g. JavaCall.jl, Taro.jl
+# From: http://stackoverflow.com/q/19275856/3822752
+sudo add-apt-repository -y ppa:webupd8team/java
+sudo apt-get update
+echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+sudo apt-get -y install oracle-java7-installer
+export JAVA_HOME=/usr/lib/jvm/java-7-oracle
+echo "export JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /home/vagrant/.profile
 
 #######################################################################
 # Install PackageEvaluator
@@ -77,36 +86,44 @@ julia -e "Pkg.init(); Pkg.clone(\"https://github.com/IainNZ/PackageEvaluator.jl.
 
 # Run PackageEvaluator
 # We'll tee to dummy file to swallow any error
+# Make results folders
 rm -rf /vagrant/$2
 mkdir /vagrant/$2
 cd /vagrant/$2
-JULIA_PKGDIR="./" julia -e "Pkg.init(); println(Pkg.dir())"
+# Make folder for where tested packages should go
+# Note that its important for it to not be in the /vagrant/
+# folder as that seems to mess with symlinks quite badly
+# See https://github.com/JuliaOpt/Ipopt.jl/issues/31
+TESTPKG="/home/vagrant/testpkg"
+mkdir $TESTPKG
+# Initialize METADATA for testing
+JULIA_PKGDIR=$TESTPKG julia -e "Pkg.init(); println(Pkg.dir())"
 if [ "$2" == "release" ]
 then
     for f in /home/vagrant/.julia/v0.3/METADATA/*;
     do
         pkgname=$(basename "$f")
-        JULIA_PKGDIR="/vagrant/$2" timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
-        JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.rm(\"${pkgname}\")"
+        JULIA_PKGDIR=$TESTPKG timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
+        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"${TESTPKG}\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR=$TESTPKG julia -e "Pkg.rm(\"${pkgname}\")"
     done
 elif [ "$2" == "releaseAL" ]
 then
     for f in /home/vagrant/.julia/v0.3/METADATA/[A-L]*;
     do
         pkgname=$(basename "$f")
-        JULIA_PKGDIR="/vagrant/$2" timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
-        JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.rm(\"${pkgname}\")"
+        JULIA_PKGDIR=$TESTPKG timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
+        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"${TESTPKG}\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR=$TESTPKG julia -e "Pkg.rm(\"${pkgname}\")"
     done
 elif [ "$2" == "releaseMZ" ]
 then
     for f in /home/vagrant/.julia/v0.3/METADATA/[M-Z]*;
     do
         pkgname=$(basename "$f")
-        JULIA_PKGDIR="/vagrant/$2" timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
-        JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.rm(\"${pkgname}\")"
+        JULIA_PKGDIR=$TESTPKG timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
+        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"${TESTPKG}\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR=$TESTPKG julia -e "Pkg.rm(\"${pkgname}\")"
     done
 
 elif [ "$2" == "nightly" ]
@@ -114,27 +131,27 @@ then
     for f in /home/vagrant/.julia/v0.4/METADATA/*;
     do
         pkgname=$(basename "$f")
-        JULIA_PKGDIR="/vagrant/$2" timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
-        JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.rm(\"${pkgname}\")"
+        JULIA_PKGDIR=$TESTPKG timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
+        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"${TESTPKG}\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR=$TESTPKG julia -e "Pkg.rm(\"${pkgname}\")"
     done
 elif [ "$2" == "nightlyAL" ]
 then
     for f in /home/vagrant/.julia/v0.4/METADATA/[A-L]*;
     do
         pkgname=$(basename "$f")
-        JULIA_PKGDIR="/vagrant/$2" timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
-        JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.rm(\"${pkgname}\")"
+        JULIA_PKGDIR=$TESTPKG timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
+        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"${TESTPKG}\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR=$TESTPKG julia -e "Pkg.rm(\"${pkgname}\")"
     done
 elif [ "$2" == "nightlyMZ" ]
 then
     for f in /home/vagrant/.julia/v0.4/METADATA/[M-Z]*;
     do
         pkgname=$(basename "$f")
-        JULIA_PKGDIR="/vagrant/$2" timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"./\",jsonpath=\"./\")" | tee catcherr
-        JULIA_PKGDIR="/vagrant/$2" julia -e "Pkg.rm(\"${pkgname}\")"
+        JULIA_PKGDIR=$TESTPKG timeout 600s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
+        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"${TESTPKG}\",jsonpath=\"./\")" | tee catcherr
+        JULIA_PKGDIR=$TESTPKG julia -e "Pkg.rm(\"${pkgname}\")"
     done
 fi
 
