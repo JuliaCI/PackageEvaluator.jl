@@ -50,14 +50,18 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
                 "CPLEX"         =>  :BINARY,
                 "CLFFT"         =>  :BINARY,
                 "CUDA"          =>  :BINARY,
+                "CUDArt"        =>  :BINARY,
+                "CUFFT"         =>  :BINARY,
+                "DCEMRI"        =>  :PYTHON,
+                "ElasticFDA"    =>  :XVFB,  # Seems to use Tk for tests
                 "Gaston"        =>  :BINARY,  # No Gnuplot on che
                 
                 "GLAbstraction" =>  :XVFB,
-                "GLPlot"        =>  :XVFB,
-                "GLText"        =>  :XVFB,
-                "GLWindow"      =>  :XVFB,
+                "GLFW"          =>  :OPENGL,
+                "GLPlot"        =>  :OPENGL,
+                "GLText"        =>  :OPENGL,
+                "GLWindow"      =>  :OPENGL,
                 
-                "GLFW"          =>  :XVFB,
                 "GR"            =>  :BINARY,
                 "Gtk"           =>  :XVFB,
                 "Gurobi"        =>  :BINARY,
