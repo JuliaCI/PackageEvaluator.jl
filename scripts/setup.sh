@@ -79,6 +79,8 @@ echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-se
 sudo apt-get -y install oracle-java7-installer
 export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 echo "export JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /home/vagrant/.profile
+# Install matplotlib for PyPlot.jl
+sudo apt-get install python-matplotlib
 
 #######################################################################
 # Install PackageEvaluator

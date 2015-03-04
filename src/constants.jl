@@ -93,7 +93,7 @@ const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we a
                 "Pandas"        =>  :PYTHON,
                 "ProfileView"   =>  :XVFB,
                 "PyLexYacc"     =>  :PYTHON,
-                "PyPlot"        =>  :PYTHON,
+                "PyPlot"        =>  :XVFB,
                 "PySide"        =>  :PYTHON,
                 "RdRand"        =>  :BINARY, # Needs latest Intel CPU
                 "REPLCompletions" => :DEP,  # Deprecated, just throws error
