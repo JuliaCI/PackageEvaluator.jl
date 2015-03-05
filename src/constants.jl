@@ -41,7 +41,8 @@ const LICFILES=["LICENSE", "LICENSE.md", "License.md", "LICENSE.txt", "LICENSE.r
 # BINARY = can't run due to a binary dependency that can't be satisfied
 # OSX    = only works on OSX
 # PYTHON = requires a Python package
-const PKGOPTS= ["ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we also exclude
+const PKGOPTS= ["AppleAccelerate" => :OSX,
+                "ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we also exclude
                 "Arduino"       =>  :BINARY,
                 "CasaCore"      =>  :BINARY,
                 "Clang"         =>  :BINARY,
