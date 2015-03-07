@@ -63,7 +63,7 @@ sudo apt-get install xvfb
 # Need GMP for e.g. GLPK, why not get some PCRE too
 sudo apt-get install libpcre3-dev libgmp-dev 
 # Need gfortran for e.g. GLMNet.jl, Ipopt.jl, KernSmooth.jl...
-sudo apt-get install gfortran
+sudo apt-get install gfortran pkg-config
 # Need unzip for e.g. Blink.jl, FLANN.jl
 sudo apt-get install unzip
 # Need cmake for e.g. GLFW.jl, Metis.jl
