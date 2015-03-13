@@ -52,7 +52,8 @@ function featuresToJSON(pkg_name, features, jsonpath)
         "log"               => build_log(pkg_name,  features[:ADD_LOG],
                                                     features[:TEST_USING_LOG],
                                                     features[:TEST_FULL_LOG]),
-        "possible"          => features[:TEST_POSSIBLE] ? "true" : "false"
+        "possible"          => features[:TEST_POSSIBLE] ? "true" : "false",
+        "testfile"          => features[:TEST_MASTERFILE]
     }
     j_path = joinpath(jsonpath,pkg_name*".json")
     print_with_color(:yellow, "PKGEVAL: Creating JSON file $j_path\n")
