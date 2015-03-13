@@ -1,14 +1,28 @@
+import JSON
+
+# ARGS[1]: Folder containing JSONs
+# ARGS[2]: Output filename (excluding .json)
 @assert length(ARGS) == 2
 
-# Load all the JSONs just as strings
-raw_files = {}
+# Parse each JSON and combine
+all_pkgs = Dict[]
 for file in readdir(ARGS[1])
     !ismatch(r"json", file) && continue
-    contains(file, "concat.json") && continue
-    push!(raw_files, readall(joinpath(ARGS[1],file)))
+    try
+        push!(all_pkgs, JSON.parsefile(joinpath(ARGS[1],file)))
+    catch e
+        if isa(e, SystemError)
+            # Propbably mmap failure due to empty file
+            println("$file: $(e.prefix)")
+        else
+            println("Error for $file:")
+            println(e)
+        end
+    end
 end
 
 # Then write them all to one big file
+println("Writing $(length(all_pkgs)) packages to $(ARGS[2]).json")
 cat_fp = open("$(ARGS[2]).json","w")
-println(cat_fp, "[",join(raw_files,","),"]")
+JSON.print(cat_fp, all_pkgs)
 close(cat_fp)
