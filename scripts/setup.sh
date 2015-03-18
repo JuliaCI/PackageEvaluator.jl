@@ -82,7 +82,8 @@ echo "export JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /home/vagrant/.profile
 # Install matplotlib for PyPlot.jl
 sudo apt-get install python-matplotlib
 # Install xlrd for ExcelReaders.jl
-sudo apt-get install python-xlrd
+sudo -H pip install -U pip
+sudo -H pip install xlrd
 
 #######################################################################
 # Install PackageEvaluator
