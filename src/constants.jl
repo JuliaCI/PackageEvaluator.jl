@@ -13,26 +13,34 @@ const LICENSES=[("MIT",[
                     r"permission is hereby granted, free of charge,"]),
                 ("GPL v2",[
                     r"gpl version 2",
+                    r"gpl ?v2",
                     r"gnu general public license\s+version 2",
                     r"gnu general public license, version 2",
                     r"free software foundation; either version 2"]),
                 ("GPL v3",[
                     r"gpl version 3",
+                    r"gpl ?v3",
                     r"http://www.gnu.org/licenses/gpl-3.0.txt",
                     r"gnu general public license\s+version 3",
-                    r"gpl v3"]),
+                    r"free software foundation, either version 3"]),
                 ("LGPL v2.1",[
                     r"lgpl version 2.1",
                     r"gnu lesser general public license\s+version 2\.1"]),
                 ("LGPL v3.0",[
                     r"lgpl-3.0"
                     r"version 3 of the gnu lesser"]),
-                ("BSD",         [r"bsd", r"promote products derived from this software"]),
-                ("GNU Affero",  [r"gnu affero general public license"])
+                ("BSD 3-clause",[r"bsd", r"promote products derived from this software"]),
+                ("BSD 2-clause",[r"bsd", r"other materials provided with the\s+distribution.\s+this software"]),
+                ("GNU Affero",  [r"gnu affero general public license"]),
+                ("Apache",      [r"apache"]),
+                ("zlib",        [r"zlib", r"the origin of this software must not be misrepresented"]),
+                ("ISC",         [r"permission to use, copy, modify, and/or distribute this software"]),
+                ("Unlicense",   [r"unlicense"])
                 ]
 
 # Possible locations of licenses
-const LICFILES=["LICENSE", "LICENSE.md", "License.md", "LICENSE.txt", "LICENSE.rst",
+const LICFILES=["LICENSE", "LICENSE.md", "License.md", "LICENSE.txt", "LICENSE.rst", "UNLICENSE"
+                "LICENCE", "LICENCE.md", "Licence.md", "LICENCE.txt", "LICENCE.rst", "UNLICENCE"
                  "README",  "README.md",                "README.txt",
                 "COPYING", "COPYING.md",               "COPYING.txt"]
 
