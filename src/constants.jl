@@ -39,8 +39,8 @@ const LICENSES=[("MIT",[
                 ]
 
 # Possible locations of licenses
-const LICFILES=["LICENSE", "LICENSE.md", "License.md", "LICENSE.txt", "LICENSE.rst", "UNLICENSE"
-                "LICENCE", "LICENCE.md", "Licence.md", "LICENCE.txt", "LICENCE.rst", "UNLICENCE"
+const LICFILES=["LICENSE", "LICENSE.md", "License.md", "LICENSE.txt", "LICENSE.rst", "UNLICENSE",
+                "LICENCE", "LICENCE.md", "Licence.md", "LICENCE.txt", "LICENCE.rst", "UNLICENCE",
                  "README",  "README.md",                "README.txt",
                 "COPYING", "COPYING.md",               "COPYING.txt"]
 
