@@ -19,7 +19,7 @@ Possible reasons include:
 * **Your package relies on X running**. It may be possible to get your package working through the magic of `xvfb`. Please submit a pull request adding a line to [`src/constants.jl`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/src/constants.jl) that specifies that your package needs to be run with `xvfb` active.
 * **Your package's tests or installation take too long**. There is a time limit of 10 minutes for installation, and a seperate 10 minute time limit for testing. You can either reduce your testing time, or exclude your package from testing.
 * **Your package requires too much memory**. The VMs only have 1 GB of RAM. You can either reduce your testing time, or exclude your package from testing.
-* **Your tests aren't being found / wrong test file is being run**. TThe preferred option is that `test/runtests.jl` exists, and then PackageEvaluator will use `Pkg.test`. Some older packages don't implement this, so files are heuristically identified. See [`src/package.jl`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/src/package.jl) for the logic used, or preferably just update your package.
+* **Your tests aren't being found / wrong test file is being run**. The preferred option is that `test/runtests.jl` exists, and then PackageEvaluator will use `Pkg.test`. Some older packages don't implement this, so files are heuristically identified. See [`src/package.jl`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/src/package.jl) for the logic used, or preferably just update your package.
 * **Something else**. You'll probably need to check manually on the testing VM. See next section.
 
 (**Licenses** are searched for in the files listed in [`src/constants.jl`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/src/constants.jl). The goal is to support a variety of licenses. If your license isn't detected, please file a pull request with detection logic.)
@@ -31,7 +31,7 @@ Possible reasons include:
 * When the virtual machine(s) are launched with `vagrant up`, a *provisioning script* called [`setup.sh`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/scripts/setup.sh) is run.
 * This script takes two arguments: the first is the version of Julia to use, and the second is the subset of packages to run.
 * The arguments are determined by the configurations in the `Vagrantfile`. In particular:
- * `releasesetup` and `releasenightly` just set up the machine with Julia and the same dependencies that PackageEvaluator uses. **Use, e.g. `vagrant up releasesetup; vagrant ssh releasesetup` to debug why a pacakge is failing.**
+ * `releasesetup` and `releasenightly` just set up the machine with Julia and the same dependencies that PackageEvaluator uses. **Use, e.g. `vagrant up releasesetup; vagrant ssh releasesetup` to debug why a package is failing.**
  * `release` and `nightly` do the setup and evaluate all the packages.
  * `releaseAL`, `releaseMZ`, `nightlyAL`, `nightlyMZ` evaluate only packages with names beginning with those letters.
 * PackageEvaluator runs all the last four configurations in parallel, using `runvagrant.sh`.
