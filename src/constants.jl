@@ -63,6 +63,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "CUFFT"         =>  :BINARY,
                 "DCEMRI"        =>  :PYTHON,
                 "ElasticFDA"    =>  :XVFB,  # Seems to use Tk for tests
+                "Expect"        =>  :BREAKS,  # Seems to cause a hang
                 "Gaston"        =>  :BINARY,  # No Gnuplot on che
                 
                 "GLAbstraction" =>  :XVFB,
