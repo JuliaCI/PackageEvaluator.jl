@@ -12,6 +12,8 @@
 # Can either run two machines in parallel (release & nightly)
 # or four machines in parallel (release on two, nightly on two)
 
+rm -rf ./release*
+rm -rf ./nightly*
 
 parallel_provision() {
     while read box; do
