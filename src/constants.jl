@@ -110,6 +110,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "RdRand"        =>  :BINARY, # Needs latest Intel CPU
                 "REPLCompletions" => :DEP,  # Deprecated, just throws error
                 "RobotOS"       =>  :BINARY,
+                "RudeOil"       =>  :BINARY,  # Needs Docker
                 "SDL"           =>  :BINARY,
                 "SemidefiniteProgramming" => :BINARY,
                 "Sodium"        =>  :BINARY,
