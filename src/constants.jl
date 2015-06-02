@@ -73,7 +73,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "GLText"        =>  :OPENGL,
                 "GLWindow"      =>  :OPENGL,
                 
-                "GR"            =>  :BINARY,
+                "GR"            =>  :XVFB,
                 "Gtk"           =>  :XVFB,
                 "Gurobi"        =>  :BINARY,
                 "Homebrew"      =>  :OSX,
