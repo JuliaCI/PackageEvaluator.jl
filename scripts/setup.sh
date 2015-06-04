@@ -36,7 +36,7 @@ sudo apt-get upgrade   # Upgrade system packages
 # Use first argument to distinguish between the versions
 if [ "$1" == "release" ]
 then
-    wget -O julia03.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.3/julia-0.3.6-linux-x86_64.tar.gz
+    wget -O julia03.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.3/julia-0.3.9-linux-x86_64.tar.gz
     mkdir julia03
     tar -zxvf julia03.tar.gz -C ./julia03 --strip-components=1
     export PATH="${PATH}:/home/vagrant/julia03/bin/"
