@@ -81,6 +81,8 @@ sudo apt-get install python-matplotlib
 # Install xlrd for ExcelReaders.jl
 sudo apt-get install python-pip
 sudo pip install xlrd
+# Install SymPy
+sudo pip install sympy
 
 
 #######################################################################
