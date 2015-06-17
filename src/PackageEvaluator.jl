@@ -9,7 +9,6 @@ module PackageEvaluator
 
 include("package.jl")
 include("constants.jl")
-include("metatools.jl")
 include("util.jl")
 
 import JSON
