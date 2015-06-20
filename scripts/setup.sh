@@ -95,7 +95,7 @@ git checkout simplify
 # The scripts need JSON.jl, but we don't want to install it as a package
 # We'll just clone it in a convenient place so we can directly include
 # it in the script files
-git clone https://github.com/JuliaLang/JSON.jl.git
+git clone https://github.com/JuliaLang/JSON.jl.git src/JSON.jl
 # Make results folders. Folder name is second argument to this script.
 # These folders are shared - i.e. we are writing to outside the VM,
 # most likely the PackageEvaluator.jl/scripts folder.
@@ -163,7 +163,7 @@ do
     then
         # Not testable
         echo "NOT TESTABLE"
-    elif [ $TESTSTATUS -eq 254]
+    elif [ $TESTSTATUS -eq 254 ]
     then
         # No tests
         echo "NO TESTS"
@@ -175,7 +175,8 @@ do
         # tests passed, a code of 1 means Julia threw an
         # error, and a code of 124 means timeout triggered
         chmod +x $PKGNAME.sh
-        TESTSTATUS=./$PKGNAME.sh
+        ./$PKGNAME.sh
+        TESTSTATUS=$?
     fi
     # We now want to bundle up the adding and testing results,
     # as well as other useful information about the package,

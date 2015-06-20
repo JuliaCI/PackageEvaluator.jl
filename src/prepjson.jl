@@ -35,16 +35,18 @@ function prepare_json()
                (url[1:5] == "https") ? url[9:(end-4)] : ""
     url      = string("http://", url)
 
+    old_dir = pwd()
     cd(Pkg.dir(pkg_name))
     # gitlog = "08ab40...c96c40 2014-05-22 17:17:40 -0400"
     gitlog   = readall(`git log -1 --format="%H %ci"`)
     spl      = split(gitlog, " ")
     git_sha  = spl[1]
     git_date = string(spl[2]," ",spl[3]," ",spl[4])
+    cd(old_dir)
 
     lic_file, license = "", "Unkown"
     for lic_file in LICFILES
-        fullfilename = joinpath(pkg_path, filename)
+        fullfilename = joinpath(Pkg.dir(pkg_name), lic_file)
         if isfile(fullfilename)
             is_license, license = check_license(fullfilename)
             is_license && break
