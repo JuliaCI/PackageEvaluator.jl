@@ -1,9 +1,11 @@
 PackageEvaluator
 ================
 
-**The package**: a [Julia](http://julialang.org) package exporting the function `eval_pkg` that gathers some basic information about a package and attempts to run its tests (or the next best thing), then spits the results to a JSON.
+The purpose of PackageEvaluator is to attempt to test every Julia package nightly, and to provide the information required to generate the [Julia package listing](http://pkg.julialang.org/).
 
-**The script**: a [Vagrant](https://www.vagrantup.com/) configuration and provisioning script that evaluates all Julia packages on stable and nightly versions of Julia. These tests are performed on an Ubuntu 12.04 LTS virtual machine, and the results are used for the [Julia package listing](http://pkg.julialang.org/).
+This is done for both release and nightly Jula, and the tests are run in an Ubuntu 12.04 LTS virtual machine managed with [Vagrant](https://www.vagrantup.com/). This allows users to debug why their tests are failing, and allows PackageEvaluator to be run almost anywhere.
+
+The code itself, in particular `scripts/setup.sh`, is heavily commented, so check that out for more information.
 
 ## "My package is failing tests!"
 
@@ -27,7 +29,7 @@ Possible reasons include:
 ## Using Vagrant and PackageEvaluator
 
 * [Vagrant](https://www.vagrantup.com/) is a tool for creating and managing virtual machines.
-* The configuration of the virtual machine, including the operating system use, live in the [`Vagrantfile`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/scripts/Vagrantfile).
+* The configuration of the virtual machine, including the operating system to use, live in the [`Vagrantfile`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/scripts/Vagrantfile).
 * When the virtual machine(s) are launched with `vagrant up`, a *provisioning script* called [`setup.sh`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/scripts/setup.sh) is run.
 * This script takes two arguments: the first is the version of Julia to use, and the second is the subset of packages to run.
 * The arguments are determined by the configurations in the `Vagrantfile`. In particular:
