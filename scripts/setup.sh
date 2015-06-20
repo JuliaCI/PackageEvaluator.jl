@@ -86,108 +86,112 @@ sudo pip install sympy
 
 
 #######################################################################
-# Install PackageEvaluator and prepare to run
-julia -e "Pkg.init(); Pkg.clone(\"https://github.com/IainNZ/PackageEvaluator.jl.git\")"
+# Get PackageEvaluator scripts
+PKGEVALDIR="/home/vagrant/pkgeval"
+git clone https://github.com/IainNZ/PackageEvaluator.jl.git $PKGEVALDIR
+# The scripts need JSON.jl, but we don't want to install it as a package
+# We'll just clone it in a convenient place so we can directly include
+# it in the script files
+git clone https://github.com/JuliaLang/JSON.jl.git $PKGEVALDIR/JSON.jl
 # Make results folders. Folder name is second argument to this script.
 # These folders are shared - i.e. we are writing to outside the VM,
 # most likely the PackageEvaluator.jl/scripts folder.
 rm -rf /vagrant/$2
 mkdir /vagrant/$2
 cd /vagrant/$2
-# Make folder for where tested packages should go.
-# We could use the default, but then it gets messy because that is
-# where PackageEvaluator itself lives (and its dependencies).
-# Its important for it to not be in the /vagrant/ folder as hat seems
-# to mess with symlinks quite badly.
+# Initialize METADATA for testing
+# Note that it is important for it to not be in the /vagrant/ folder as
+# that seems to mess with symlinks quite badly.
 # See https://github.com/JuliaOpt/Ipopt.jl/issues/31 for discussion
 # about this breaking a build.
-TESTPKG="/home/vagrant/testpkg"
-mkdir $TESTPKG
-# Initialize METADATA for testing
-JULIA_PKGDIR=$TESTPKG julia -e "Pkg.init(); println(Pkg.dir())"
+julia -e "Pkg.init(); println(Pkg.dir())"
 
 
 #######################################################################
 # Run PackageEvaluator
 if [ "$2" == "release" ]
 then
-    # For every package name...
-    for f in /home/vagrant/.julia/v0.3/METADATA/*;
-    do
-        # Extract just the package name from the path
-        PKGNAME=$(basename "$f")
-        # Attempt to add the package. We give it half an hour - most
-        # use far less, some do push it. CoinOptServices.jl set the
-        # standard for build time and memory consumption, see
-        # https://github.com/IainNZ/PackageEvaluator.jl/issues/83
-        # The log for adding the package will go in the results folder.
-        JULIA_PKGDIR=$TESTPKG timeout 1800s julia -e "Pkg.add(\"${PKGNAME}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
-        julia -e "using PackageEvaluator; eval_pkg(\"${PKGNAME}\",loadpkgadd=true,juliapkg=\"${TESTPKG}\",jsonpath=\"./\")" | tee catcherr
-        # Finish up by removing the package. Doesn't actually remove
-        # it in the sense of deleting the files - this helps the
-        # overall process run faster, if my understanding of how
-        # the .trash folder works is correct.
-        JULIA_PKGDIR=$TESTPKG julia -e "Pkg.rm(\"${PKGNAME}\")"
-    done
+    LOOPOVER=/home/vagrant/.julia/v0.3/METADATA/*
 elif [ "$2" == "releaseAL" ]
 then
-    for f in /home/vagrant/.julia/v0.3/METADATA/[A-L]*;
-    do
-        pkgname=$(basename "$f")
-        JULIA_PKGDIR=$TESTPKG timeout 1800s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"${TESTPKG}\",jsonpath=\"./\")" | tee catcherr
-        JULIA_PKGDIR=$TESTPKG julia -e "Pkg.rm(\"${pkgname}\")"
-    done
+    LOOPOVER=/home/vagrant/.julia/v0.3/METADATA/[A-L]*;
 elif [ "$2" == "releaseMZ" ]
 then
-    for f in /home/vagrant/.julia/v0.3/METADATA/[M-Z]*;
-    do
-        pkgname=$(basename "$f")
-        JULIA_PKGDIR=$TESTPKG timeout 1800s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"${TESTPKG}\",jsonpath=\"./\")" | tee catcherr
-        JULIA_PKGDIR=$TESTPKG julia -e "Pkg.rm(\"${pkgname}\")"
-    done
-
+    LOOPOVER=/home/vagrant/.julia/v0.3/METADATA/[M-Z]*;
 elif [ "$2" == "nightly" ]
 then
-    for f in /home/vagrant/.julia/v0.4/METADATA/*;
-    do
-        pkgname=$(basename "$f")
-        JULIA_PKGDIR=$TESTPKG timeout 1800s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"${TESTPKG}\",jsonpath=\"./\")" | tee catcherr
-        JULIA_PKGDIR=$TESTPKG julia -e "Pkg.rm(\"${pkgname}\")"
-    done
+    LOOPOVER=/home/vagrant/.julia/v0.4/METADATA/*;
 elif [ "$2" == "nightlyAL" ]
 then
-    for f in /home/vagrant/.julia/v0.4/METADATA/[A-L]*;
-    do
-        pkgname=$(basename "$f")
-        JULIA_PKGDIR=$TESTPKG timeout 1800s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"${TESTPKG}\",jsonpath=\"./\")" | tee catcherr
-        JULIA_PKGDIR=$TESTPKG julia -e "Pkg.rm(\"${pkgname}\")"
-    done
+    LOOPOVER=/home/vagrant/.julia/v0.4/METADATA/[A-L]*;
 elif [ "$2" == "nightlyMZ" ]
 then
-    for f in /home/vagrant/.julia/v0.4/METADATA/[M-Z]*;
-    do
-        pkgname=$(basename "$f")
-        JULIA_PKGDIR=$TESTPKG timeout 1800s julia -e "Pkg.add(\"${pkgname}\")" 2>&1 | tee PKGEVAL_${pkgname}_add.log
-        julia -e "using PackageEvaluator; eval_pkg(\"${pkgname}\",loadpkgadd=true,juliapkg=\"${TESTPKG}\",jsonpath=\"./\")" | tee catcherr
-        JULIA_PKGDIR=$TESTPKG julia -e "Pkg.rm(\"${pkgname}\")"
-    done
+    LOOPOVER=/home/vagrant/.julia/v0.4/METADATA/[M-Z]*;
 fi
+# For every package name...
+for f in $LOOPOVER;
+do
+    # Extract just the package name from the path
+    PKGNAME=$(basename "$f")
+    # Attempt to add the package. We give it half an hour - most
+    # use far less, some do push it. CoinOptServices.jl set the
+    # standard for build time and memory consumption, see
+    # https://github.com/IainNZ/PackageEvaluator.jl/issues/83
+    # The log for adding the package will go in the results folder.
+    timeout 1800s julia -e "Pkg.add(\"${PKGNAME}\")" 2>&1 | tee PKGEVAL_${PKGNAME}_add.log
+    # A package can have four states:
+    # - Not testable: for some reason, we can't even analyze how
+    #   broken or not the package is, usually due to a limitation
+    #   of PackageEvaluaor itself.
+    # - No tests: the package doesn't even have tests. We used to
+    #   further distinguish this by seeing if the package loads,
+    #   but loading doesn't mean it actually works so this is bit
+    #   misleading.
+    # - Tests fail: the package has tests, and they don't pass.
+    # - Tests pass: the tests pass!
+    # We first run a script that:
+    # - Identifies if we are testable or not. If we are not,
+    #   exit with status 1 (not testable), or 2 (no tests).
+    # - If we are, create a shell script to run the tests that
+    #   includes xvfb, timeout, etc.
+    julia $PKGEVALDIR/src/preptest.jl $PKGNAME
+    TESTSTATUS=$?
+    if [ $TESTSTATUS -eq 255 ]
+    then
+        # Not testable
+        echo "NOT TESTABLE"
+    elif [ $TESTSTATUS -eq 254]
+    then
+        # No tests
+        echo "NO TESTS"
+    else
+        # Has tests, we need to run them
+        # preptest.jl should have created a shell script to
+        # run them. We just need to run that shell script
+        # and store the error code. A code of 0 means the
+        # tests passed, a code of 1 means Julia threw an
+        # error, and a code of 124 means timeout triggered
+        chmod +x $PKGNAME.sh
+        TESTSTATUS=./$PKGNAME.sh
+    fi
+    # We now want to bundle up the adding and testing results,
+    # as well as other useful information about the package,
+    # into a JSON that we can concatenate with the rest of the
+    # results later on.
+    julia $PKGEVALDIR/src/prepjson.jl $PKGNAME $TESTSTATUS /vagrant/$2
+    # Finish up by removing the package. Doesn't actually remove
+    # it in the sense of deleting the files - this helps the
+    # overall process run faster, if my understanding of how
+    # the .trash folder works is correct.
+    julia -e "Pkg.rm(\"${PKGNAME}\")"
+done
 
 
 #######################################################################
 # Bundle results together
 echo "Bundling results"
 cd /vagrant/
-if [ "$1" == "release" ]
-then
-    julia /home/vagrant/.julia/v0.3/PackageEvaluator/scripts/joinjson.jl /vagrant/$2 $2
-else
-    julia /home/vagrant/.julia/v0.4/PackageEvaluator/scripts/joinjson.jl /vagrant/$2 $2
-fi
+julia $PKGEVALDIR/joinjson.jl /vagrant/$2 $2
 
 
 #######################################################################
