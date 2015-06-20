@@ -65,11 +65,11 @@ function prepare_json()
         test_status = "no_tests"
     elseif exit_code == "0"
         # Tests ran and passed
-        test_log = readall("PKGEVAL_$(pkg_name)_add.log")
+        test_log = readall("PKGEVAL_$(pkg_name)_test.log")
         test_status = "tests_pass"
     elseif exit_code == "1" || exit_code == "124"
         # Test ran and failed or timed out
-        test_log = readall("PKGEVAL_$(pkg_name)_add.log")
+        test_log = readall("PKGEVAL_$(pkg_name)_test.log")
         test_status = "tests_fail"
     end
 
