@@ -1,3 +1,12 @@
+#######################################################################
+# PackageEvaluator
+# https://github.com/IainNZ/PackageEvaluator.jl
+# (c) Iain Dunning 2015
+# Licensed under the MIT License
+#######################################################################
+# Combines the JSON files in a folder into one
+#######################################################################
+
 import JSON
 
 # ARGS[1]: Folder containing JSONs

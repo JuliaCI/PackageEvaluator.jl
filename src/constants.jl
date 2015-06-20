@@ -4,6 +4,12 @@
 # (c) Iain Dunning 2015
 # Licensed under the MIT License
 #######################################################################
+# This file is a list of constants used in PackageEvaluator, incl.
+# - License identification strings
+# - Typical names for files where license information can be found
+# - A list of packages that need "special treatment" for tests,
+#   including whether they need the X virtual framebuffer running
+#   and if they can be run at all.
 
 # Regexes to identify the license type
 const LICENSES=[("MIT",[
@@ -48,78 +54,68 @@ const LICFILES=["LICENSE", "LICENSE.md", "License.md", "LICENSE.txt", "LICENSE.r
 # XVFB   = requires X virtual framebuffer
 # BINARY = can't run due to a binary dependency that can't be satisfied
 # OSX    = only works on OSX
-# PYTHON = requires a Python package
+# PYTHON = requires a Python package that we haven't got installed
+# BREAKS = something about the package doesn't play nice
+# OPENGL = Needs OpenGL support, which XVFB can't handle
 const PKGOPTS= ["AppleAccelerate" => :OSX,
-                "ApproxFun"     =>  :BINARY,  # seems to need PyPlot, which we also exclude
-                "Arduino"       =>  :BINARY,
-                "CasaCore"      =>  :BINARY,
-                "Clang"         =>  :BINARY,
-                "CommonCrawl"   =>  :BINARY,  # needs AWS auth, downloads a lot
-                "CoreNLP"       =>  :PYTHON,
-                "CPLEX"         =>  :BINARY,
-                "CLFFT"         =>  :BINARY,
+                "ApproxFun"     =>  :BINARY,    # Seems to need plotting for tests?
+                "Arduino"       =>  :BINARY,    # Needs libarduino
+                "CasaCore"      =>  :BINARY,    # Needs http://casacore.github.io/casacore/
+                "Clang"         =>  :BINARY,    # Needs libclang
+                "CommonCrawl"   =>  :BINARY,    # Needs AWS auth & downloads a lot
+                "CoreNLP"       =>  :PYTHON,    # Needs CoreNLP via corenlp-python
+                "CPLEX"         =>  :BINARY,    # Commercial software
+                "CLFFT"         =>  :BINARY,    # OpenCL
                 "CUBLAS"        =>  :BINARY,
                 "CUDA"          =>  :BINARY,
                 "CUDArt"        =>  :BINARY,
                 "CUFFT"         =>  :BINARY,
-                "DCEMRI"        =>  :PYTHON,
-                "ElasticFDA"    =>  :XVFB,  # Seems to use Tk for tests
-                "Expect"        =>  :BREAKS,  # Seems to cause a hang
-                "Gaston"        =>  :BINARY,  # No Gnuplot on che
-                
-                "GLAbstraction" =>  :XVFB,
+                "Expect"        =>  :BREAKS,    # Used to cause hangs TODO reevaluate
+                "GLAbstraction" =>  :OPENGL,
                 "GLFW"          =>  :OPENGL,
                 "GLPlot"        =>  :OPENGL,
                 "GLText"        =>  :OPENGL,
                 "GLWindow"      =>  :OPENGL,
-                
-                "GR"            =>  :XVFB,
-                "Gtk"           =>  :XVFB,
-                "Gurobi"        =>  :BINARY,
+                "GR"            =>  :XVFB,      # Plotting package
+                "Gtk"           =>  :XVFB,      # GUI package
+                "Gurobi"        =>  :BINARY,    # Commercial software
                 "Homebrew"      =>  :OSX,
-                "IJulia"        =>  :PYTHON,
-                "ImageView"     =>  :XVFB,
-                "Instruments"   =>  :BINARY,
-                "KNITRO"        =>  :BINARY,
-                "LevelDB"       =>  :BINARY,
-                "LibBSON"       =>  :BINARY,
-                "LibGit2"       =>  :BINARY,
-                "LibTrading"    =>  :BINARY,
-                "Mathematica"   =>  :BINARY,
-                "MathProgBase"  =>  :BINARY,
-                "MATLAB"        =>  :BINARY,
-                "MATLABCluster" =>  :BINARY,
-                "Memcache"      =>  :BINARY,
-                "ModernGL"      =>  :XVFB,
-                "MolecularDynamics" => :BINARY,
-                "Mongo"         =>  :BINARY,
-                "Mongrel2"      =>  :BINARY,
-                "Mosek"         =>  :BINARY,
-                "MPI"           =>  :BINARY,
-                "Neovim"        =>  :BINARY,
-                "NIDAQ"         =>  :BINARY,
+                "IJulia"        =>  :PYTHON,    # Could be interesting to revist
+                "ImageView"     =>  :XVFB,      # GUI via Tk.jl
+                "Instruments"   =>  :BINARY,    # Needs NI-VISA
+                "KNITRO"        =>  :BINARY,    # Commercial software
+                "LibTrading"    =>  :BINARY,    # Needs libtrading
+                "Mathematica"   =>  :BINARY,    # Commercial software
+                "MATLAB"        =>  :BINARY,    # Commercial software
+                "MATLABCluster" =>  :BINARY,    # Commercial software
+                "Memcache"      =>  :BINARY,    # Needs memcache
+                "ModernGL"      =>  :OPENGL,
+                "MolecularDynamics" => :BINARY, # Needs xdrfile
+                "Mongo"         =>  :BINARY,    # Needs mongo C library
+                "Mongrel2"      =>  :BINARY,    # Needs... something
+                "Mosek"         =>  :BINARY,    # Commercial software
+                "MPI"           =>  :BINARY,    # Needs MPI install and config
+                "Neovim"        =>  :BINARY,    # Needs Neovim installed
+                "NIDAQ"         =>  :BINARY,    # Needs NIDAQmx
                 "OpenCL"        =>  :BINARY,
                 "OpenGL"        =>  :BINARY,
-                "OpenStreetMap" =>  :XVFB,
-                "Pandas"        =>  :PYTHON,
-                "Pardiso"       =>  :BINARY,
+                "OpenStreetMap" =>  :XVFB,      # Graphics via Winston
+                "Pandas"        =>  :PYTHON,    # Needs pandas
+                "Pardiso"       =>  :BINARY,    # Commercial software
                 "ProfileView"   =>  :XVFB,
-                "PyLexYacc"     =>  :PYTHON,
-                "PyPlot"        =>  :XVFB,
-                "PySide"        =>  :PYTHON,
-                "RdRand"        =>  :BINARY, # Needs latest Intel CPU
-                "REPLCompletions" => :DEP,  # Deprecated, just throws error
-                "RobotOS"       =>  :BINARY,
-                "RudeOil"       =>  :BINARY,  # Needs Docker
-                "SDL"           =>  :BINARY,
-                "SemidefiniteProgramming" => :BINARY,
-                "Sodium"        =>  :BINARY,
-                "SymPy"         =>  :PYTHON,
-                "Thrift"        =>  :BINARY,
-                "Tk"            =>  :XVFB,
-                "Twitter"       =>  :BINARY, # need authentication
-                "Watcher"       =>  :BINARY, # using it runs forever watching changes etc
-                "Winston"       =>  :XVFB,
-                "Vega"          =>  :BINARY,
-                "VML"           =>  :BINARY,
-                "YT"            =>  :PYTHON]
+                "PyLexYacc"     =>  :PYTHON,    # Needs PLY and attrdict
+                "PyPlot"        =>  :XVFB,      # GUI
+                "PySide"        =>  :PYTHON,    # Needs PySide/Qt
+                "RdRand"        =>  :BINARY,    # Needs latest Intel CPU
+                "REPLCompletions" => :DEP,      # Deprecated, just throws error (???)
+                "RobotOS"       =>  :PYTHON,    # Needs rospy
+                "RudeOil"       =>  :BINARY,    # Needs Docker
+                "SemidefiniteProgramming" => :BINARY,   # Needs CSDP
+                "Sodium"        =>  :BINARY,    # Needs libsodium
+                "Thrift"        =>  :BINARY,    # Needs Thrift compiler
+                "Tk"            =>  :XVFB,      # GUI package
+                "Twitter"       =>  :BINARY,    # Needs authentication
+                "Watcher"       =>  :BREAKS,    # Seems to cause hangs
+                "Winston"       =>  :XVFB,      # GUI via Tk.jl
+                "VML"           =>  :BINARY,    # Needs MKL
+                "YT"            =>  :PYTHON]    # Needs yt
