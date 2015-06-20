@@ -90,12 +90,7 @@ sudo pip install sympy
 PKGEVALDIR="/home/vagrant/pkgeval"
 git clone https://github.com/IainNZ/PackageEvaluator.jl.git $PKGEVALDIR
 cd $PKGEVALDIR
-# Next lines is temporary
 git checkout simplify
-# The scripts need JSON.jl, but we don't want to install it as a package
-# We'll just clone it in a convenient place so we can directly include
-# it in the script files
-git clone https://github.com/JuliaLang/JSON.jl.git src/JSON.jl
 # Make results folders. Folder name is second argument to this script.
 # These folders are shared - i.e. we are writing to outside the VM,
 # most likely the PackageEvaluator.jl/scripts folder.
@@ -182,6 +177,11 @@ do
     # as well as other useful information about the package,
     # into a JSON that we can concatenate with the rest of the
     # results later on.
+    # TODO: Avoid the need to add JSON each time,
+    # even if it is just a simple move effectively. Can we
+    # just pull the encoding part out of JSON, which is all
+    # we really need because most of it is parsing?
+    julia -e 'Pkg.add("JSON")'
     julia $PKGEVALDIR/src/prepjson.jl $PKGNAME $TESTSTATUS /vagrant/$2
     # Finish up by removing the package. Doesn't actually remove
     # it in the sense of deleting the files - this helps the

@@ -8,8 +8,9 @@
 # exist, as well as other useful information about the package.
 #######################################################################
 
+import JSON
+
 include("constants.jl")
-include("JSON.jl/src/JSON.jl")
 
 function check_license(filename)
     text = lowercase(readall(filename))
