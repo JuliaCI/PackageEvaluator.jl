@@ -89,8 +89,6 @@ sudo pip install sympy
 # Get PackageEvaluator scripts
 PKGEVALDIR="/home/vagrant/pkgeval"
 git clone https://github.com/IainNZ/PackageEvaluator.jl.git $PKGEVALDIR
-cd $PKGEVALDIR
-git checkout simplify
 # Make results folders. Folder name is second argument to this script.
 # These folders are shared - i.e. we are writing to outside the VM,
 # most likely the PackageEvaluator.jl/scripts folder.
