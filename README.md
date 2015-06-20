@@ -33,7 +33,7 @@ Possible reasons include:
 * When the virtual machine(s) are launched with `vagrant up`, a *provisioning script* called [`setup.sh`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/scripts/setup.sh) is run.
 * This script takes two arguments: the first is the version of Julia to use, and the second is the subset of packages to run.
 * The arguments are determined by the configurations in the `Vagrantfile`. In particular:
- * `releasesetup` and `releasenightly` just set up the machine with Julia and the same dependencies that PackageEvaluator uses. **Use, e.g. `vagrant up releasesetup; vagrant ssh releasesetup` to debug why a package is failing.**
+ * `releasesetup` and `nightlysetup` just set up the machine with Julia and the same dependencies that PackageEvaluator uses. **Use, e.g. `vagrant up releasesetup; vagrant ssh releasesetup` to debug why a package is failing.**
  * `release` and `nightly` do the setup and evaluate all the packages.
  * `releaseAL`, `releaseMZ`, `nightlyAL`, `nightlyMZ` evaluate only packages with names beginning with those letters.
 * PackageEvaluator runs all the last four configurations in parallel, using `runvagrant.sh`.
