@@ -195,7 +195,7 @@ done
 # Bundle results together
 echo "Bundling results"
 cd /vagrant/
-julia $PKGEVALDIR/joinjson.jl /vagrant/$2 $2
+julia $PKGEVALDIR/src/joinjson.jl /vagrant/$2 $2
 
 
 #######################################################################
