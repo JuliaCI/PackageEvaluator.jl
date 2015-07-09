@@ -2,11 +2,11 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  #config.vm.box = "ubuntu/trusty64"
-  config.vm.box = "ubuntu/precise64"
+  config.vm.box = "ubuntu/trusty64"
+  #config.vm.box = "ubuntu/precise64"
 
   config.vm.provider "virtualbox" do |v|
-    v.memory = 1536
+    v.memory = 2048
   end
 
   # JUST SETUP - NO RUN
