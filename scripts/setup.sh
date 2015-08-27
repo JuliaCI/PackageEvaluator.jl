@@ -33,7 +33,7 @@ sudo su -c 'echo "APT::Get::force-yes \"true\";" >> /etc/apt/apt.conf.d/pkgevalf
 #######################################################################
 # Upgrade the installation and install Julia 
 sudo apt-get update    # Pull in latest versions
-sudo apt-get upgrade   # Upgrade system packages
+#sudo apt-get upgrade   # Upgrade system packages
 # Use first argument to script to distinguish between the versions
 if [ "$1" == "release" ]
 then
@@ -43,9 +43,9 @@ else
 fi
 mkdir julia
 tar -zxvf julia.tar.gz -C ./julia --strip-components=1
-export PATH="${PATH}:/home/vagrant/julia/bin/"
+export PATH="${PATH}:/home/ubuntu/julia/bin/"
 # Retain PATH to make it easier to use VM for debugging
-echo "export PATH=\"\${PATH}:/home/vagrant/julia/bin/\"" >> /home/vagrant/.profile
+echo "export PATH=\"\${PATH}:/home/ubuntu/julia/bin/\"" >> /home/ubuntu/.profile
 
 
 #######################################################################
@@ -75,7 +75,7 @@ echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-
 echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 sudo apt-get -y install oracle-java7-installer
 export JAVA_HOME=/usr/lib/jvm/java-7-oracle
-echo "export JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /home/vagrant/.profile
+echo "export JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /home/ubuntu/.profile
 # Install matplotlib for PyPlot.jl
 sudo apt-get install python-matplotlib
 # Install xlrd for ExcelReaders.jl
@@ -87,14 +87,14 @@ sudo pip install sympy
 
 #######################################################################
 # Get PackageEvaluator scripts
-PKGEVALDIR="/home/vagrant/pkgeval"
+PKGEVALDIR="/home/ubuntu/pkgeval"
 git clone https://github.com/IainNZ/PackageEvaluator.jl.git $PKGEVALDIR
 # Make results folders. Folder name is second argument to this script.
 # These folders are shared - i.e. we are writing to outside the VM,
 # most likely the PackageEvaluator.jl/scripts folder.
-rm -rf /vagrant/$2
-mkdir /vagrant/$2
-cd /vagrant/$2
+rm -rf /home/ubuntu/shared/$2
+mkdir /home/ubuntu/shared/$2
+cd /home/ubuntu/shared/$2
 # Initialize METADATA for testing
 # Note that it is important for it to not be in the /vagrant/ folder as
 # that seems to mess with symlinks quite badly.
@@ -107,22 +107,22 @@ julia -e "Pkg.init(); println(Pkg.dir())"
 # Run PackageEvaluator
 if [ "$2" == "release" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v0.3/METADATA/*
+    LOOPOVER=/home/ubuntu/.julia/v0.3/METADATA/*
 elif [ "$2" == "releaseAL" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v0.3/METADATA/[A-L]*;
+    LOOPOVER=/home/ubuntu/.julia/v0.3/METADATA/[A-L]*;
 elif [ "$2" == "releaseMZ" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v0.3/METADATA/[M-Z]*;
+    LOOPOVER=/home/ubuntu/.julia/v0.3/METADATA/[M-Z]*;
 elif [ "$2" == "nightly" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v0.4/METADATA/*;
+    LOOPOVER=/home/ubuntu/.julia/v0.4/METADATA/*;
 elif [ "$2" == "nightlyAL" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v0.4/METADATA/[A-L]*;
+    LOOPOVER=/home/ubuntu/.julia/v0.4/METADATA/[A-L]*;
 elif [ "$2" == "nightlyMZ" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v0.4/METADATA/[M-Z]*;
+    LOOPOVER=/home/ubuntu/.julia/v0.4/METADATA/[M-Z]*;
 fi
 # For every package name...
 for f in $LOOPOVER;
@@ -180,7 +180,7 @@ do
     # just pull the encoding part out of JSON, which is all
     # we really need because most of it is parsing?
     julia -e 'Pkg.add("JSON")'
-    julia $PKGEVALDIR/src/prepjson.jl $PKGNAME $TESTSTATUS /vagrant/$2
+    julia $PKGEVALDIR/src/prepjson.jl $PKGNAME $TESTSTATUS /home/ubuntu/shared/$2
     # Finish up by removing the package. Doesn't actually remove
     # it in the sense of deleting the files - this helps the
     # overall process run faster, if my understanding of how
@@ -192,8 +192,8 @@ done
 #######################################################################
 # Bundle results together
 echo "Bundling results"
-cd /vagrant/
-julia $PKGEVALDIR/src/joinjson.jl /vagrant/$2 $2
+cd /home/ubuntu/shared/
+julia $PKGEVALDIR/src/joinjson.jl /home/ubuntu/shared/$2 $2
 
 
 #######################################################################
