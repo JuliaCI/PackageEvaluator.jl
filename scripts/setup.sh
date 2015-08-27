@@ -93,6 +93,7 @@ git clone https://github.com/IainNZ/PackageEvaluator.jl.git $PKGEVALDIR
 # These folders are shared - i.e. we are writing to outside the VM,
 # most likely the PackageEvaluator.jl/scripts folder.
 rm -rf /home/ubuntu/shared/$2
+mkdir /home/ubuntu/shared
 mkdir /home/ubuntu/shared/$2
 cd /home/ubuntu/shared/$2
 # Initialize METADATA for testing
