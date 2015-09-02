@@ -3,7 +3,7 @@
 # https://github.com/IainNZ/PackageEvaluator.jl
 # (c) Iain Dunning 2015. MIT License.
 #-----------------------------------------------------------------------
-# website/update_db.jl
+# website/build_site_data.jl
 # Take the results and repository information, and produce a single
 # JSON with all information required to construct the website. At the
 # same time, produce all badges and log files.
@@ -49,8 +49,7 @@ const badge_color = Dict(
 
 # Process all packages for all tested Julia versions
 for pkg in all_pkgs
-    print(pkg["name"], ", ", pkg["jlver"], ", ")
-    @printf("%5.2f%%\n", length(pkg)/length(all_pkgs)*100)
+    print(pkg["name"], ", ", pkg["jlver"])
 
     # Make log file
     log_file = joinpath(log_path, string(pkg["name"],"_",pkg["jlver"],".log"))

@@ -10,7 +10,7 @@ the HTML and images for the website.
 
 #### Required packages
 
-* Julia packages: `JSON.jl`, `GitHub.jl`, `MetadataTools.jl`, `Mustache.jl`, `JLD.jl`, `Requests.jl`
+* Julia packages: `JSON.jl`, `GitHub.jl`, `MetadataTools.jl`, `Mustache.jl`, `JLD.jl`, `Requests.jl`, `Humanize.jl`
 
 #### 1. `pull_repo_info.jl`
 
@@ -23,3 +23,9 @@ token is stored in working directory in a `token` file.
 
 Take the results and repository information, and update the test and
 start history databases.
+
+#### 3. `build_site_data.jl`
+
+Take the results and repository information, and produce a single
+JSON with all information required to construct the website. At the
+same time, produce all badges and log files from the package info.
