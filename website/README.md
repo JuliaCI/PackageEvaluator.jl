@@ -8,9 +8,8 @@ Depending on the configuration it is run in, PkgEval will produce either
 The scripts in this folder take these results, enhance them, and contruct
 the HTML and images for the website.
 
-#### Required packages
-
-* Julia packages: `JSON.jl`, `GitHub.jl`, `MetadataTools.jl`, `Mustache.jl`, `JLD.jl`, `Requests.jl`, `Humanize.jl`
+**Required packages**:
+`JSON.jl`, `GitHub.jl`, `MetadataTools.jl`, `Mustache.jl`, `JLD.jl`, `Requests.jl`, `Humanize.jl`
 
 #### 1. `pull_repo_info.jl`
 
