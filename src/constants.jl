@@ -62,7 +62,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "Arduino"       =>  :BINARY,    # Needs libarduino
                 "CasaCore"      =>  :BINARY,    # Needs http://casacore.github.io/casacore/
                 "Clang"         =>  :BINARY,    # Needs libclang
-                "CommonCrawl"   =>  :BINARY,    # Needs AWS auth & downloads a lot
+                "CommonCrawl"   =>  :BREAKS,    # Needs AWS auth & downloads a lot
                 "CoreNLP"       =>  :PYTHON,    # Needs CoreNLP via corenlp-python
                 "CPLEX"         =>  :BINARY,    # Commercial software
                 "CLFFT"         =>  :BINARY,    # OpenCL
@@ -70,7 +70,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "CUDA"          =>  :BINARY,
                 "CUDArt"        =>  :BINARY,
                 "CUFFT"         =>  :BINARY,
-                "Expect"        =>  :BREAKS,    # Used to cause hangs TODO reevaluate
+                "Expect"        =>  :BREAKS,    # Used to cause hangs
                 "GLAbstraction" =>  :OPENGL,
                 "GLFW"          =>  :OPENGL,
                 "GLPlot"        =>  :OPENGL,
@@ -113,10 +113,13 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "RudeOil"       =>  :BINARY,    # Needs Docker
                 "SemidefiniteProgramming" => :BINARY,   # Needs CSDP
                 "Sodium"        =>  :BINARY,    # Needs libsodium
+                "SystemImageBuilder" => :BREAKS,  # Freezes PkgEval
+                "ThingSpeak"    =>  :BREAKS,    # Needs API key
                 "Thrift"        =>  :BINARY,    # Needs Thrift compiler
                 "Tk"            =>  :XVFB,      # GUI package
-                "Twitter"       =>  :BINARY,    # Needs authentication
+                "Twitter"       =>  :BREAKS,    # Needs authentication
                 "Watcher"       =>  :BREAKS,    # Seems to cause hangs
+                "WCSLIB"        =>  :BREAKS,    # Very unreliable download
                 "Winston"       =>  :XVFB,      # GUI via Tk.jl
                 "VML"           =>  :BINARY,    # Needs MKL
                 "YT"            =>  :PYTHON]    # Needs yt
