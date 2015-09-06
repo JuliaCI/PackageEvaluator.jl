@@ -66,10 +66,12 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "CoreNLP"       =>  :PYTHON,    # Needs CoreNLP via corenlp-python
                 "CPLEX"         =>  :BINARY,    # Commercial software
                 "CLFFT"         =>  :BINARY,    # OpenCL
-                "CUBLAS"        =>  :BINARY,
-                "CUDA"          =>  :BINARY,
-                "CUDArt"        =>  :BINARY,
-                "CUFFT"         =>  :BINARY,
+                "CUBLAS"        =>  :BINARY,    # NVIDIA CUDA
+                "CUDA"          =>  :BINARY,    # NVIDIA CUDA
+                "CUDNN"         =>  :BINARY,    # NVIDIA CUDA
+                "CUDArt"        =>  :BINARY,    # NVIDIA CUDA
+                "CUFFT"         =>  :BINARY,    # NVIDIA CUDA
+                "CUSPARSE"      =>  :BINARY,    # NVIDIA CUDA
                 "Expect"        =>  :BREAKS,    # Used to cause hangs
                 "GLAbstraction" =>  :OPENGL,
                 "GLFW"          =>  :OPENGL,
