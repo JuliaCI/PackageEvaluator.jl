@@ -114,6 +114,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "RobotOS"       =>  :PYTHON,    # Needs rospy
                 "RudeOil"       =>  :BINARY,    # Needs Docker
                 "SemidefiniteProgramming" => :BINARY,   # Needs CSDP
+                "Snappy"        =>  :BINARY,    # Needs libsnappy
                 "Sodium"        =>  :BINARY,    # Needs libsodium
                 "SystemImageBuilder" => :BREAKS,  # Freezes PkgEval
                 "ThingSpeak"    =>  :BREAKS,    # Needs API key
