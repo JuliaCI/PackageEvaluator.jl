@@ -12,24 +12,8 @@
 
 using JSON, GitHub, JLD
 
-# Load raw PkgEval data
-if length(ARGS) == 2
-    # release/nightly
-    R = JSON.parsefile(ARGS[1])
-    N = JSON.parsefile(ARGS[2])
-    all_pkgs = vcat(R,N)
-elseif length(ARGS) == 4
-    # releaseAL|MZ/nightlyAL|MZ
-    RAL = JSON.parsefile(ARGS[1])
-    RMZ = JSON.parsefile(ARGS[2])
-    NAL = JSON.parsefile(ARGS[3])
-    NMZ = JSON.parsefile(ARGS[4])
-    all_pkgs = vcat(RAL,RMZ,NAL,NMZ)
-else
-    error("""
-        Expected either 2 path arguments (release.json, nightly.json),
-        or 4 path arguments (releaseAL/MZ, nightlyAL/MZ).""")
-end
+# Load raw PkgEval data. Assume all arguments are JSON result files
+all_pkgs = vcat([JSON.parsefile(ARG) for ARG in ARGS]...)
 
 # Cache concatenated JSON
 println("Saving concatenated JSON")

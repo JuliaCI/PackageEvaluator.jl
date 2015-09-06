@@ -1,0 +1,50 @@
+<div
+    class       = "container pkglisting"
+    data-pkg    = "{{LOWER_NAME}}"
+    data-owner  = "{{LOWER_OWNER}}"
+    data-ver    = "{{JLVER}}"
+    data-status = "{{STATUS}}"
+    data-lic    = "{{LICENSE}}">
+<hr>
+<div class="row">
+<div class="col-xs-12">
+    <h2><a href="{{URL}}">{{NAME}}</a></h2>
+    <h4>{{DESC}}</h4>
+    <p>
+        Current version: <a href="{{URL}}/tree/{{SHA}}" title="{{SHA}}">{{VER}}</a>
+        ({{DTSTR}} ago) / {{{DEPSTR}}}
+        <a href="{{LICENSE_URL}}">{{LICENSE}}</a> license /
+        Owner: <a href="http://github.com/{{OWNER}}">{{OWNER}}</a> / 
+        <span title="GitHub stars">
+            {{STARS}} <i class="glyphicon glyphicon-star"></i>
+        </span>
+    </p>
+    <p>
+        Test status: <i class="glyphicon glyphicon-stop {{STATUS}}"></i> {{HUMAN_STATUS}}
+        <small>
+        <a class="showbadge" data-pkg="{{NAME}}" data-ver="{{JLVER}}">
+            <span id="{{NAME}}{{MINOR}}_badgelink">Get permalink/badge</span>
+        </a> -
+        <a class="showhist" data-pkg="{{NAME}}" data-ver="{{JLVER}}">
+            <span id="{{NAME}}{{MINOR}}_histlink">Show version &amp; test history</span>
+        </a> -
+        <a class="showlog" data-pkg="{{NAME}}" data-ver="{{JLVER}}">
+            <span id="{{NAME}}{{MINOR}}_loglink">Show last test log</span>
+        </a>
+        <span style="display: none;" id="{{NAME}}{{MINOR}}_file"> -
+            <a href="https://github.com/IainNZ/PackageEvaluator.jl/issues">
+                Report test result error
+            </a>
+        </span>
+        </small>
+    </p>
+    <pre style="display: none;" class="badgelinks" id="{{NAME}}{{MINOR}}_badge">
+PERMALINK: {{PKG_LINK}}
+BADGE:     <img src="{{SVG_LINK}}">
+BADGE URL: {{SVG_LINK}}
+MARKDOWN:  [![{{NAME}}]({{SVG_LINK}})]({{PKG_LINK}})</pre>
+    <pre style="display: none;" class="testlog" id="{{NAME}}{{MINOR}}_log"></pre>
+    <pre style="display: none;" class="testhist" id="{{NAME}}{{MINOR}}_hist">{{HIST_DATA}}</pre>
+</div> <!-- col -->
+</div> <!-- row -->
+</div> <!-- container -->

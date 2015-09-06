@@ -6,7 +6,9 @@ Depending on the configuration it is run in, PkgEval will produce either
 * `releaseAL.`, `releaseMZ.`, `nightlyAL.`, `nightlyMZ.json`.
 
 The scripts in this folder take these results, enhance them, and contruct
-the HTML and images for the website.
+the HTML and images for the website. If you have everything installed,
+you should open up `build.sh` and modify the paths for your system. It
+will then run through all the components.
 
 **Required packages**:
 `JSON.jl`, `GitHub.jl`, `MetadataTools.jl`, `Mustache.jl`, `JLD.jl`, `Requests.jl`, `Humanize.jl`
@@ -28,3 +30,11 @@ start history databases.
 Take the results and repository information, and produce a single
 JSON with all information required to construct the website. At the
 same time, produce all badges and log files from the package info.
+
+#### 4. `build_index.jl`
+
+The main page is built by combining a header, a footer, and then
+repeating a middle chunk for every package. The templates are stored
+in the `website/html/` subfolder, and are populated using `Mustache`.
+
+#### TODO: bring `plot_pkg` and `build_pulse` over

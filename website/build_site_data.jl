@@ -49,7 +49,7 @@ const badge_color = Dict(
 
 # Process all packages for all tested Julia versions
 for pkg in all_pkgs
-    print(pkg["name"], ", ", pkg["jlver"])
+    println(pkg["name"], ", ", pkg["jlver"])
 
     # Make log file
     log_file = joinpath(log_path, string(pkg["name"],"_",pkg["jlver"],".log"))
