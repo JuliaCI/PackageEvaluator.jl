@@ -76,7 +76,7 @@ for pkg in all_pkgs
     end
 
     # Make badge using shields.io
-    req_url = string("https://img.shields.io/badge/Julia%20v", pkg["jlver"],
+    req_url = string("http://img.shields.io/badge/Julia%20v", pkg["jlver"],
                         "-v", pkg["version"], "%20",
                         badge_status[pkg["status"]], "-",
                         badge_color[pkg["status"]], ".svg")
@@ -95,7 +95,7 @@ for pkg in all_pkgs
 end
 
 # Save enhanced JSON
-print("Saving enchanced JSON... ")
+print("Saving enhanced JSON... ")
 open("final.json","w") do fp
     print(fp, JSON.json(all_pkgs))
 end

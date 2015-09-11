@@ -11,7 +11,14 @@ you should open up `build.sh` and modify the paths for your system. It
 will then run through all the components.
 
 **Required packages**:
-`JSON.jl`, `GitHub.jl`, `MetadataTools.jl`, `Mustache.jl`, `JLD.jl`, `Requests.jl`, `Humanize.jl`
+`Gadfly.jl`,
+`GitHub.jl`,
+`Humanize.jl`,
+`JLD.jl`, 
+`JSON.jl`,
+`MetadataTools.jl`,
+`Mustache.jl`,
+`Requests.jl`
 
 #### 1. `pull_repo_info.jl`
 

@@ -11,15 +11,17 @@
 
 JULIA=/Users/idunning/Code/julia04/julia
 
-$JULIA pull_repo_info.jl releaseMZ/releaseAL.json releaseMZ/releaseMZ.json releaseMZ/nightly.json
+#$JULIA pull_repo_info.jl release.json nightly.json
 
 STARPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/db/star_db.csv
 HISTPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/db/hist_db.csv
-$JULIA update_db.jl 20150906 $STARPATH $HISTPATH
+#$JULIA update_db.jl 20150911 $STARPATH $HISTPATH
 
 LOGPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/logs
 BADGEPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/badges
-$JULIA build_site_data.jl $LOGPATH $BADGEPATH
+#$JULIA build_site_data.jl $LOGPATH $BADGEPATH
 
 INDPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/index.html
-$JULIA build_index.jl $HISTPATH $INDPATH
+#$JULIA build_index.jl $HISTPATH $INDPATH
+
+$JULIA pulse_plots.jl $STARPATH $HISTPATH ./
