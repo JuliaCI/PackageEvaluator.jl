@@ -93,9 +93,9 @@ function prepare_json()
         "exit_code"         => exit_code,
         "log"               => log_str
     }
-    fp = open(joinpath(json_path,pkg_name*".json"),"w")
-    JSON.print(fp, output_dict)
-    close(fp)
+    open(joinpath(json_path,pkg_name*".json"),"w") do fp
+        JSON.print(fp, output_dict)
+    end
 end
 
 prepare_json()
