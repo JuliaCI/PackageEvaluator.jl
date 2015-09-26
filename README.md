@@ -5,7 +5,7 @@ PackageEvaluator
 
 The purpose of PackageEvaluator is to attempt to test every Julia package nightly, and to provide the information required to generate the [Julia package listing](http://pkg.julialang.org/).
 
-This is done for both release and nightly Jula, and the tests are run in an Ubuntu 12.04 LTS virtual machine managed with [Vagrant](https://www.vagrantup.com/). This allows users to debug why their tests are failing, and allows PackageEvaluator to be run almost anywhere.
+This is currently done for both Julia 0.3 and 0.4, and the tests are run in Ubuntu 14.04 LTS ("Trusty Tahr") virtual machines managed with [Vagrant](https://www.vagrantup.com/). This allows users to debug why their tests are failing, and allows PackageEvaluator to be run almost anywhere.
 
 The code itself, in particular `scripts/setup.sh`, is heavily commented, so check that out for more information.
 
@@ -21,9 +21,9 @@ Possible reasons include:
 * **Your package only works on Windows/OSX/one particular *-nix**. Your package might need to be excluded from testing. Please submit a pull request adding a line to [`src/constants.jl`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/src/constants.jl) saying your package shouldn't be run.
 * **Your testing process relies on random numbers**. Please make sure you set a seed or use appropriate tolerances if you rely on random numbers in your tests.
 * **Your package relies on X running**. It may be possible to get your package working through the magic of `xvfb`. Please submit a pull request adding a line to [`src/constants.jl`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/src/constants.jl) that specifies that your package needs to be run with `xvfb` active.
-* **Your package's tests or installation take too long**. There is a time limit of 10 minutes for installation, and a seperate 10 minute time limit for testing. You can either reduce your testing time, or exclude your package from testing.
-* **Your package requires too much memory**. The VMs only have 1 GB of RAM. You can either reduce your testing time, or exclude your package from testing.
-* **Your tests aren't being found / wrong test file is being run**. The preferred option is that `test/runtests.jl` exists, and then PackageEvaluator will use `Pkg.test`. Some older packages don't implement this, so files are heuristically identified. See [`src/package.jl`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/src/package.jl) for the logic used, or preferably just update your package.
+* **Your package's tests or installation take too long**. There is a time limit of 30 minutes for installation, and a seperate 10 minute time limit for testing. You can either reduce your testing time, or exclude your package from testing.
+* **Your package requires too much memory**. The VMs only have 2 GB of RAM. You can either reduce your test memory usage, or exclude your package from testing.
+* **Your tests aren't being found / wrong test file is being run**. Your package needs a `test/runtests.jl` file. PackageEvaluator will execute it with `Pkg.test`.
 * **Something else**. You'll probably need to check manually on the testing VM. See next section.
 
 (**Licenses** are searched for in the files listed in [`src/constants.jl`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/src/constants.jl). The goal is to support a variety of licenses. If your license isn't detected, please file a pull request with detection logic.)
