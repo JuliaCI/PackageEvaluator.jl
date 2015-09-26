@@ -174,7 +174,7 @@ do
     # not present, bad things happen (packages that don't depend
     # on DataStructures themselves fail to output .json results).
     julia -e 'Pkg.add("JSON"), Pkg.add("DataStructures")'
-    julia $PKGEVALDIR/src/prepjson.jl $PKGNAME $TESTSTATUS /vagrant/$2
+    julia $PKGEVALDIR/src/prepjson.jl $PKGNAME $TESTSTATUS /vagrant/${1}${2}
     # Finish up by removing the package. Doesn't actually remove
     # it in the sense of deleting the files - this helps the
     # overall process run faster, if my understanding of how
