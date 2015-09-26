@@ -1,6 +1,8 @@
 PackageEvaluator
 ================
 
+[![Build Status](https://travis-ci.org/IainNZ/PackageEvaluator.jl.svg?branch=master)](https://travis-ci.org/IainNZ/PackageEvaluator.jl)
+
 The purpose of PackageEvaluator is to attempt to test every Julia package nightly, and to provide the information required to generate the [Julia package listing](http://pkg.julialang.org/).
 
 This is done for both release and nightly Jula, and the tests are run in an Ubuntu 12.04 LTS virtual machine managed with [Vagrant](https://www.vagrantup.com/). This allows users to debug why their tests are failing, and allows PackageEvaluator to be run almost anywhere.
