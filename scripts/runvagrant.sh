@@ -24,27 +24,27 @@ parallel_provision() {
 
 if [ "$1" == "two" ]
 then
-    vagrant up --no-provision ALL03
-    vagrant up --no-provision ALL04
+    vagrant up --no-provision all03
+    vagrant up --no-provision all04
 
     # Provision in parallel
     cat <<EOF | parallel_provision
-ALL03
-ALL04
+all03
+all04
 EOF
 
 else
-    vagrant up --no-provision HALFAL03
-    vagrant up --no-provision HALFMZ03
-    vagrant up --no-provision HALFAL04
-    vagrant up --no-provision HALFMZ04
+    vagrant up --no-provision halfAL03
+    vagrant up --no-provision halfMZ03
+    vagrant up --no-provision halfAL04
+    vagrant up --no-provision halfMZ04
 
     # Provision in parallel
     cat <<EOF | parallel_provision
-HALFAL03
-HALFMZ03
-HALFAL04
-HALFMZ04
+halfAL03
+halfMZ03
+halfAL04
+halfMZ04
 EOF
 
 fi
