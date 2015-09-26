@@ -10,9 +10,8 @@
 # then runs it to produce the JSON result files.
 #
 # Commandline arguments for this script, passed through by Vagrant.
-# 1st: Julia version: release | nightly
-# 2nd: Test set to run: release | releaseAL | releaseMZ |
-#                       nightly | nightlyAL | nightlyMZ
+# 1st: Julia version:   0.3 | 0.4
+# 2nd: Test set to run: setup | all | AL | MZ
 #######################################################################
 
 
@@ -35,7 +34,7 @@ sudo su -c 'echo "APT::Get::force-yes \"true\";" >> /etc/apt/apt.conf.d/pkgevalf
 sudo apt-get update    # Pull in latest versions
 sudo apt-get upgrade   # Upgrade system packages
 # Use first argument to script to distinguish between the versions
-if [ "$1" == "release" ]
+if [ "$1" == "0.3" ]
 then
     wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.3/julia-0.3-latest-linux-x86_64.tar.gz
 else
@@ -92,9 +91,9 @@ git clone https://github.com/IainNZ/PackageEvaluator.jl.git $PKGEVALDIR
 # Make results folders. Folder name is second argument to this script.
 # These folders are shared - i.e. we are writing to outside the VM,
 # most likely the PackageEvaluator.jl/scripts folder.
-rm -rf /vagrant/$2
-mkdir /vagrant/$2
-cd /vagrant/$2
+rm -rf /vagrant/${1}${2}
+mkdir /vagrant/${1}${2}
+cd /vagrant/${1}{$2}
 # Initialize METADATA for testing
 # Note that it is important for it to not be in the /vagrant/ folder as
 # that seems to mess with symlinks quite badly.
@@ -105,24 +104,15 @@ julia -e "Pkg.init(); println(Pkg.dir())"
 
 #######################################################################
 # Run PackageEvaluator
-if [ "$2" == "release" ]
+if [ "$2" == "all" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v0.3/METADATA/*
-elif [ "$2" == "releaseAL" ]
+    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/*
+elif [ "$2" == "AL" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v0.3/METADATA/[A-L]*;
-elif [ "$2" == "releaseMZ" ]
+    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/[A-L]*;
+elif [ "$2" == "MZ" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v0.3/METADATA/[M-Z]*;
-elif [ "$2" == "nightly" ]
-then
-    LOOPOVER=/home/vagrant/.julia/v0.4/METADATA/*;
-elif [ "$2" == "nightlyAL" ]
-then
-    LOOPOVER=/home/vagrant/.julia/v0.4/METADATA/[A-L]*;
-elif [ "$2" == "nightlyMZ" ]
-then
-    LOOPOVER=/home/vagrant/.julia/v0.4/METADATA/[M-Z]*;
+    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/[M-Z]*;
 fi
 # For every package name...
 for f in $LOOPOVER;
@@ -197,8 +187,8 @@ done
 # Bundle results together
 echo "Bundling results"
 cd /vagrant/
-julia $PKGEVALDIR/src/joinjson.jl /vagrant/$2 $2
+julia $PKGEVALDIR/src/joinjson.jl /vagrant/${1}{$2} ${1}{$2}
 
 
 #######################################################################
-echo "Finished normally! $1  $2"
+echo "Finished normally! $1 $2"

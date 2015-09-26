@@ -1,4 +1,2 @@
-rm -rf ./releaseAL*
-rm -rf ./releaseMZ*
-rm -rf ./nightlyAL*
-rm -rf ./nightlyMZ*
+rm -rf ./0.3*
+rm -rf ./0.4*

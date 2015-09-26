@@ -9,11 +9,10 @@
 # work happens during provisioning. Afterwards, it tears them down.
 # Based off of
 #  http://server.dzone.com/articles/parallel-provisioning-speeding
-# Can either run two machines in parallel (release & nightly)
-# or four machines in parallel (release on two, nightly on two)
+# Can either run two or four machines in parallel
 
-rm -rf ./release*
-rm -rf ./nightly*
+rm -rf ./0.3*
+rm -rf ./0.4*
 
 parallel_provision() {
     while read box; do
@@ -25,27 +24,27 @@ parallel_provision() {
 
 if [ "$1" == "two" ]
 then
-    vagrant up --no-provision release
-    vagrant up --no-provision nightly
+    vagrant up --no-provision ALL03
+    vagrant up --no-provision ALL04
 
     # Provision in parallel
     cat <<EOF | parallel_provision
-release
-nightly
+ALL03
+ALL04
 EOF
 
 else
-    vagrant up --no-provision releaseAL
-    vagrant up --no-provision releaseMZ
-    vagrant up --no-provision nightlyAL
-    vagrant up --no-provision nightlyMZ
+    vagrant up --no-provision HALFAL03
+    vagrant up --no-provision HALFMZ03
+    vagrant up --no-provision HALFAL04
+    vagrant up --no-provision HALFMZ04
 
     # Provision in parallel
     cat <<EOF | parallel_provision
-releaseAL
-releaseMZ
-nightlyAL
-nightlyMZ
+HALFAL03
+HALFMZ03
+HALFAL04
+HALFMZ04
 EOF
 
 fi
