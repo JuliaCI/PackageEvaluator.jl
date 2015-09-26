@@ -93,7 +93,7 @@ git clone https://github.com/IainNZ/PackageEvaluator.jl.git $PKGEVALDIR
 # most likely the PackageEvaluator.jl/scripts folder.
 rm -rf /vagrant/${1}${2}
 mkdir /vagrant/${1}${2}
-cd /vagrant/${1}{$2}
+cd /vagrant/${1}${2}
 # Initialize METADATA for testing
 # Note that it is important for it to not be in the /vagrant/ folder as
 # that seems to mess with symlinks quite badly.
