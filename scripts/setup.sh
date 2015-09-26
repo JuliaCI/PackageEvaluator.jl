@@ -39,7 +39,7 @@ if [ "$1" == "release" ]
 then
     wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.3/julia-0.3-latest-linux-x86_64.tar.gz
 else
-    wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4.0-rc1-linux-x86_64.tar.gz
+    wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4-latest-linux-x86_64.tar.gz
 fi
 mkdir julia
 tar -zxvf julia.tar.gz -C ./julia --strip-components=1
@@ -179,7 +179,11 @@ do
     # even if it is just a simple move effectively. Can we
     # just pull the encoding part out of JSON, which is all
     # we really need because most of it is parsing?
-    julia -e 'Pkg.add("JSON")'
+    # Add DataStructures because if JSON gets precompiled with
+    # DataStructures present but then loaded with DataStructures
+    # not present, bad things happen (packages that don't depend
+    # on DataStructures themselves fail to output .json results).
+    julia -e 'Pkg.add("JSON"), Pkg.add("DataStructures")'
     julia $PKGEVALDIR/src/prepjson.jl $PKGNAME $TESTSTATUS /vagrant/$2
     # Finish up by removing the package. Doesn't actually remove
     # it in the sense of deleting the files - this helps the

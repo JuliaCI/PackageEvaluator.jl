@@ -32,6 +32,6 @@ end
 
 # Then write them all to one big file
 println("Writing $(length(all_pkgs)) packages to $(ARGS[2]).json")
-cat_fp = open("$(ARGS[2]).json","w")
-JSON.print(cat_fp, all_pkgs)
-close(cat_fp)
+open("$(ARGS[2]).json","w") do cat_fp
+    JSON.print(cat_fp, all_pkgs)
+end
