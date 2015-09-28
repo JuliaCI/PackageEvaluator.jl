@@ -3,46 +3,78 @@
 
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/trusty64"
-  #config.vm.box = "ubuntu/precise64"
 
   config.vm.provider "virtualbox" do |v|
     v.memory = 2048
   end
 
-  # JUST SETUP - NO RUN
-  config.vm.define :releasesetup do |releasesetup|
-    config.vm.provision :shell, path: "setup.sh", args: ["release", "donothing"], keep_color: true, privileged: false
+  #---------------------------------------------------------------------
+  # SETUP ONLY
+  config.vm.define :setup03 do |setup03|
+    config.vm.provision :shell,
+      path: "setup.sh",
+      args: ["0.3", "setup"],
+      keep_color: true,
+      privileged: false
   end
 
-  config.vm.define :nightlysetup do |nightlysetup|
-    config.vm.provision :shell, path: "setup.sh", args: ["nightly", "donothing"], keep_color: true, privileged: false
+  config.vm.define :setup04 do |setup04|
+    config.vm.provision :shell,
+      path: "setup.sh",
+      args: ["0.4", "setup"],
+      keep_color: true,
+      privileged: false
   end
 
-  # TWO WAY PARALLEL OPTION
-
-  config.vm.define :release do |release|
-    config.vm.provision :shell, path: "setup.sh", args: ["release", "release"], keep_color: true, privileged: false
+  #---------------------------------------------------------------------
+  # ALL PACKAGES
+  config.vm.define :all03 do |all03|
+    config.vm.provision :shell,
+      path: "setup.sh",
+      args: ["0.3", "all"],
+      keep_color: true,
+      privileged: false
   end
 
-  config.vm.define :nightly do |nightly|
-    config.vm.provision :shell, path: "setup.sh", args: ["nightly","nightly"], keep_color: true, privileged: false
+  config.vm.define :all04 do |all04|
+    config.vm.provision :shell,
+      path: "setup.sh",
+      args: ["0.4", "all"],
+      keep_color: true,
+      privileged: false
   end
 
 
-  # FOUR WAY PARALLEL OPTION
+  #---------------------------------------------------------------------
+  # HALF PACKAGES
+  config.vm.define :halfAL03 do |halfAL03|
+    config.vm.provision :shell,
+      path: "setup.sh",
+      args: ["0.3", "AL"],
+      keep_color: true,
+      privileged: false
+  end
+  config.vm.define :halfMZ03 do |halfMZ03|
+    config.vm.provision :shell,
+      path: "setup.sh",
+      args: ["0.3", "MZ"],
+      keep_color: true,
+      privileged: false
+  end
 
-  config.vm.define :releaseAL do |releaseAL|
-    config.vm.provision :shell, path: "setup.sh", args: ["release", "releaseAL"], keep_color: true, privileged: false
+  config.vm.define :halfAL04 do |halfAL04|
+    config.vm.provision :shell,
+      path: "setup.sh",
+      args: ["0.4", "AL"],
+      keep_color: true,
+      privileged: false
   end
-  config.vm.define :releaseMZ do |releaseMZ|
-    config.vm.provision :shell, path: "setup.sh", args: ["release", "releaseMZ"], keep_color: true, privileged: false
-  end
-
-  config.vm.define :nightlyAL do |nightlyAL|
-    config.vm.provision :shell, path: "setup.sh", args: ["nightly","nightlyAL"], keep_color: true, privileged: false
-  end
-  config.vm.define :nightlyMZ do |nightlyMZ|
-    config.vm.provision :shell, path: "setup.sh", args: ["nightly","nightlyMZ"], keep_color: true, privileged: false
+  config.vm.define :halfMZ04 do |halfMZ04|
+    config.vm.provision :shell,
+      path: "setup.sh",
+      args: ["0.4", "MZ"],
+      keep_color: true,
+      privileged: false
   end
 
 end

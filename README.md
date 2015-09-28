@@ -33,9 +33,12 @@ Possible reasons include:
 * [Vagrant](https://www.vagrantup.com/) is a tool for creating and managing virtual machines.
 * The configuration of the virtual machine, including the operating system to use, live in the [`Vagrantfile`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/scripts/Vagrantfile).
 * When the virtual machine(s) are launched with `vagrant up`, a *provisioning script* called [`setup.sh`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/scripts/setup.sh) is run.
-* This script takes two arguments: the first is the version of Julia to use, and the second is the subset of packages to run.
-* The arguments are determined by the configurations in the `Vagrantfile`. In particular:
- * `releasesetup` and `nightlysetup` just set up the machine with Julia and the same dependencies that PackageEvaluator uses. **Use, e.g. `vagrant up releasesetup; vagrant ssh releasesetup` to debug why a package is failing.**
- * `release` and `nightly` do the setup and evaluate all the packages.
- * `releaseAL`, `releaseMZ`, `nightlyAL`, `nightlyMZ` evaluate only packages with names beginning with those letters.
-* PackageEvaluator runs all the last four configurations in parallel, using `runvagrant.sh`.
+* This script takes two arguments. The first is the version of Julia
+  to use (`0.3` or `0.4`)
+* The second determines the mode to operate in:
+    * `setup`: set up the machine with Julia and the same
+      dependencies that are used for a full PackageEvaluator run, but
+      do not do any testing.
+    * `all`: do `setup` and evaluate all the packages.
+    * `AL` or `MZ`: evaluate only packages with names beginning with those letters.
+* Each combination of settings corresponds to a named virtual machine - see `scripts/Vagrantfile` for the list of the VMs.
