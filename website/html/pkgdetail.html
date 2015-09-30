@@ -1,0 +1,45 @@
+<html>
+<head>
+<title>Julia Package Listing - Testing Information</title>
+</head>
+<body>
+
+<h1>{{NAME}}</h1>
+
+<p>
+Permalink:
+<a href="{{PKG_LINK}}">{{PKG_LINK}}</a>
+</p>
+
+<p>
+If you think that there is an error in how your package is being tested or represented, please file an issue at <a href="https://github.com/IainNZ/PackageEvaluator.jl/">PackageEvaluator.jl</a>, making sure to read the FAQ first.
+</p>
+
+<h2>Badges</h2>
+
+{{#PERVERSION}}
+<h4>Julia v{{JLVER}}</h4>
+<img src="{{SVG_URL}}"><br>
+<a href="{{SVG_LINK}}">{{SVG_LINK}}</a>
+<pre>[![{{NAME}}]({{SVG_LINK}})]({{PKG_LINK}})</pre>
+{{/PERVERSION}}
+
+<h2>Most Recent Test Logs</h2>
+
+<ul>
+{{#PERVERSION}}
+<li>
+<a href="{{LOG_LINK}}">Julia v{{JLVER}}</a>
+</li>
+{{/PERVERSION}}
+</ul>
+
+<h2>Version and Status History</h2>
+
+{{#PERVERSION}}
+<h4>Julia v{{JLVER}}</h4>
+<pre>{{HIST_DATA}}</pre>
+{{/PERVERSION}}
+
+</body>
+</html>

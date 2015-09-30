@@ -23,7 +23,7 @@ LOGPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/logs
 BADGEPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/badges
 #$JULIA build_site_data.jl $LOGPATH $BADGEPATH
 
-INDPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/index.html
-#$JULIA build_index.jl $HISTPATH $INDPATH
+INDPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/
+$JULIA build_index.jl $HISTPATH $INDPATH
 
 #$JULIA pulse_plots.jl $STARPATH $HISTPATH ./

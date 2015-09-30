@@ -22,7 +22,7 @@ const HUMANSTATUS = Dict(
         "using_fail"    => "No tests, package doesn't load.")
 
 # Take the YYYYMMDD date format and turn it in YYYY-MM-DD
-date_nice(orig::String) = string(orig[1:4],"-",orig[5:6],"-",orig[7:8])
+date_nice(orig::AbstractString) = string(orig[1:4],"-",orig[5:6],"-",orig[7:8])
 date_nice(orig::Int) = date_nice(string(orig))
 
 # Takes a database YYYYMMDD date and turns it into a Date instance
@@ -39,7 +39,7 @@ dbdate_to_date(dbdate) =
 #  - Set of all package names seen in the database
 #  - Vector of all dates seen in the database
 function load_hist_db(hist_db_file)
-    all_hist = readcsv(hist_db_file, String)
+    all_hist = readcsv(hist_db_file, AbstractString)
     # Remove all the whitespace from all fields
     map!(strip, all_hist)
     # Form the dictionaries and sets
@@ -77,7 +77,7 @@ end
 #  - an array of all dates seen in the file.
 function load_star_db(hist_file)
     # Load CSV
-    all_hist = readcsv(hist_file, String)
+    all_hist = readcsv(hist_file, AbstractString)
     # Remove all the whitespace
     map!(strip, all_hist)
     # Store results in a dictionary keyed on on package

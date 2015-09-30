@@ -7,6 +7,8 @@
 # The main page is built by combining a header, a footer, and then
 # repeating a middle chunk for every package. The templates are stored
 # in the website/html/ subfolder, and are populated using Mustache.
+# At the same time, create subpages for each package that has all the
+# extra-for-experts stuff like histories, badges, and logs.
 #-----------------------------------------------------------------------
 
 import JSON, Humanize, Mustache
@@ -14,18 +16,32 @@ include("shared.jl")
 
 # Load test history
 if length(ARGS) != 2
-    error("Expected 2 arguments, the path of the test history database and the output filename.")
+    error("Expected 2 arguments, the path of the test history database and the output directory.")
 end
 hist_db_file = ARGS[1]
 hist_db, _, _ = load_hist_db(hist_db_file)
 
 # Load all package info
 all_pkgs = JSON.parsefile("final.json")
+pkgs_by_name = Dict()
+for pkg in all_pkgs
+    pkg_name = pkg["name"]
+    if pkg_name in keys(pkgs_by_name)
+        push!(pkgs_by_name[pkg_name], pkg)
+    else
+        pkgs_by_name[pkg_name] = [pkg]
+    end
+end
+pkg_names = sort(collect(keys(pkgs_by_name)))
+
+# Load logo
+jllogo_svg = readall("html/jllogo.svg")
 
 # Load and render header
 index_head = Mustache.render(readall("html/indexhead.html"),
-    Dict("LASTUPDATED" => string(Dates.today()),  # YYYY-MM-DD
-         "PKGCOUNT"    => string(div(length(all_pkgs),2))) )  # Estimate
+    Dict("JLLOGO"      => jllogo_svg,
+         "LASTUPDATED" => string(Dates.today()),  # YYYY-MM-DD
+         "PKGCOUNT"    => string(length(pkg_names))) )
 
 # Load footer (no templates used)
 index_foot = readall("html/indexfoot.html")
@@ -33,9 +49,12 @@ index_foot = readall("html/indexfoot.html")
 # Load the template for a package
 index_pkg = readall("html/indexpkg.html")
 
+# Load the package detail template
+pkg_detail = readall("html/pkgdetail.html")
+
 # Helper function to produce history listings for each package
 function hist_table(hist_db, pkg_name, jl_ver)
-    output_strs = String[]
+    output_strs = AbstractString[]
     hist = hist_db[(pkg_name, jl_ver)]
     pos = size(hist,1)
     cur_start_date = date_nice(hist[pos,1])
@@ -72,48 +91,68 @@ end
 
 
 
+
+
 listings = UTF8String[]
 
-for pkg in all_pkgs
-    println(pkg["name"], ", ", pkg["jlver"])
-
+# For each package in the data set
+for pkg_name in pkg_names
+    # Sort by ascending Julia version
+    sort!(pkgs_by_name[pkg_name], by=pkg->pkg["jlver"])
+    # Construct a dictionary to populate the Mustache template
+    temp_data = Dict()
+    # First populate data that is either invariant between versions,
+    # or when ambiguous, the most recent information available
+    pkg = pkgs_by_name[pkg_name][end]
+    temp_data["NAME"]        = pkg["name"]
+    temp_data["LOWER_NAME"]  = lowercase(pkg["name"])
     owner = split(pkg["url"],"/")[end-1]
-    push!(listings, Mustache.render(index_pkg, Dict(
-        "LOWER_NAME"    => lowercase(pkg["name"]),
-        "LOWER_OWNER"   => lowercase(owner),
-        "JLVER"         => pkg["jlver"],
-        "STATUS"        => pkg["status"],
-        "LICENSE"       => pkg["license"],
-        "URL"           => pkg["url"],
-        "NAME"          => pkg["name"],
-        "DESC"          => (pkg["githubdesc"] == "nothing" ? "" : pkg["githubdesc"]),
-        "SHA"           => pkg["gitsha"],
-        # Top block
-        "VER"           => pkg["version"],
-        "DTSTR"         => Humanize.timedelta(Dates.now() - 
-                                DateTime(pkg["gitdate"],"y-m-d H:M:S")),
-        "DEPSTR"        => (pkg["deprecated"] ? """ <span class=\"using_fail\"
+    temp_data["OWNER"]       = owner
+    temp_data["LOWER_OWNER"] = lowercase(owner)
+    temp_data["STARS"]       = pkg["githubstars"]
+    temp_data["LICENSE"]     = pkg["license"]
+    temp_data["LICENSE_URL"] = string(pkg["url"], "/blob/",
+                                    pkg["gitsha"], "/", pkg["licfile"])
+    temp_data["URL"]         = pkg["url"]
+    temp_data["DESC"]        = (pkg["githubdesc"] == "nothing" ? "" : pkg["githubdesc"])
+    temp_data["DEPSTR"]      = (pkg["deprecated"] ? """/ <span class=\"using_fail\"
                                                     title=\"Package is no longer supported and
                                                     may not install on the next Julia release\">
-                                                    deprecated</span> / """ : ""),
-        "LICENSE_URL"   => string(pkg["url"], "/blob/",
-                                    pkg["gitsha"], "/", pkg["licfile"]),
-        "OWNER"         => owner,
-        "STARS"         => pkg["githubstars"],
-        # Middle block
-        "HUMAN_STATUS"  => HUMANSTATUS[pkg["status"]],
-        # Bottom block
-        "MINOR"         => pkg["jlver"][end:end],
-        "PKG_LINK"      => string("http://pkg.julialang.org/?pkg=",
-                                    pkg["name"], "&ver=", pkg["jlver"]),
-        "SVG_LINK"      => string("http://pkg.julialang.org/badges/",
-                                    pkg["name"], "_", pkg["jlver"], ".svg"),
-        "HIST_DATA"     => hist_table(hist_db, pkg["name"], pkg["jlver"])
-        )))
+                                                    deprecated</span>""" : "")
+    # For per-package detail page
+    temp_data["PKG_LINK"]    = string("http://pkg.julialang.org/?pkg=", pkg["name"])
+
+    # Now add per-version information
+    temp_data["PERVERSION"] = Dict[]
+    for pkg in reverse(pkgs_by_name[pkg_name])
+        ver_data = Dict(
+            "JLVER"         => pkg["jlver"],
+            "STATUS"        => pkg["status"],
+            "SHA"           => pkg["gitsha"],
+            "VER"           => pkg["version"],
+            "DTSTR"         => Humanize.timedelta(Dates.now() - 
+                                    DateTime(pkg["gitdate"],"y-m-d H:M:S")),
+            "HUMAN_STATUS"  => HUMANSTATUS[pkg["status"]],
+            # For per-package detail page
+            "SVG_URL"      => string("../badges/",
+                                        pkg["name"], "_", pkg["jlver"], ".svg"),
+            "SVG_LINK"      => string("http://pkg.julialang.org/badges/",
+                                        pkg["name"], "_", pkg["jlver"], ".svg"),
+            "HIST_DATA"     => hist_table(hist_db, pkg["name"], pkg["jlver"]),
+            "LOG_LINK"      => string("../logs/", pkg["name"],
+                                        "_", pkg["jlver"], ".log"))
+        push!(temp_data["PERVERSION"], ver_data)
+    end
+
+    push!(listings, Mustache.render(index_pkg, temp_data))
+
+    open(joinpath(ARGS[2],"detail","$(pkg_name).html"),"w") do fp
+        println(fp, Mustache.render(pkg_detail, temp_data))
+    end
 end
 
 # Output finished product
-open(ARGS[2],"w") do fp
+open(joinpath(ARGS[2],"index.html"),"w") do fp
     println(fp, index_head)
     println(fp, join(listings, "\n"))
     println(fp, index_foot)

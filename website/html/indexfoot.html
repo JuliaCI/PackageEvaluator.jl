@@ -1,5 +1,17 @@
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    <script src="jlpkg.js"></script>
+    <script>
+      window.onload = function (event) {
+        var qstr = window.location.search;
+        qstr = window.location.search.substr(1, qstr.length - 2);
+        var aspl = qstr.split('&');
+        for (var i = 0; i < aspl.length; i++) {
+          var subqstr = aspl[i];
+          var spl = subqstr.split('=');
+          if (spl[0] == 'pkg') {
+            window.location.hash = spl[1];
+          }
+        }
+      };
+    </script>
+  </div>
   </body>
 </html>
