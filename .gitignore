@@ -1,3 +1,4 @@
+scripts/.vagrant
 website/*.json
 website/*.jld
 website/token
