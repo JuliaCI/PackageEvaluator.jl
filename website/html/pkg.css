@@ -60,4 +60,19 @@
       }
       .pkglisting h2 { margin-bottom: 0px; }
       pre {margin: 0;}
+      @media (min-width: 785px) {
+        .pkglisting {
+          display: table;
+          width: 100%;
+        }
+        .pkgnamedesc {
+          display: table-cell;
+          width: 50%;
+        }
+        .pkgvertest {
+          display: table-cell;
+          width:50%;
+          text-align: right
+        }
+      }
     </style>

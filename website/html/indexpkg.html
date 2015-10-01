@@ -1,11 +1,13 @@
-<div class="container pkglisting">
 <hr>
-<h2>
-    <a href="{{URL}}" name="{{NAME}}">{{NAME}}</a>
-</h2>
-<h4>{{DESC}}</h4>
-<p>
-    <a href="{{LICENSE_URL}}">{{LICENSE}}</a> license /
+<div class="pkglisting">
+<div class="pkgnamedesc">
+    <h2>
+        <a href="{{{URL}}}" name="{{NAME}}">{{NAME}}</a>
+    </h2>
+    <h4>{{DESC}}</h4>
+</div>
+<div class="pkgvertest">
+    <a href="{{{LICENSE_URL}}}">{{LICENSE}}</a> license /
     Owner: <a href="http://github.com/{{OWNER}}">{{OWNER}}</a> / 
     <span title="GitHub stars">
         {{STARS}} ★
@@ -14,11 +16,10 @@
     {{#PERVERSION}}
     <br>
     Julia v{{JLVER}}:
-    <a href="{{URL}}/tree/{{SHA}}" title="{{SHA}}">{{VER}}</a>
+    <a href="{{{URL}}}/tree/{{SHA}}" title="{{SHA}}">{{VER}}</a>
     ({{DTSTR}} ago) /
     <span class="statusbox {{STATUS}}"></span>
     <a href="detail/{{NAME}}.html">{{HUMAN_STATUS}}</a>
     {{/PERVERSION}}
-</p>
-
+</div>
 </div>
