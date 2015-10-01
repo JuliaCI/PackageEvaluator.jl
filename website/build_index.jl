@@ -37,9 +37,13 @@ pkg_names = sort(collect(keys(pkgs_by_name)))
 # Load logo
 jllogo_svg = readall("html/jllogo.svg")
 
+# Load stylesheet
+pkg_css = readall("html/pkg.css")
+
 # Load and render header
 index_head = Mustache.render(readall("html/indexhead.html"),
     Dict("JLLOGO"      => jllogo_svg,
+         "PKGCSS"      => pkg_css,
          "LASTUPDATED" => string(Dates.today()),  # YYYY-MM-DD
          "PKGCOUNT"    => string(length(pkg_names))) )
 
@@ -124,7 +128,7 @@ for pkg_name in pkg_names
 
     # Now add per-version information
     temp_data["PERVERSION"] = Dict[]
-    for pkg in reverse(pkgs_by_name[pkg_name])
+    for pkg in pkgs_by_name[pkg_name]
         ver_data = Dict(
             "JLVER"         => pkg["jlver"],
             "STATUS"        => pkg["status"],
@@ -146,6 +150,8 @@ for pkg_name in pkg_names
 
     push!(listings, Mustache.render(index_pkg, temp_data))
 
+    temp_data["JLLOGO"] = jllogo_svg
+    temp_data["PKGCSS"] = pkg_css
     open(joinpath(ARGS[2],"detail","$(pkg_name).html"),"w") do fp
         println(fp, Mustache.render(pkg_detail, temp_data))
     end

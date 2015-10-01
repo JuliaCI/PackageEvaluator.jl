@@ -1,45 +1,80 @@
-<html>
-<head>
-<title>Julia Package Listing - Testing Information</title>
-</head>
-<body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Julia Package Listing - Testing Information</title>
 
-<h1>{{NAME}}</h1>
+    {{{PKGCSS}}}
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-<p>
-Permalink:
-<a href="{{PKG_LINK}}">{{PKG_LINK}}</a>
-</p>
+      ga('create', 'UA-44252521-5', 'iainnz.github.io');
+      ga('send', 'pageview');
+    </script>
+  </head>
 
-<p>
-If you think that there is an error in how your package is being tested or represented, please file an issue at <a href="https://github.com/IainNZ/PackageEvaluator.jl/">PackageEvaluator.jl</a>, making sure to read the FAQ first.
-</p>
+  <body>
+  <div class="site">
+    <!-- HEADER -->
+    <div class="titlebox">
+        {{{JLLOGO}}}
 
-<h2>Badges</h2>
+        <h1>
+          <a href="{{URL}}" name="{{NAME}}">{{NAME}}</a>
+        </h1>
 
-{{#PERVERSION}}
-<h4>Julia v{{JLVER}}</h4>
-<img src="{{SVG_URL}}"><br>
-<a href="{{SVG_LINK}}">{{SVG_LINK}}</a>
-<pre>[![{{NAME}}]({{SVG_LINK}})]({{PKG_LINK}})</pre>
-{{/PERVERSION}}
+        <h4>
+          <a href="http://github.com/{{OWNER}}">{{OWNER}}</a>
+        </h4>
 
-<h2>Most Recent Test Logs</h2>
+        <p>
+          Permalink:
+          <a href="{{PKG_LINK}}">{{PKG_LINK}}</a>
+        </p>
 
-<ul>
-{{#PERVERSION}}
-<li>
-<a href="{{LOG_LINK}}">Julia v{{JLVER}}</a>
-</li>
-{{/PERVERSION}}
-</ul>
+    </div>
 
-<h2>Version and Status History</h2>
+    <p>
+      If you think that there is an error in how your package is being tested or represented, please file an issue at <a href="https://github.com/IainNZ/PackageEvaluator.jl/">PackageEvaluator.jl</a>, making sure to read the FAQ first.
+    </p>
 
-{{#PERVERSION}}
-<h4>Julia v{{JLVER}}</h4>
-<pre>{{HIST_DATA}}</pre>
-{{/PERVERSION}}
+    <h3>Badges</h3>
 
-</body>
+    {{#PERVERSION}}
+    <h4>Julia v{{JLVER}}</h4>
+
+    <img src="{{SVG_URL}}">
+    <br>
+    <a href="{{SVG_LINK}}">{{SVG_LINK}}</a>
+    <pre>[![{{NAME}}]({{SVG_LINK}})]({{PKG_LINK}})</pre>
+    {{/PERVERSION}}
+
+  
+    <h3>Most Recent Test Logs</h3>
+
+    <ul>
+    {{#PERVERSION}}
+      <li>
+        <a href="{{LOG_LINK}}">Julia v{{JLVER}}</a>
+      </li>
+    {{/PERVERSION}}
+    </ul>
+
+
+    <h3>Version and Status History</h3>
+
+    {{#PERVERSION}}
+    <h4>Julia v{{JLVER}}</h4>
+
+    <pre>{{HIST_DATA}}</pre>
+    {{/PERVERSION}}
+
+  </div>
+  </body>
 </html>

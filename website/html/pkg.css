@@ -1,0 +1,63 @@
+<style>
+      /* -- Mix of julialang.org, Bootstrap 3, and custom -- */
+      body {
+        background-color: white;
+        font-family: Georgia, 'Liberation Serif', serif;
+        font-size: 14px;
+        color: #333;
+        line-height: 1.42857143;
+      }
+      .site {
+        max-width: 785px;
+        margin: 2.5em auto 2em;
+        padding: 0 1.5em;
+      }
+      a {
+        color: #428bca;
+        text-decoration: none;
+        cursor: auto;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-family: inherit;
+        font-weight: 500;
+        line-height: 1.1;
+        color: inherit;
+      }
+      h1, h2, h3 {
+          margin-top: 20px;
+          margin-bottom: 10px;
+      }
+      h2 {
+        font-size: 30px;
+      }
+      h3 {
+          font-size: 24px;
+      }
+      h4 {
+        font-size: 18px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+      .titlebox {
+        text-align: center;
+        font-size: 120%;
+        margin-top: 3em;
+      }
+      .tests_pass   { background-color: #11AA11; } /*Tests passing*/
+      .tests_fail   { background-color: #DD3333; } /*Tests failed*/
+      .no_tests     { background-color: #3333DD; } /*Tests missing*/
+      .not_possible { background-color: #222222; } /*Package excused*/
+      .statusbox {
+        width: 12px;
+        height: 12px;
+        display: inline-block;
+      }
+      hr {
+        margin-top: 10px;
+        margin-bottom: 0px;
+        border: 0;
+        border-top: 1px solid #eee;
+      }
+      .pkglisting h2 { margin-bottom: 0px; }
+      pre {margin: 0;}
+    </style>
