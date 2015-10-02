@@ -71,6 +71,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "CUDNN"         =>  :BINARY,    # NVIDIA CUDA
                 "CUDArt"        =>  :BINARY,    # NVIDIA CUDA
                 "CUFFT"         =>  :BINARY,    # NVIDIA CUDA
+                "CURAND"        =>  :BINARY,    # NVIDIA CUDA
                 "CUSPARSE"      =>  :BINARY,    # NVIDIA CUDA
                 "Expect"        =>  :BREAKS,    # Used to cause hangs
                 "GLAbstraction" =>  :OPENGL,
