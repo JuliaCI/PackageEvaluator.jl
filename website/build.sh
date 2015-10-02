@@ -9,7 +9,7 @@
 # You should edit this file for the paths on your system.
 #-----------------------------------------------------------------------
 
-CURDATE=20150927
+CURDATE=20151001
 
 JULIA=/Users/idunning/Code/julia04/julia
 
@@ -24,6 +24,7 @@ BADGEPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/badges
 #$JULIA build_site_data.jl $LOGPATH $BADGEPATH
 
 INDPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/
-$JULIA build_index.jl $HISTPATH $INDPATH
+#$JULIA build_index.jl $HISTPATH $INDPATH
 
-#$JULIA pulse_plots.jl $STARPATH $HISTPATH ./
+IMGPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/img
+$JULIA pulse_plots.jl $STARPATH $HISTPATH $IMGPATH

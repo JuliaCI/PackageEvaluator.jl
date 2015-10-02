@@ -42,6 +42,16 @@ same time, produce all badges and log files from the package info.
 
 The main page is built by combining a header, a footer, and then
 repeating a middle chunk for every package. The templates are stored
-in the `website/html/` subfolder, and are populated using `Mustache`.
+in the website/html/ subfolder, and are populated using Mustache.
+At the same time, create subpages for each package that has all the
+extra-for-experts stuff like histories, badges, and logs.
 
-#### TODO: bring `plot_pkg` and `build_pulse` over
+#### 5. `pulse_plots.jl`
+
+Makes the plots for the Pulse page:
+  - The totals-by-version plot
+  - The stars plot
+  - The test status fraction plot
+
+
+#### TODO: bring `plot_pkg`
