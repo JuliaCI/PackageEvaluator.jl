@@ -80,6 +80,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "GLPlot"        =>  :OPENGL,
                 "GLText"        =>  :OPENGL,
                 "GLWindow"      =>  :OPENGL,
+                "GLVisualize"   =>  :OPENGL,
                 "GR"            =>  :XVFB,      # Plotting package
                 "Gtk"           =>  :XVFB,      # GUI package
                 "Gurobi"        =>  :BINARY,    # Commercial software
