@@ -1,0 +1,2 @@
+rm ./*.json
+rm ./*.jld
