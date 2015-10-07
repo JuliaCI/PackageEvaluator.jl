@@ -82,6 +82,8 @@ sudo apt-get install python-pip
 sudo pip install xlrd
 # Install SymPy
 sudo pip install sympy
+# need /usr/share/dict/words for TextAnalysis.jl
+sudo apt-get install wamerican
 
 
 #######################################################################
