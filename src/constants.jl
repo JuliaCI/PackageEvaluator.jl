@@ -72,6 +72,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "CUDArt"        =>  :BINARY,    # NVIDIA CUDA
                 "CUFFT"         =>  :BINARY,    # NVIDIA CUDA
                 "CURAND"        =>  :BINARY,    # NVIDIA CUDA
+                "CUSOLVER"      =>  :BINARY,    # NVIDIA CUDA
                 "CUSPARSE"      =>  :BINARY,    # NVIDIA CUDA
                 "Expect"        =>  :BREAKS,    # Used to cause hangs
                 "GLAbstraction" =>  :OPENGL,
@@ -79,6 +80,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "GLPlot"        =>  :OPENGL,
                 "GLText"        =>  :OPENGL,
                 "GLWindow"      =>  :OPENGL,
+                "GLVisualize"   =>  :OPENGL,
                 "GR"            =>  :XVFB,      # Plotting package
                 "Gtk"           =>  :XVFB,      # GUI package
                 "Gurobi"        =>  :BINARY,    # Commercial software
