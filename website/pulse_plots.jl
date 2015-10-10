@@ -67,31 +67,38 @@ for ver in keys(totals)
     end
 end
 # Julia releases so far
-jl_date_vers = [Date(2014,08,20)  "v0.3.0"  250;
-                Date(2014,09,21)  "v0.3.1"  250;
-                Date(2014,10,21)  "v0.3.2"  250;
-                Date(2014,11,23)  "v0.3.3"  250;
-                Date(2014,12,26)  ""        250;
-                Date(2015,01,08)  "v0.3.5"  250;
-                Date(2015,02,17)  "v0.3.6"  250;
-                Date(2015,03,23)  "v0.3.7"  250;
-                Date(2015,04,30)  "v0.3.8"  250;
-                Date(2015,05,30)  "v0.3.9"  250;
-                Date(2015,05,30)  "v0.3.9"  250;
-                Date(2015,06,24)  "v0.3.10" 250;
-                Date(2015,07,27)  "v0.3.11" 250]
+jl_date_vers = [Date(2014,08,20)  "v0.3.0→"  100;
+                Date(2014,09,21)  "v0.3.1→"  100;
+                Date(2014,10,21)  "v0.3.2→"  100;
+                Date(2014,11,23)  "v0.3.3→"  100;
+                Date(2014,12,26)  "v0.3.4→"  100;
+                Date(2015,01,08)  ""        100;
+                Date(2015,02,17)  "v0.3.6→"  100;
+                Date(2015,03,23)  "v0.3.7→"  100;
+                Date(2015,04,30)  "v0.3.8→"  100;
+                Date(2015,05,30)  "v0.3.9→"  100;
+                Date(2015,05,30)  "v0.3.9→"  100;
+                Date(2015,06,24)  ""        100;
+                Date(2015,07,27)  "v0.3.11→" 100;
+                Date(2015,10,08)  "v0.4.0→"  200]
 p = plot(
     layer(x=x_dates["0.2"],y=y_totals["0.2"],color=fill("0.2",length(x_dates["0.2"])),Geom.line),
     layer(x=x_dates["0.3"],y=y_totals["0.3"],color=fill("0.3",length(x_dates["0.3"])),Geom.line),
     layer(x=x_dates["0.4"],y=y_totals["0.4"],color=fill("0.4",length(x_dates["0.4"])),Geom.line),
-    layer(xintercept=jl_date_vers[:,1],Geom.vline(color=colorant"gray20",size=1px)),
-    layer(x=jl_date_vers[:,1],y=jl_date_vers[:,3],label=jl_date_vers[:,2],Geom.label),
+    # Julia release lines
+    layer(x=map(d->(d+Dates.Day(4)), jl_date_vers[:,1]),  # Correct offset
+          y=jl_date_vers[:,3],
+          label=jl_date_vers[:,2],
+          Geom.label(position=:left)),
+    layer(xintercept=jl_date_vers[:,1],
+          Geom.vline(color=colorant"gray50", size=1px)),
+    # Axis labels
     Scale.y_continuous(minvalue=250,maxvalue=700),
     Guide.ylabel("Number of Tagged Packages"),
     Guide.xlabel("Date"),
     Guide.colorkey("Julia ver."),
     Theme(line_width=3px,label_placement_iterations=0))
-draw(SVG(joinpath(output_path,"allver.svg"), 8inch, 3inch), p)
+draw(SVG(joinpath(output_path,"allver.svg"), 10inch, 4inch), p)
 
 #-----------------------------------------------------------------------
 # 2. STAR PLOT

@@ -6,22 +6,28 @@
 # website/build_site_data.jl
 # Take the results and repository information, and produce a single
 # JSON with all information required to construct the website. At the
-# same time, produce all badges and log files.
+# same time, produce all badges and log files - avoid creating the
+# badge if there is no change.
 #-----------------------------------------------------------------------
 
 using JSON, GitHub, JLD
 import MetadataTools
 import Requests
+include("shared.jl")
 
-if length(ARGS) != 2
-    error("Expected 2 arguments: log folder and badge folder")
+if length(ARGS) != 3
+    error("Expected 2 arguments: log folder, badge folder, history path")
 end
 log_path = ARGS[1]
 badge_path = ARGS[2]
+hist_path = ARGS[3]
 
 # Load results and repository info
 all_pkgs = JSON.parsefile("all.json")
 pkg_repo_infos = load("pkg_repo_infos.jld", "pkg_repo_infos")
+
+# Load history
+hist_db, _, _ = load_hist_db(hist_path)
 
 # MetadataTools can determine the highest Julia version a package can
 # be installed on (ignoring the fact that dependencies may themselves
@@ -75,22 +81,36 @@ for pkg in all_pkgs
         pkg["deprecated"] = false
     end
 
-    # Make badge using shields.io
+    # Make badge using shields.io, if needed
+    # Identify last status and version for this package
+    key = (pkg["name"], pkg["jlver"])
+    if key in keys(hist_db)
+        h = hist_db[key][1,:]
+        prev_ver, prev_status = h[2], h[3]
+
+        if prev_ver == pkg["version"] &&
+            prev_status == pkg["status"]
+            # No change in the badge, so don't bother
+            print_with_color(:blue, "  No change in version and status, skipping\n")
+            continue
+        end
+    end
+
     req_url = string("http://img.shields.io/badge/Julia%20v", pkg["jlver"],
                         "-v", pkg["version"], "%20",
                         badge_status[pkg["status"]], "-",
                         badge_color[pkg["status"]], ".svg")
     r = Requests.get(req_url)
     if Requests.statuscode(r) != 200
-        warn("No badge generated for ", pkg["name"], ", ", pkg["jlver"])
-        @show Requests.statuscode(r)
-        @show Requests.text(r)
+        print_with_color(:red, "  No badge generated (HTTP status != 200)\n")
+        print_with_color(:red, "  ", Requests.statuscode(r), "  ", Requests.text(r), "\n")
     else
         badge_file = joinpath(badge_path,
                         string(pkg["name"],"_",pkg["jlver"],".svg"))
         open(badge_file,"w") do badge_fp
             print(badge_fp, Requests.text(r))
         end
+        print_with_color(:green, "  Success\n")
     end
 end
 
