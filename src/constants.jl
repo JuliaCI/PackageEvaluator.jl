@@ -119,6 +119,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "SemidefiniteProgramming" => :BINARY,   # Needs CSDP
                 "Snappy"        =>  :BINARY,    # Needs libsnappy
                 "Sodium"        =>  :BINARY,    # Needs libsodium
+                "Sparrow"       =>  :BINARY,    # Needs ctioga2
                 "SystemImageBuilder" => :BREAKS,  # Freezes PkgEval
                 "ThingSpeak"    =>  :BREAKS,    # Needs API key
                 "Thrift"        =>  :BINARY,    # Needs Thrift compiler
