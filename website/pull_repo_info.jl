@@ -34,11 +34,11 @@ println("Number of packages: ", length(pkg_repos))
 # Authenticate with Github
 gh_auth = authenticate(readall("token"))
 
-# Retrieve information
+# Retrieve information from Github
 pkg_repo_infos = Dict()
 for (pkg_name, repo_name, repo_owner) in pkg_repos
-    print((pkg_name, repo_owner, repo_name))
-    println(" (", length(pkg_repo_infos)/length(pkg_repos)*100, "%)")
+    @printf("(%5.2f%%) ", length(pkg_repo_infos)/length(pkg_repos)*100)
+    println((pkg_name, repo_owner, repo_name))
     repo_info = try
         repo(repo_owner, repo_name, auth=gh_auth)
     catch err

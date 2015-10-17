@@ -39,6 +39,18 @@ for pkg_meta in values(metadata_pkgs)
     deprecated[pkg_meta.name] = (ul != v"0.0.0")
 end
 
+# Using MetadataTools, we can also get the number of dependencies for,
+# and number of packages that depend on, each package
+import MetadataTools: make_dep_graph, get_pkg_dep_graph
+pgfwd = make_dep_graph(metadata_pkgs)
+pgrev = make_dep_graph(metadata_pkgs, reverse=true)
+fwddep_counts = Dict()
+revdep_counts = Dict()
+for pkg_meta in values(metadata_pkgs)
+    fwddep_counts[pkg_meta.name] = size(get_pkg_dep_graph(pkg_meta, pgfwd)) - 1
+    revdep_counts[pkg_meta.name] = size(get_pkg_dep_graph(pkg_meta, pgrev)) - 1
+end
+
 # Mapping of test statuses to badge text and color
 const badge_status = Dict(
     "tests_pass"    => "Tests%20Pass",
@@ -64,7 +76,8 @@ for pkg in all_pkgs
     end
 
     # Add description and stars
-    if pkg["name"] in keys(pkg_repo_infos)
+    if pkg["name"] in keys(pkg_repo_infos) &&
+                pkg_repo_infos[pkg["name"]] != nothing
         pkg["githubdesc"]  = pkg_repo_infos[pkg["name"]].description
         pkg["githubstars"] = pkg_repo_infos[pkg["name"]].stargazers_count
     else
@@ -79,6 +92,16 @@ for pkg in all_pkgs
     else
         warn(pkg["name"], " has no deprecation information! Update METADATA?")
         pkg["deprecated"] = false
+    end
+
+    # Add dependency info
+    if pkg["name"] in keys(fwddep_counts)
+        pkg["fwddep"] = fwddep_counts[pkg["name"]]
+        pkg["revdep"] = revdep_counts[pkg["name"]]
+    else
+        warn(pkg["name"], " has no dependency count information! Update METADATA?")
+        pkg["fwddep"] = 0
+        pkg["revdep"] = 0
     end
 
     # Make badge using shields.io, if needed
