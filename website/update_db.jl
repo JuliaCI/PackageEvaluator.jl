@@ -31,11 +31,17 @@ end
 pkg_repo_infos = load("pkg_repo_infos.jld", "pkg_repo_infos")
 
 # Update star history
-print("Updating star history database... ")
+print_with_color(:yellow, "Updating star history database... ")
 star_fp = open(star_db_path, "a")
 total_stars = 0
 for (pkg_name, repo_info) in pkg_repo_infos
-    println(star_fp, datestr, ", ", 
+    if repo_info == nothing
+        println(star_fp, datestr, ", ",
+                lpad(pkg_name,30," "), ",",
+                lpad("0",5," ") )
+        continue
+    end
+    println(star_fp, datestr, ", ",
             lpad(pkg_name,30," "), ",",
             lpad(string(repo_info.stargazers_count),5," ") )
     total_stars += repo_info.stargazers_count
@@ -44,7 +50,7 @@ close(star_fp)
 println("Done. Total stars: ", total_stars)
 
 # Update test history
-print("Updating test history database... ")
+print_with_color(:yellow, "Updating test history database... ")
 hist_fp = open(hist_db_path, "a")  # APPEND
 for pkg in all_pkgs
     println(hist_fp, datestr, ", ",
