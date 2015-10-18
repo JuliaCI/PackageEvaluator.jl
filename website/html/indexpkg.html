@@ -8,11 +8,17 @@
 </div>
 <div class="pkgvertest">
     <a href="{{{LICENSE_URL}}}">{{LICENSE}}</a> license /
-    Owner: <a href="http://github.com/{{OWNER}}">{{OWNER}}</a> / 
+    Owner: <a href="http://github.com/{{OWNER}}">{{OWNER}}</a>
+    {{{DEPSTR}}}<br>
     <span title="GitHub stars">
         {{STARS}} ★
+    </span> /
+    <span title="Number of packages this package depends on">
+        {{FWDDEP}} ↧
+    </span> /
+    <span title="Number of packages that depend on this package">
+        {{REVDEP}} ↥
     </span>
-    {{{DEPSTR}}}
     {{#PERVERSION}}
     <br>
     Julia v{{JLVER}}:

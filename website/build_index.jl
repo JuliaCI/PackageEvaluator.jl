@@ -123,6 +123,8 @@ for pkg_name in pkg_names
                                                     title=\"Package is no longer supported and
                                                     may not install on the next Julia release\">
                                                     deprecated</span>""" : "")
+    temp_data["FWDDEP"]      = pkg["fwddep"]
+    temp_data["REVDEP"]      = pkg["revdep"]
     # For per-package detail page
     temp_data["PKG_LINK"]    = string("http://pkg.julialang.org/?pkg=", pkg["name"])
 
@@ -134,7 +136,7 @@ for pkg_name in pkg_names
             "STATUS"        => pkg["status"],
             "SHA"           => pkg["gitsha"],
             "VER"           => pkg["version"],
-            "DTSTR"         => Humanize.timedelta(Dates.now() - 
+            "DTSTR"         => Humanize.timedelta(Dates.now() -
                                     DateTime(pkg["gitdate"],"y-m-d H:M:S")),
             "HUMAN_STATUS"  => HUMANSTATUS[pkg["status"]],
             # For per-package detail page
