@@ -30,6 +30,10 @@ sudo su -c 'echo "APT::Get::force-yes \"true\";" >> /etc/apt/apt.conf.d/pkgevalf
 
 
 #######################################################################
+# Use newest R release
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+sudo add-apt-repository -y "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/"
+
 # Upgrade the installation and install Julia 
 sudo apt-get update    # Pull in latest versions
 sudo apt-get upgrade   # Upgrade system packages
