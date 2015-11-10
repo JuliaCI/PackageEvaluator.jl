@@ -94,6 +94,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "Instruments"   =>  :BINARY,    # Needs NI-VISA
                 "KNITRO"        =>  :BINARY,    # Commercial software
                 "LibTrading"    =>  :BINARY,    # Needs libtrading
+                "Mandrill"      =>  :BREAKS,    # Needs API Key
                 "Mathematica"   =>  :BINARY,    # Commercial software
                 "MATLAB"        =>  :BINARY,    # Commercial software
                 "MATLABCluster" =>  :BINARY,    # Commercial software
