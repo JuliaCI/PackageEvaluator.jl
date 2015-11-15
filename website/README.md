@@ -5,7 +5,7 @@ Depending on the configuration it is run in, PkgEval will produce either
 * `0.3all.json` and `0.4all.json`, or
 * `0.3AL.json`, `0.3MZ.json`, `0.4AL.json`, `0.4MZ.json`
 
-The scripts in this folder take these results, enhance them, and contruct
+The scripts in this folder take these results, enhance them, and construct
 the HTML and images for the website. If you have everything installed,
 you should open up `build.sh` and modify the paths for your system. It
 will then run through all the components.
