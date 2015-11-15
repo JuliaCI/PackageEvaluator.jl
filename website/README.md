@@ -14,7 +14,7 @@ will then run through all the components.
 `Gadfly.jl`,
 `GitHub.jl`,
 `Humanize.jl`,
-`JLD.jl`, 
+`JLD.jl`,
 `JSON.jl`,
 `MetadataTools.jl`,
 `Mustache.jl`,
@@ -54,5 +54,6 @@ Makes the plots for the Pulse page:
   - The stars plot
   - The test status fraction plot
 
+#### 6. `build_pulse.jl`
 
-#### TODO: bring `plot_pkg`
+Builds the Package Ecosystem Pulse page.
