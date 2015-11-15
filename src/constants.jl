@@ -117,6 +117,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "PyLexYacc"     =>  :PYTHON,    # Needs PLY and attrdict
                 "PyPlot"        =>  :XVFB,      # GUI
                 "PySide"        =>  :PYTHON,    # Needs PySide/Qt
+                "QuartzImageIO" =>  :OSX,
                 "RdRand"        =>  :BINARY,    # Needs latest Intel CPU
                 "REPLCompletions" => :DEP,      # Deprecated, just throws error (???)
                 "RobotOS"       =>  :PYTHON,    # Needs rospy
