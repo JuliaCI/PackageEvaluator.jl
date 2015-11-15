@@ -30,6 +30,10 @@ sudo su -c 'echo "APT::Get::force-yes \"true\";" >> /etc/apt/apt.conf.d/pkgevalf
 
 
 #######################################################################
+# Use newest R release
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+sudo add-apt-repository -y "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/"
+
 # Upgrade the installation and install Julia 
 sudo apt-get update    # Pull in latest versions
 sudo apt-get upgrade   # Upgrade system packages
@@ -75,13 +79,8 @@ echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-se
 sudo apt-get -y install oracle-java7-installer
 export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 echo "export JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /home/vagrant/.profile
-# Install matplotlib for PyPlot.jl
-sudo apt-get install python-matplotlib
-# Install xlrd for ExcelReaders.jl
-sudo apt-get install python-pip
-sudo pip install xlrd
-# Install SymPy
-sudo pip install sympy
+# Use the Conda Package as Python environment
+export PYTHON = ""
 # need /usr/share/dict/words for TextAnalysis.jl
 sudo apt-get install wamerican
 

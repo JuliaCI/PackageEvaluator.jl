@@ -17,6 +17,9 @@ const LICENSES=[("MIT",[
                     r"mit expat license",
                     r"mit \"expat\" license",
                     r"permission is hereby granted, free of charge,"]),
+                ("MPL v2",[
+                    r"mpl version 2",
+                    r"mozilla public license version 2"]),
                 ("GPL v2",[
                     r"gpl version 2",
                     r"gpl ?v2",
@@ -74,6 +77,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "CURAND"        =>  :BINARY,    # NVIDIA CUDA
                 "CUSOLVER"      =>  :BINARY,    # NVIDIA CUDA
                 "CUSPARSE"      =>  :BINARY,    # NVIDIA CUDA
+                "EEG"           =>  :XVFB,      # GUI via Tk.jl
                 "Expect"        =>  :BREAKS,    # Used to cause hangs
                 "GLAbstraction" =>  :OPENGL,
                 "GLFW"          =>  :OPENGL,
@@ -90,6 +94,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "Instruments"   =>  :BINARY,    # Needs NI-VISA
                 "KNITRO"        =>  :BINARY,    # Commercial software
                 "LibTrading"    =>  :BINARY,    # Needs libtrading
+                "Mandrill"      =>  :BREAKS,    # Needs API Key
                 "Mathematica"   =>  :BINARY,    # Commercial software
                 "MATLAB"        =>  :BINARY,    # Commercial software
                 "MATLABCluster" =>  :BINARY,    # Commercial software
