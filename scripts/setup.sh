@@ -80,7 +80,7 @@ sudo apt-get -y install oracle-java7-installer
 export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 echo "export JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /home/vagrant/.profile
 # Use the Conda Package as Python environment
-export PYTHON = ""
+export PYTHON=""
 # need /usr/share/dict/words for TextAnalysis.jl
 sudo apt-get install wamerican
 
