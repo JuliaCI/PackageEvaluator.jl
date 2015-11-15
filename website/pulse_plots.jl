@@ -10,6 +10,8 @@
 # - The test status fraction plot
 #-----------------------------------------------------------------------
 
+print_with_color(:magenta, "Making plots for pulse page...\n")
+
 using Gadfly
 include("shared.jl")
 
@@ -72,15 +74,17 @@ jl_date_vers = [Date(2014,08,20)  "v0.3.0→"  100;
                 Date(2014,10,21)  "v0.3.2→"  100;
                 Date(2014,11,23)  "v0.3.3→"  100;
                 Date(2014,12,26)  "v0.3.4→"  100;
-                Date(2015,01,08)  ""        100;
+                Date(2015,01,08)  ""         100;
                 Date(2015,02,17)  "v0.3.6→"  100;
                 Date(2015,03,23)  "v0.3.7→"  100;
                 Date(2015,04,30)  "v0.3.8→"  100;
                 Date(2015,05,30)  "v0.3.9→"  100;
                 Date(2015,05,30)  "v0.3.9→"  100;
-                Date(2015,06,24)  ""        100;
+                Date(2015,06,24)  ""         100;
                 Date(2015,07,27)  "v0.3.11→" 100;
-                Date(2015,10,08)  "v0.4.0→"  200]
+                Date(2015,10,26)  "v0.3.12→" 100;
+                Date(2015,10,08)  "v0.4.0→"  200;
+                Date(2015,11,08)  "v0.4.1→"  200]
 p = plot(
     layer(x=x_dates["0.2"],y=y_totals["0.2"],color=fill("0.2",length(x_dates["0.2"])),Geom.line),
     layer(x=x_dates["0.3"],y=y_totals["0.3"],color=fill("0.3",length(x_dates["0.3"])),Geom.line),
@@ -154,7 +158,7 @@ for ver in keys(totals), aspercent in [true,false]
             if v["total"] > 0
                 push!(x_dates_old, d)
                 for key in OLDCODES
-                    push!(y_totals_old[key], 
+                    push!(y_totals_old[key],
                         aspercent ? v[key] / v["total"] * 100 :
                                     v[key])
                 end
@@ -175,12 +179,12 @@ for ver in keys(totals), aspercent in [true,false]
         [layer(x=x_dates_old,
                y=y_totals_old[key],
                color=fill("old"*key,length(x_dates_old)),
-               Geom.line) 
+               Geom.line)
             for key in OLDCODES[1:end-1]]...,
         [layer(x=x_dates,
                y=y_totals[key],
                color=fill("new"*key,length(x_dates)),
-               Geom.line) 
+               Geom.line)
             for key in NEWCODES[1:end-1]]...,
         Scale.y_continuous(
             minvalue=0,

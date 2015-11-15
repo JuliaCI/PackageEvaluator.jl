@@ -11,6 +11,8 @@
 # extra-for-experts stuff like histories, badges, and logs.
 #-----------------------------------------------------------------------
 
+print_with_color(:magenta, "Building index page and detail pages...\n")
+
 import JSON, Humanize, Mustache
 include("shared.jl")
 
