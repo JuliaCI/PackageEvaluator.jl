@@ -10,7 +10,7 @@
 # then runs it to produce the JSON result files.
 #
 # Commandline arguments for this script, passed through by Vagrant.
-# 1st: Julia version:   0.3 | 0.4
+# 1st: Julia version:   0.3 | 0.4 | 0.5
 # 2nd: Test set to run: setup | all | AL | MZ
 #######################################################################
 
@@ -34,15 +34,19 @@ sudo su -c 'echo "APT::Get::force-yes \"true\";" >> /etc/apt/apt.conf.d/pkgevalf
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
 sudo add-apt-repository -y "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/"
 
-# Upgrade the installation and install Julia 
+# Upgrade the installation and install Julia
 sudo apt-get update    # Pull in latest versions
 sudo apt-get upgrade   # Upgrade system packages
 # Use first argument to script to distinguish between the versions
 if [ "$1" == "0.3" ]
 then
     wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.3/julia-0.3-latest-linux-x86_64.tar.gz
-else
+elif [ "$1" == "0.4" ]
+then
     wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4-latest-linux-x86_64.tar.gz
+else
+    # Nightly
+    wget -O julia.tar.gz https://status.julialang.org/download/linux-x86_64
 fi
 mkdir julia
 tar -zxvf julia.tar.gz -C ./julia --strip-components=1
@@ -69,7 +73,7 @@ sudo apt-get install unzip
 # Need cmake for e.g. GLFW.jl, Metis.jl
 sudo apt-get install cmake
 # Install R for e.g. Rif.jl, RCall.jl
-sudo apt-get install r-base r-base-dev 
+sudo apt-get install r-base r-base-dev
 # Install Java for e.g. JavaCall.jl, Taro.jl
 # From: http://stackoverflow.com/q/19275856/3822752
 sudo add-apt-repository -y ppa:webupd8team/java
@@ -170,11 +174,7 @@ do
     # even if it is just a simple move effectively. Can we
     # just pull the encoding part out of JSON, which is all
     # we really need because most of it is parsing?
-    # Add DataStructures because if JSON gets precompiled with
-    # DataStructures present but then loaded with DataStructures
-    # not present, bad things happen (packages that don't depend
-    # on DataStructures themselves fail to output .json results).
-    julia -e 'Pkg.add("JSON"), Pkg.add("DataStructures")'
+    julia -e 'Pkg.add("JSON")'
     julia $PKGEVALDIR/src/prepjson.jl $PKGNAME $TESTSTATUS /vagrant/${1}${2}
     # Finish up by removing the package. Doesn't actually remove
     # it in the sense of deleting the files - this helps the
