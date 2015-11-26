@@ -14,6 +14,11 @@ import JSON, Mustache
 include("shared.jl")
 const RELEASE = "0.3"
 const NIGHTLY = "0.4"
+const LASTVER = "0.3"
+const CURVER  = "0.4"
+const NEXTVER = "0.5"
+const JULIA_VERSIONS = [LASTVER,CURVER,NEXTVER]
+const VERSION_FOR_CHANGES = CURVER
 
 # Load test history
 date_str     = ARGS[1]
@@ -23,7 +28,8 @@ output_path  = ARGS[4]
 
 # Load package listing, turn into a more useful dictionary
 pkgs = JSON.parsefile("final.json")
-pkgdict = Dict(RELEASE=>Dict(), NIGHTLY=>Dict())
+#pkgdict = Dict(RELEASE=>Dict(), NIGHTLY=>Dict())
+pkgdict = Dict([ver => Dict() for ver in JULIA_VERSIONS])
 for pkg in pkgs
     pkgdict[pkg["jlver"]][pkg["name"]] = pkg
 end
@@ -46,7 +52,7 @@ print_with_color(:magenta, "  Package version changes... ")
 # * version bumps
 changes = Any[]
 for pkgname in pkgnames
-    hist_key = (pkgname, NIGHTLY)
+    hist_key = (pkgname, VERSION_FOR_CHANGES)
     # If no history for this package, just punt
     hist_key ∉ keys(hist_db) && continue
     hist = hist_db[hist_key]
@@ -81,7 +87,7 @@ temp_data["NUMNEWPKG"] = 0
 temp_data["NUMUPDPKG"] = 0
 for c in changes
     change_type, pkgname, pre_ver, cur_ver = c
-    pd = pkgdict[NIGHTLY][pkgname]
+    pd = pkgdict[VERSION_FOR_CHANGES][pkgname]
     temp_change = Dict()
     temp_change["icon"] = (change_type == :new) ? "star" : "arrow-up"
     temp_change["name"] = pkgname
@@ -133,7 +139,7 @@ temp_data["TOPSTARALLTIME"] = Any[]
 for i in 1:10
     pkgname, cur_star, pre_star = star_top_alltime[i]
     push!(temp_data["TOPSTARALLTIME"], Dict(
-                "url"       => pkgdict[NIGHTLY][pkgname]["url"],
+                "url"       => pkgdict[VERSION_FOR_CHANGES][pkgname]["url"],
                 "name"      => pkgname,
                 "count"     => cur_star,
                 "change"    => cur_star - pre_star ))
@@ -145,7 +151,7 @@ temp_data["TOPSTARCHANGE"] = Any[]
 for i in 1:10
     pkgname, cur_star, pre_star = star_top_change[i]
     push!(temp_data["TOPSTARCHANGE"], Dict(
-                "url"       => pkgdict[NIGHTLY][pkgname]["url"],
+                "url"       => pkgdict[VERSION_FOR_CHANGES][pkgname]["url"],
                 "name"      => pkgname,
                 "count"     => cur_star,
                 "change"    => cur_star - pre_star ))
@@ -157,8 +163,8 @@ end
 
 print_with_color(:magenta, "  Status totals...\n")
 
-totals = Dict{Any,Any}(RELEASE => Dict(), NIGHTLY => Dict())
-for JULIA_VERSION in [RELEASE, NIGHTLY]
+totals = Dict([ver => Dict() for ver in JULIA_VERSIONS])
+for JULIA_VERSION in JULIA_VERSIONS
     for pkgname in pkgnames
         hist_key = (pkgname, JULIA_VERSION)
         # If no history for this package, just punt
@@ -182,19 +188,26 @@ function rel_num(count, total)
     @sprintf("%d (%.0f%%)", count, count/total*100)
 end
 
-RELEASE_total = totals[RELEASE]["total"]
-temp_data["RELEASEPASS"]    = rel_num(totals[RELEASE]["tests_pass"],    RELEASE_total)
-temp_data["RELEASEFAIL"]    = rel_num(totals[RELEASE]["tests_fail"],    RELEASE_total)
-temp_data["RELEASENOTEST"]  = rel_num(totals[RELEASE]["no_tests"],      RELEASE_total)
-temp_data["RELEASEUNTEST"]  = rel_num(totals[RELEASE]["not_possible"],  RELEASE_total)
-temp_data["RELEASETOTAL"]   = string(RELEASE_total)
+LASTVER_total = totals[LASTVER]["total"]
+temp_data["LASTVERPASS"]    = rel_num(totals[LASTVER]["tests_pass"],    LASTVER_total)
+temp_data["LASTVERFAIL"]    = rel_num(totals[LASTVER]["tests_fail"],    LASTVER_total)
+temp_data["LASTVERNOTEST"]  = rel_num(totals[LASTVER]["no_tests"],      LASTVER_total)
+temp_data["LASTVERUNTEST"]  = rel_num(totals[LASTVER]["not_possible"],  LASTVER_total)
+temp_data["LASTVERTOTAL"]   = string(LASTVER_total)
 
-NIGHTLY_total = totals[NIGHTLY]["total"]
-temp_data["NIGHTLYPASS"]    = rel_num(totals[NIGHTLY]["tests_pass"],    NIGHTLY_total)
-temp_data["NIGHTLYFAIL"]    = rel_num(totals[NIGHTLY]["tests_fail"],    NIGHTLY_total)
-temp_data["NIGHTLYNOTEST"]  = rel_num(totals[NIGHTLY]["no_tests"],      NIGHTLY_total)
-temp_data["NIGHTLYUNTEST"]  = rel_num(totals[NIGHTLY]["not_possible"],  NIGHTLY_total)
-temp_data["NIGHTLYTOTAL"]   = string(NIGHTLY_total)
+CURVER_total = totals[CURVER]["total"]
+temp_data["CURVERPASS"]     = rel_num(totals[CURVER]["tests_pass"],     CURVER_total)
+temp_data["CURVERFAIL"]     = rel_num(totals[CURVER]["tests_fail"],     CURVER_total)
+temp_data["CURVERNOTEST"]   = rel_num(totals[CURVER]["no_tests"],       CURVER_total)
+temp_data["CURVERUNTEST"]   = rel_num(totals[CURVER]["not_possible"],   CURVER_total)
+temp_data["CURVERTOTAL"]    = string(CURVER_total)
+
+NEXTVER_total = totals[NEXTVER]["total"]
+temp_data["NEXTVERPASS"]    = rel_num(totals[NEXTVER]["tests_pass"],    NEXTVER_total)
+temp_data["NEXTVERFAIL"]    = rel_num(totals[NEXTVER]["tests_fail"],    NEXTVER_total)
+temp_data["NEXTVERNOTEST"]  = rel_num(totals[NEXTVER]["no_tests"],      NEXTVER_total)
+temp_data["NEXTVERUNTEST"]  = rel_num(totals[NEXTVER]["not_possible"],  NEXTVER_total)
+temp_data["NEXTVERTOTAL"]   = string(NEXTVER_total)
 
 #-----------------------------------------------------------------------
 # STATUS CHANGES

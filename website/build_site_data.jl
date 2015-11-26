@@ -16,7 +16,7 @@ import Requests
 include("shared.jl")
 
 if length(ARGS) != 3
-    error("Expected 2 arguments: log folder, badge folder, history path")
+    error("Expected 3 arguments: log folder, badge folder, history path")
 end
 log_path = ARGS[1]
 badge_path = ARGS[2]
@@ -126,7 +126,7 @@ for pkg in all_pkgs
     r = Requests.get(req_url)
     if Requests.statuscode(r) != 200
         print_with_color(:red, "  No badge generated (HTTP status != 200)\n")
-        print_with_color(:red, "  ", Requests.statuscode(r), "  ", Requests.text(r), "\n")
+        print_with_color(:red, string("  ", Requests.statuscode(r), "  ", Requests.text(r), "\n"))
     else
         badge_file = joinpath(badge_path,
                         string(pkg["name"],"_",pkg["jlver"],".svg"))

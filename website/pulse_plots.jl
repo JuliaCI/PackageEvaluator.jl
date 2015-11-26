@@ -23,9 +23,11 @@ output_path  = ARGS[3]
 # Load history databases
 hist_db, pkgnames, dates = load_hist_db(hist_db_file)
 
+print_with_color(:magenta, "  Totals and sanity checks...\n")
+
 # Collect totals for each Julia version by date and status
 totals = Dict()
-for ver in ["0.2","0.3","0.4"]
+for ver in ["0.2","0.3","0.4","0.5"]
     totals[ver] = Dict([date => Dict([status => 0 for status in keys(HUMANSTATUS)])
                         for date in dates])
     for pkg in pkgnames
@@ -42,19 +44,17 @@ for ver in ["0.2","0.3","0.4"]
 end
 
 # Print some sanity check info, good for picking up massive failures
-println(dates[1], "  ", dates[2])
+println("    ", dates[1], "  ", dates[2])
 for status in keys(HUMANSTATUS)
-    print(status, "  ")
-    print(totals["0.4"][dates[1]][status])
-    print("  ")
-    print(totals["0.4"][dates[2]][status])
-    println()
+    @printf("    %20s   %4d   %4d\n", status,
+        totals["0.4"][dates[1]][status],
+        totals["0.4"][dates[2]][status])
 end
 
 #-----------------------------------------------------------------------
 # 1. MAIN PLOT
 # Shows total packages by version
-println("Printing main plot...")
+print_with_color(:magenta, "  Printing main plot...\n")
 
 # Build an x-axis and y-axis for each version
 x_dates  = Dict([ver=>Date[] for ver in keys(totals)])
@@ -89,13 +89,14 @@ p = plot(
     layer(x=x_dates["0.2"],y=y_totals["0.2"],color=fill("0.2",length(x_dates["0.2"])),Geom.line),
     layer(x=x_dates["0.3"],y=y_totals["0.3"],color=fill("0.3",length(x_dates["0.3"])),Geom.line),
     layer(x=x_dates["0.4"],y=y_totals["0.4"],color=fill("0.4",length(x_dates["0.4"])),Geom.line),
+    layer(x=x_dates["0.5"],y=y_totals["0.5"],color=fill("0.5",length(x_dates["0.5"])),Geom.line),
     # Julia release lines
     layer(x=map(d->(d+Dates.Day(4)), jl_date_vers[:,1]),  # Correct offset
           y=jl_date_vers[:,3],
           label=jl_date_vers[:,2],
           Geom.label(position=:left)),
     layer(xintercept=jl_date_vers[:,1],
-          Geom.vline(color=colorant"gray50", size=1px)),
+          Geom.vline(color="gray50", size=1px)),
     # Axis labels
     Scale.y_continuous(minvalue=250,maxvalue=700),
     Guide.ylabel("Number of Tagged Packages"),
@@ -107,7 +108,7 @@ draw(SVG(joinpath(output_path,"allver.svg"), 10inch, 4inch), p)
 #-----------------------------------------------------------------------
 # 2. STAR PLOT
 # Shows total stars across time
-println("Printing star plot...")
+print_with_color(:magenta, "  Printing star plot...\n")
 
 star_hist, star_dates = load_star_db(star_db_file)
 star_totals = [d => 0 for d in dates]
@@ -138,6 +139,8 @@ draw(SVG(joinpath(output_path,"stars.svg"), 8inch, 3inch), p)
 
 #-----------------------------------------------------------------------
 # 3. VERSION PLOTS
+print_with_color(:magenta, "  Printing version plots...\n")
+
 const OLDCODES = ["full_pass","full_fail",
                   "using_pass","using_fail",
                   "not_possible","total"]

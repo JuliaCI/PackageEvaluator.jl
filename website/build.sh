@@ -9,7 +9,7 @@
 # You should edit this file for the paths on your system.
 #-----------------------------------------------------------------------
 
-CURDATE=20151114
+CURDATE=20151125
 
 JULIA=/Users/idunning/Code/julia04/julia
 STARPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/db/star_db.csv
@@ -21,7 +21,7 @@ IMGPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/img
 
 scp nanosoldier1.csail.mit.edu:~/PkgEval/scripts/*.json ./
 
-$JULIA --color=yes pull_repo_info.jl 0.3AL.json 0.3MZ.json 0.4AL.json 0.4MZ.json
+$JULIA --color=yes pull_repo_info.jl 0.3AL.json 0.3MZ.json 0.4AL.json 0.4MZ.json 0.5AL.json 0.5MZ.json
 
 $JULIA --color=yes build_site_data.jl $LOGPATH $BADGEPATH $HISTPATH
 

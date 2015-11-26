@@ -137,21 +137,29 @@
 
       <h3 style="text-align:center">Testing status changes</h3>
       <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-4">
         <img src="../img/0.3_false.svg"  class="img-responsive center-block" alt="Julia 0.3 Package Test Status">
       </div>
-      <div class="col-sm-6">
+      <div class="col-sm-4">
         <img src="../img/0.4_false.svg"  class="img-responsive center-block" alt="Julia 0.4 Package Test Status">
       </div>
+      <div class="col-sm-4">
+        <img src="../img/0.5_false.svg"  class="img-responsive center-block" alt="Julia 0.5 Package Test Status">
       </div>
+      </div>
+
       <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-4">
         <img src="../img/0.3_true.svg"  class="img-responsive center-block" alt="Julia 0.3 Package Test Status">
       </div>
-      <div class="col-sm-6">
+      <div class="col-sm-4">
         <img src="../img/0.4_true.svg"  class="img-responsive center-block" alt="Julia 0.4 Package Test Status">
       </div>
+      <div class="col-sm-4">
+        <img src="../img/0.5_true.svg"  class="img-responsive center-block" alt="Julia 0.5 Package Test Status">
       </div>
+      </div>
+
       <table width="100%">
         <tr style="border-bottom: 1px solid">
           <td style="border-right: 1px solid">Version</td>
@@ -161,21 +169,29 @@
           <td width="17%" style="color: grey;">Package untestable</td>
           <td width="17%" style="color: grey;">Total</td>
         </tr>
-        <tr style="border-bottom: 1px solid">
+        <tr>
           <td style="border-right: 1px solid">Julia 0.3</td>
-          <td>{{RELEASEPASS}}</td>
-          <td>{{RELEASEFAIL}}</td>
-          <td>{{RELEASENOTEST}}</td>
-          <td>{{RELEASEUNTEST}}</td>
-          <td>{{RELEASETOTAL}}</td>
+          <td>{{LASTVERPASS}}</td>
+          <td>{{LASTVERFAIL}}</td>
+          <td>{{LASTVERNOTEST}}</td>
+          <td>{{LASTVERUNTEST}}</td>
+          <td>{{LASTVERTOTAL}}</td>
         </tr>
         <tr>
           <td style="border-right: 1px solid">Julia 0.4</td>
-          <td>{{NIGHTLYPASS}}</td>
-          <td>{{NIGHTLYFAIL}}</td>
-          <td>{{NIGHTLYNOTEST}}</td>
-          <td>{{NIGHTLYUNTEST}}</td>
-          <td>{{NIGHTLYTOTAL}}</td>
+          <td>{{CURVERPASS}}</td>
+          <td>{{CURVERFAIL}}</td>
+          <td>{{CURVERNOTEST}}</td>
+          <td>{{CURVERUNTEST}}</td>
+          <td>{{CURVERTOTAL}}</td>
+        </tr>
+        <tr>
+          <td style="border-right: 1px solid">Julia 0.5</td>
+          <td>{{NEXTVERPASS}}</td>
+          <td>{{NEXTVERFAIL}}</td>
+          <td>{{NEXTVERNOTEST}}</td>
+          <td>{{NEXTVERUNTEST}}</td>
+          <td>{{NEXTVERTOTAL}}</td>
         </tr>
       </table>
 
