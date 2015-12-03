@@ -8,7 +8,7 @@
 # start history databases.
 #-----------------------------------------------------------------------
 
-print_with_color(:magenta, "Update databases...\n")
+print_with_color(:magenta, "Updating databases...\n")
 
 using JSON, GitHub, JLD
 

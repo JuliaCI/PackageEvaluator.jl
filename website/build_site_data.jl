@@ -10,6 +10,8 @@
 # badge if there is no change.
 #-----------------------------------------------------------------------
 
+print_with_color(:magenta, "Merging repo info, creating badges and logs...\n")
+
 using JSON, GitHub, JLD
 import MetadataTools
 import Requests

@@ -9,7 +9,7 @@
 # You should edit this file for the paths on your system.
 #-----------------------------------------------------------------------
 
-CURDATE=20151125
+CURDATE=20151203
 
 JULIA=/Users/idunning/Code/julia04/julia
 STARPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/db/star_db.csv

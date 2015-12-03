@@ -10,6 +10,8 @@
 # token is stored in working directory in a `token` file.
 #-----------------------------------------------------------------------
 
+print_with_color(:magenta, "Pulling repository info...\n")
+
 using JSON, GitHub, JLD
 
 # Load raw PkgEval data. Assume all arguments are JSON result files
