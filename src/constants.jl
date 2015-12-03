@@ -78,6 +78,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "CUSOLVER"      =>  :BINARY,    # NVIDIA CUDA
                 "CUSPARSE"      =>  :BINARY,    # NVIDIA CUDA
                 "EEG"           =>  :XVFB,      # GUI via Tk.jl
+                "Elemental"     =>  :BINARY,    # Depends on MPI.jl
                 "Expect"        =>  :BREAKS,    # Used to cause hangs
                 "GLAbstraction" =>  :OPENGL,
                 "GLFW"          =>  :OPENGL,
