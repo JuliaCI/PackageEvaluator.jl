@@ -80,8 +80,8 @@ for pkg in all_pkgs
     # Add description and stars
     if pkg["name"] in keys(pkg_repo_infos) &&
                 pkg_repo_infos[pkg["name"]] != nothing
-        pkg["githubdesc"]  = pkg_repo_infos[pkg["name"]].description
-        pkg["githubstars"] = pkg_repo_infos[pkg["name"]].stargazers_count
+        pkg["githubdesc"]  = pkg_repo_infos[pkg["name"]]["description"]
+        pkg["githubstars"] = pkg_repo_infos[pkg["name"]]["stargazers_count"]
     else
         warn(pkg["name"], " has no repository information!")
         pkg["githubdesc"]  = "No description available."

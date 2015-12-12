@@ -45,8 +45,8 @@ for (pkg_name, repo_info) in pkg_repo_infos
     end
     println(star_fp, datestr, ", ",
             lpad(pkg_name,30," "), ",",
-            lpad(string(repo_info.stargazers_count),5," ") )
-    total_stars += repo_info.stargazers_count
+            lpad(string(repo_info["stargazers_count"]),5," ") )
+    total_stars += repo_info["stargazers_count"]
 end
 close(star_fp)
 println("Done. Total stars: ", total_stars)

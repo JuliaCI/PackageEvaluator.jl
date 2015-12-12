@@ -42,13 +42,21 @@ for (pkg_name, repo_name, repo_owner) in pkg_repos
     @printf("(%5.2f%%) ", length(pkg_repo_infos)/length(pkg_repos)*100)
     println((pkg_name, repo_owner, repo_name))
     repo_info = try
-        repo(repo_owner, repo_name, auth=gh_auth)
+        repo(repo_owner * "/" * repo_name, auth=gh_auth)
     catch err
         println("Couldn't get info for ", repo_owner, "/", repo_name)
         println(err)
         nothing
     end
-    pkg_repo_infos[pkg_name] = repo_info
+    # Convert repo to dict so we can serialize
+    if repo_info == nothing
+        pkg_repo_infos[pkg_name] = repo_info
+    else
+        pkg_repo_infos[pkg_name] = Dict(
+            "description"       => get(repo_info.description, ""),
+            "stargazers_count"  => get(repo_info.stargazers_count, 0)
+        )
+    end
 end
 
 # Save information in a JLD file
