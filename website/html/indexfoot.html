@@ -1,7 +1,7 @@
     <script>
       window.onload = function (event) {
         var qstr = window.location.search;
-        qstr = window.location.search.substr(1, qstr.length - 2);
+        qstr = window.location.search.substr(1, qstr.length - 1);
         var aspl = qstr.split('&');
         for (var i = 0; i < aspl.length; i++) {
           var subqstr = aspl[i];
