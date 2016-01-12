@@ -50,7 +50,13 @@ echo "verbose = off" >> ~/.wgetrc
 sudo apt-get update    # Pull in latest versions
 sudo apt-get upgrade   # Upgrade system packages
 # Use first argument to script to distinguish between the versions
-if [ "$1" == "0.7" ]
+if [ "$2" == "AK" ]
+then
+    wget -O julia.tar.gz https://julianightlies.s3.amazonaws.com/bin/linux/x64/julia-latest-linux64.tar.gz
+elif [ "$2" == "LZ" ]
+then
+    wget -O julia.tar.gz https://julianightlies.s3.amazonaws.com/bin/linux/x64/0.6/julia-0.6.0-32a08c7acb-linux64.tar.gz
+elif [ "$1" == "0.5" ]
 then
     # Nightly
     wget -O julia.tar.gz https://julialangnightlies-s3.julialang.org/bin/linux/x64/julia-latest-linux64.tar.gz
@@ -135,15 +141,15 @@ julia -e "Pkg.init(); println(Pkg.dir())"
 
 #######################################################################
 # Run PackageEvaluator
-if [ "$2" == "all" ]
+if [ "$1" == "0.3" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/*
-elif [ "$2" == "AK" ]
+    LOOPOVER=/home/vagrant/.julia/v0.6/METADATA/[A-F,a-f]*
+elif [ "$1" == "0.4" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/[A-K,a-k]*;
-elif [ "$2" == "LZ" ]
+    LOOPOVER=/home/vagrant/.julia/v0.6/METADATA/[G-N,g-n]*;
+elif [ "$1" == "0.5" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/[L-Z,l-z]*;
+    LOOPOVER=/home/vagrant/.julia/v0.6/METADATA/[O-Z,o-z]*;
 fi
 # For every package name...
 for f in $LOOPOVER;
