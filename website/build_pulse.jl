@@ -223,6 +223,7 @@ for JULIA_VERSION in [RELEASE, NIGHTLY]
     for pkgname in pkgnames
         hist_key = (pkgname, JULIA_VERSION)
         # If no history for this package, just punt
+        pkgname ∉ keys(pkgdict[JULIA_VERSION]) && continue
         hist_key ∉ keys(hist_db) && continue
         hist = hist_db[hist_key]
         # How many days of history?
