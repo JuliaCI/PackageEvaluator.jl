@@ -12,7 +12,7 @@
 
 print_with_color(:magenta, "Making plots for pulse page...\n")
 
-using Gadfly
+using PyPlot
 include("shared.jl")
 
 # Load test history
@@ -59,51 +59,49 @@ print_with_color(:magenta, "  Printing main plot...\n")
 # Build an x-axis and y-axis for each version
 x_dates  = Dict([ver=>Date[] for ver in keys(totals)])
 y_totals = Dict([ver=>Int[]  for ver in keys(totals)])
-for ver in keys(totals)
-    for date in dates
-        y = totals[ver][date]["total"]
-        if y > 0
-            push!(x_dates[ver], dbdate_to_date(date))
-            push!(y_totals[ver], y)
-        end
-    end
+for ver in keys(totals), date in dates
+    y = totals[ver][date]["total"]
+    y <= 0 && continue
+    push!(x_dates[ver], dbdate_to_date(date))
+    push!(y_totals[ver], y)
 end
-# Julia releases so far
-jl_date_vers = [Date(2014,08,20)  "v0.3.0→"  100;
-                Date(2014,09,21)  "v0.3.1→"  100;
-                Date(2014,10,21)  "v0.3.2→"  100;
-                Date(2014,11,23)  "v0.3.3→"  100;
-                Date(2014,12,26)  "v0.3.4→"  100;
-                Date(2015,01,08)  ""         100;
-                Date(2015,02,17)  "v0.3.6→"  100;
-                Date(2015,03,23)  "v0.3.7→"  100;
-                Date(2015,04,30)  "v0.3.8→"  100;
-                Date(2015,05,30)  "v0.3.9→"  100;
-                Date(2015,05,30)  "v0.3.9→"  100;
-                Date(2015,06,24)  ""         100;
-                Date(2015,07,27)  "v0.3.11→" 100;
-                Date(2015,10,26)  "v0.3.12→" 100;
-                Date(2015,10,08)  "v0.4.0→"  200;
-                Date(2015,11,08)  "v0.4.1→"  200]
-p = plot(
-    layer(x=x_dates["0.2"],y=y_totals["0.2"],color=fill("0.2",length(x_dates["0.2"])),Geom.line),
-    layer(x=x_dates["0.3"],y=y_totals["0.3"],color=fill("0.3",length(x_dates["0.3"])),Geom.line),
-    layer(x=x_dates["0.4"],y=y_totals["0.4"],color=fill("0.4",length(x_dates["0.4"])),Geom.line),
-    layer(x=x_dates["0.5"],y=y_totals["0.5"],color=fill("0.5",length(x_dates["0.5"])),Geom.line),
-    # Julia release lines
-    layer(x=map(d->(d+Dates.Day(4)), jl_date_vers[:,1]),  # Correct offset
-          y=jl_date_vers[:,3],
-          label=jl_date_vers[:,2],
-          Geom.label(position=:left)),
-    layer(xintercept=jl_date_vers[:,1],
-          Geom.vline(color="gray50", size=1px)),
-    # Axis labels
-    Scale.y_continuous(minvalue=250,maxvalue=700),
-    Guide.ylabel("Number of Tagged Packages"),
-    Guide.xlabel("Date"),
-    Guide.colorkey("Julia ver."),
-    Theme(line_width=3px,label_placement_iterations=0))
-draw(SVG(joinpath(output_path,"allver.svg"), 10inch, 4inch), p)
+# Julia releases so far (release date, name, vertical height on plot, bold)
+jl_date_vers = [Date(2014,08,20)  "v0.3.0"  250  true;
+                Date(2014,09,21)  "v0.3.1"  300  false;
+                Date(2014,10,21)  "v0.3.2"  250  false;
+                Date(2014,11,23)  "v0.3.3"  300  false;
+                Date(2014,12,26)  "v0.3.4"  250  false;
+                Date(2015,01,08)  "v0.3.5"  300  false;
+                Date(2015,02,17)  "v0.3.6"  250  false;
+                Date(2015,03,23)  "v0.3.7"  300  false;
+                Date(2015,04,30)  "v0.3.8"  250  false;
+                Date(2015,05,30)  "v0.3.9"  300  false;
+                Date(2015,06,24)  "v0.3.10" 250  false;
+                Date(2015,07,27)  "v0.3.11" 300  false;
+                Date(2015,10,26)  "v0.3.12" 250  false;
+                Date(2015,10,08)  "v0.4.0"  400  true;
+                Date(2015,11,08)  "v0.4.1"  450  false;
+                Date(2015,12,06)  "v0.4.2"  400  false;
+                Date(2016,01,12)  "v0.4.3"  450  false]
+fig = figure(figsize=(10,4))  # inches
+plot(x_dates["0.2"], y_totals["0.2"], "r-",
+     x_dates["0.3"], y_totals["0.3"], "g-",
+     x_dates["0.4"], y_totals["0.4"], "b-",
+     x_dates["0.5"], y_totals["0.5"], "k-",
+     linewidth=2)
+for i in 1:size(jl_date_vers,1)
+    annotate(xy=(jl_date_vers[i,1],jl_date_vers[i,3]), s=jl_date_vers[i,2],
+             size="small", ha="center", backgroundcolor="w")
+    axvline(x=jl_date_vers[i,1], alpha=1.0,
+            color=jl_date_vers[i,4] ? "#333333" : "#cccccc")
+end
+xticks(rotation="vertical")
+ylabel("Number of Tagged Packages")
+legend(["0.2","0.3","0.4","0.5"], loc=2, fontsize="small")
+open(joinpath(output_path,"allver.svg"), "w") do fp
+    writemime(fp, "image/svg+xml", fig)
+end
+
 
 #-----------------------------------------------------------------------
 # 2. STAR PLOT
@@ -120,21 +118,24 @@ end
 
 x_dates  = Date[]
 y_totals = Int[]
-for (date,total) in star_totals
+for date in star_dates
     date == "20140925" && continue  # First entry, not accurate
     date == "20150620" && continue  # Weird spike, double counting?
+    total = star_totals[date]
     if total > 10
         push!(x_dates, dbdate_to_date(date))
         push!(y_totals, total)
     end
 end
-p = plot(
-    layer(x=x_dates,y=y_totals,color=ones(length(y_totals)),Geom.line),
-    Scale.color_discrete_manual(colorant"gold"),
-    Guide.ylabel("Number of Stars"),
-    Guide.xlabel("Date"),
-    Theme(line_width=3px,key_position=:none))
-draw(SVG(joinpath(output_path,"stars.svg"), 8inch, 3inch), p)
+fig = figure(figsize=(10,4))  # inches
+plot(x_dates, y_totals,
+     color="gold", marker="*",
+     linestyle="solid", linewidth=2)
+xticks(rotation="vertical")
+ylabel("Number of stars")
+open(joinpath(output_path,"stars.svg"), "w") do fp
+    writemime(fp, "image/svg+xml", fig)
+end
 
 
 #-----------------------------------------------------------------------
@@ -178,6 +179,7 @@ for ver in keys(totals), aspercent in [true,false]
             end
         end
     end
+    #=
     p = plot(
         [layer(x=x_dates_old,
                y=y_totals_old[key],
@@ -200,4 +202,24 @@ for ver in keys(totals), aspercent in [true,false]
                                     "green","red","blue","grey"),
         Theme(key_position=:none))
     draw(SVG(joinpath(output_path,"$(ver)_$(aspercent).svg"), 4inch, 3inch), p)
+    =#
+    fig = figure(figsize=(4,3))  # inches
+    # OLDCODES
+    plot(x_dates_old, y_totals_old["full_pass"],    color="green",  marker=".")
+    plot(x_dates_old, y_totals_old["full_fail"],    color="orange", marker=".")
+    plot(x_dates_old, y_totals_old["using_pass"],   color="blue",   marker=".")
+    plot(x_dates_old, y_totals_old["using_fail"],   color="red",    marker=".")
+    plot(x_dates_old, y_totals_old["not_possible"], color="grey",   marker=".")
+    # NEWCODES
+    plot(x_dates, y_totals["tests_pass"],   color="green",  marker=".")
+    plot(x_dates, y_totals["tests_fail"],   color="red",    marker=".")
+    plot(x_dates, y_totals["no_tests"],     color="blue",   marker=".")
+    plot(x_dates, y_totals["not_possible"], color="grey",   marker=".")
+    xticks(rotation="vertical")
+    ylabel(string(aspercent?"Percentage":"Number", " of Packages"))
+    ylim(ymin = 0, ymax = aspercent ? 70 : 600 )
+    title(string("Julia v$(ver)", aspercent ? " (relative)" : ""))
+    open(joinpath(output_path,"$(ver)_$(aspercent).svg"), "w") do fp
+        writemime(fp, "image/svg+xml", fig)
+    end
 end

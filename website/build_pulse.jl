@@ -12,8 +12,8 @@ print_with_color(:magenta, "Building pulse page...\n")
 import JSON, Mustache
 
 include("shared.jl")
-const RELEASE = "0.3"
-const NIGHTLY = "0.4"
+const RELEASE = "0.4"
+const NIGHTLY = "0.5"
 const LASTVER = "0.3"
 const CURVER  = "0.4"
 const NEXTVER = "0.5"
@@ -28,7 +28,6 @@ output_path  = ARGS[4]
 
 # Load package listing, turn into a more useful dictionary
 pkgs = JSON.parsefile("final.json")
-#pkgdict = Dict(RELEASE=>Dict(), NIGHTLY=>Dict())
 pkgdict = Dict([ver => Dict() for ver in JULIA_VERSIONS])
 for pkg in pkgs
     pkgdict[pkg["jlver"]][pkg["name"]] = pkg
@@ -101,7 +100,7 @@ for c in changes
     end
     temp_change["url"] = pd["url"]
     temp_change["sha"] = pd["gitsha"]
-    push!(disp_changes, temp_change)
+    change_type == :new && push!(disp_changes, temp_change)
 end
 temp_data["CHANGESLEFT"]  = disp_changes[1:div(length(disp_changes),2)+1]
 temp_data["CHANGESRIGHT"] = disp_changes[div(length(disp_changes),2)+2:end]
@@ -215,9 +214,11 @@ temp_data["NEXTVERTOTAL"]   = string(NEXTVER_total)
 
 print_with_color(:magenta, "  Status changes...\n")
 
+MAX_DAYS_HIST = 3
+
 changes = Dict(RELEASE => Dict(), NIGHTLY => Dict())
 for JULIA_VERSION in [RELEASE, NIGHTLY]
-    for date in hist_dates[1:5]
+    for date in hist_dates[1:MAX_DAYS_HIST]
         changes[JULIA_VERSION][date] = []
     end
     for pkgname in pkgnames
@@ -227,7 +228,7 @@ for JULIA_VERSION in [RELEASE, NIGHTLY]
         hist_key ∉ keys(hist_db) && continue
         hist = hist_db[hist_key]
         # How many days of history?
-        hist_days = min(size(hist,1), 5)
+        hist_days = min(size(hist,1), MAX_DAYS_HIST)
         # Look for changes
         for days_back in 1:hist_days
             cur_date   = hist[days_back, 1]
@@ -250,17 +251,17 @@ for JULIA_VERSION in [RELEASE, NIGHTLY]
             end
         end
     end
-    for date in hist_dates[1:5]
+    for date in hist_dates[1:MAX_DAYS_HIST]
         sort!(changes[JULIA_VERSION][date], by=d->d["name"])
     end
 end
 
 temp_data["RELEASECHANGES"] = [Dict(
     "TESTDATE"      => hist_dates[i],
-    "STATUSCHANGE"  => changes[RELEASE][hist_dates[i]]) for i in 1:5]
+    "STATUSCHANGE"  => changes[RELEASE][hist_dates[i]]) for i in 1:MAX_DAYS_HIST]
 temp_data["NIGHTLYCHANGES"] = [Dict(
     "TESTDATE"      => hist_dates[i],
-    "STATUSCHANGE"  => changes[NIGHTLY][hist_dates[i]]) for i in 1:5]
+    "STATUSCHANGE"  => changes[NIGHTLY][hist_dates[i]]) for i in 1:MAX_DAYS_HIST]
 
 #-----------------------------------------------------------------------
 # RENDER
