@@ -68,8 +68,7 @@
         <table class="changes" style="margin: 0 auto;">
           {{#CHANGESLEFT}}
           <tr>
-            <td> <span class="glyphicon glyphicon-{{icon}}"></span>
-                 <a href="{{url}}">{{name}}</a> </td>
+            <td> <a href="{{url}}">{{name}}</a> </td>
             <td> {{pre}} </td>
             <td> <a href="{{url}}/tree/{{sha}}">{{post}}</a> </td>
           </tr>
@@ -80,8 +79,7 @@
         <table class="changes" style="margin: 0 auto;">
           {{#CHANGESRIGHT}}
           <tr>
-            <td> <span class="glyphicon glyphicon-{{icon}}"></span>
-                 <a href="{{url}}">{{name}}</a> </td>
+            <td> <a href="{{url}}">{{name}}</a> </td>
             <td> {{pre}} </td>
             <td> <a href="{{url}}/tree/{{sha}}">{{post}}</a> </td>
           </tr>
@@ -108,7 +106,7 @@
 
       <div class="row">
       <div class="col-sm-6" style="text-align:center">
-        <h4>Top ten all-time <small>with 14-day change</small></h4>
+        <h4>Top twenty all-time <small>with 14-day change</small></h4>
         <table class="changes" style="margin: 0 auto;">
           {{#TOPSTARALLTIME}} <tr>
           <td> <a href="{{url}}">{{name}}</a> </td>
@@ -119,7 +117,7 @@
         </table>
       </div>
       <div class="col-sm-6" style="text-align:center">
-        <h4>Top ten 14-day change <small>with total</small></h4>
+        <h4>Top twenty 14-day change <small>with total</small></h4>
         <table class="changes" style="margin: 0 auto;">
           {{#TOPSTARCHANGE}} <tr>
           <td> <a href="{{url}}">{{name}}</a> </td>

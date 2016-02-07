@@ -132,10 +132,11 @@ for pkgname in keys(star_hist)
 end
 sort!(star_changes)
 
-# Get top ten by count
+# Get top by count
+num_top_star = 20
 star_top_alltime = sort(star_changes, by=f->f[2], rev=true)
 temp_data["TOPSTARALLTIME"] = Any[]
-for i in 1:10
+for i in 1:num_top_star
     pkgname, cur_star, pre_star = star_top_alltime[i]
     push!(temp_data["TOPSTARALLTIME"], Dict(
                 "url"       => pkgdict[VERSION_FOR_CHANGES][pkgname]["url"],
@@ -144,10 +145,10 @@ for i in 1:10
                 "change"    => cur_star - pre_star ))
 end
 
-# Get top ten by change
+# Get top by change
 star_top_change = sort(star_changes, by=f->(f[2]-f[3]), rev=true)
 temp_data["TOPSTARCHANGE"] = Any[]
-for i in 1:10
+for i in 1:num_top_star
     pkgname, cur_star, pre_star = star_top_change[i]
     push!(temp_data["TOPSTARCHANGE"], Dict(
                 "url"       => pkgdict[VERSION_FOR_CHANGES][pkgname]["url"],

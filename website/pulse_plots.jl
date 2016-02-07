@@ -149,6 +149,9 @@ const NEWCODES = ["tests_pass","tests_fail",
                   "no_tests","not_possible","total"]
 
 # Build an x-axis and y-axis for each version
+jlv3 = Date(2014,08,20)
+jlv4 = Date(2015,10,08)
+
 for ver in keys(totals), aspercent in [true,false]
     x_dates_old  = Date[]
     y_totals_old = [key=>Any[] for key in OLDCODES]
@@ -179,30 +182,6 @@ for ver in keys(totals), aspercent in [true,false]
             end
         end
     end
-    #=
-    p = plot(
-        [layer(x=x_dates_old,
-               y=y_totals_old[key],
-               color=fill("old"*key,length(x_dates_old)),
-               Geom.line)
-            for key in OLDCODES[1:end-1]]...,
-        [layer(x=x_dates,
-               y=y_totals[key],
-               color=fill("new"*key,length(x_dates)),
-               Geom.line)
-            for key in NEWCODES[1:end-1]]...,
-        Scale.y_continuous(
-            minvalue=0,
-            maxvalue=aspercent?100:450),
-        Guide.ylabel(string(aspercent?"Percentage":"Number",
-                            " of Packages"), orientation=:vertical),
-        Guide.xlabel("Date"),
-        Guide.title(string("Julia v$(ver)", aspercent ? " (relative)" : "")),
-        Scale.color_discrete_manual("green","orange","blue","red","grey",
-                                    "green","red","blue","grey"),
-        Theme(key_position=:none))
-    draw(SVG(joinpath(output_path,"$(ver)_$(aspercent).svg"), 4inch, 3inch), p)
-    =#
     fig = figure(figsize=(4,3))  # inches
     # OLDCODES
     plot(x_dates_old, y_totals_old["full_pass"],    color="green",  marker=".")
@@ -215,6 +194,16 @@ for ver in keys(totals), aspercent in [true,false]
     plot(x_dates, y_totals["tests_fail"],   color="red",    marker=".")
     plot(x_dates, y_totals["no_tests"],     color="blue",   marker=".")
     plot(x_dates, y_totals["not_possible"], color="grey",   marker=".")
+    if ver == "0.3"
+        annotate(xy=(jlv3,aspercent?35:550), s="v0.3",
+                 size="small", ha="left", backgroundcolor="w")
+        axvline(x=jlv3, alpha=1.0, color="#333333")
+    end
+    if ver == "0.3" || ver == "0.4"
+        annotate(xy=(jlv4,aspercent?35:550), s="v0.4",
+                 size="small", ha="left", backgroundcolor="w")
+        axvline(x=jlv4, alpha=1.0, color="#333333")
+    end
     xticks(rotation="vertical")
     ylabel(string(aspercent?"Percentage":"Number", " of Packages"))
     ylim(ymin = 0, ymax = aspercent ? 70 : 600 )
