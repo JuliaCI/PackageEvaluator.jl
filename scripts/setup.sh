@@ -87,6 +87,8 @@ echo "export JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /home/vagrant/.profile
 export PYTHON=""
 # need /usr/share/dict/words for TextAnalysis.jl
 sudo apt-get install wamerican
+# Need xmllint (and others?) for XMLDict.jl
+sudo apt-get install libxml2-utils
 
 
 #######################################################################
