@@ -63,6 +63,13 @@ const LICFILES=["LICENSE", "LICENSE.md", "License.md", "LICENSE.txt", "LICENSE.r
 const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "ApproxFun"     =>  :BINARY,    # Seems to need plotting for tests?
                 "Arduino"       =>  :BINARY,    # Needs libarduino
+                "AWSCore"       =>  :BINARY,    # Needs credentials (#119)
+                "AWSEC2"        =>  :BINARY,    # Needs credentials (#119)
+                "AWSIAM"        =>  :BINARY,    # Needs credentials (#119)
+                "AWSLambda"     =>  :BINARY,    # Needs credentials (#119)
+                "AWSS3"         =>  :BINARY,    # Needs credentials (#119)
+                "AWSSNS"        =>  :BINARY,    # Needs credentials (#119)
+                "AWSSQS"        =>  :BINARY,    # Needs credentials (#119)
                 "CasaCore"      =>  :BINARY,    # Needs http://casacore.github.io/casacore/
                 "Clang"         =>  :BINARY,    # Needs libclang
                 "CommonCrawl"   =>  :BREAKS,    # Needs AWS auth & downloads a lot
