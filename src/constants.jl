@@ -100,6 +100,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "IJulia"        =>  :PYTHON,    # Could be interesting to revist
                 "ImageView"     =>  :XVFB,      # GUI via Tk.jl
                 "Instruments"   =>  :BINARY,    # Needs NI-VISA
+                "JuliaWebAPI"   =>  :BINARY,    # Was freezing PkgEval
                 "KNITRO"        =>  :BINARY,    # Commercial software
                 "LibTrading"    =>  :BINARY,    # Needs libtrading
                 "Mandrill"      =>  :BREAKS,    # Needs API Key
