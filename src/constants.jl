@@ -121,6 +121,7 @@ const PKGOPTS= ["AppleAccelerate" => :OSX,
                 "OpenStreetMap" =>  :XVFB,      # Graphics via Winston
                 "Pandas"        =>  :PYTHON,    # Needs pandas
                 "Pardiso"       =>  :BINARY,    # Commercial software
+                "Plots"         =>  :BINARY,    # Too many plotting package dependecies https://github.com/tbreloff/Plots.jl/issues/243
                 "Polyglot"      =>  :BINARY,    # Froze PkgEval https://github.com/wavexx/Polyglot.jl/issues/1
                 "ProfileView"   =>  :XVFB,
                 "PyLexYacc"     =>  :PYTHON,    # Needs PLY and attrdict
