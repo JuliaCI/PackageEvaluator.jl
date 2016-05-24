@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #-----------------------------------------------------------------------
 # PackageEvaluator
 # https://github.com/IainNZ/PackageEvaluator.jl
@@ -9,17 +9,19 @@
 # You should edit this file for the paths on your system.
 #-----------------------------------------------------------------------
 
-CURDATE=20160207
+set -e # stop on failure
+CURDATE=$(date +%Y%m%d)
 
-JULIA=/Users/idunning/Code/julia04/julia
-STARPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/db/star_db.csv
-HISTPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/db/hist_db.csv
-LOGPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/logs
-BADGEPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/badges
-INDPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/
-IMGPATH=/Users/idunning/Dropbox/Websites/packages.julialang.org/img
+JULIA=$(which julia)
+STARPATH=$HOME/github/pkg.julialang.org/db/star_db.csv
+HISTPATH=$HOME/github/pkg.julialang.org/db/hist_db.csv
+LOGPATH=$HOME/github/pkg.julialang.org/logs
+BADGEPATH=$HOME/github/pkg.julialang.org/badges
+INDPATH=$HOME/github/pkg.julialang.org/
+IMGPATH=$HOME/github/pkg.julialang.org/img
 
-scp nanosoldier1.csail.mit.edu:~/PkgEval/scripts/*.json ./
+#scp nanosoldier1.csail.mit.edu:~/PkgEval/scripts/*.json ./
+cp $(dirname "$0")/../scripts/*.json .
 
 $JULIA --color=yes pull_repo_info.jl 0.3AL.json 0.3MZ.json 0.4AL.json 0.4MZ.json 0.5AL.json 0.5MZ.json
 

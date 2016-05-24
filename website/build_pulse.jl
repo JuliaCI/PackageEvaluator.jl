@@ -138,8 +138,9 @@ star_top_alltime = sort(star_changes, by=f->f[2], rev=true)
 temp_data["TOPSTARALLTIME"] = Any[]
 for i in 1:num_top_star
     pkgname, cur_star, pre_star = star_top_alltime[i]
+    url = pkgdict[NIGHTLY][pkgname]["url"]
     push!(temp_data["TOPSTARALLTIME"], Dict(
-                "url"       => pkgdict[VERSION_FOR_CHANGES][pkgname]["url"],
+                "url"       => url,
                 "name"      => pkgname,
                 "count"     => cur_star,
                 "change"    => cur_star - pre_star ))
@@ -150,8 +151,9 @@ star_top_change = sort(star_changes, by=f->(f[2]-f[3]), rev=true)
 temp_data["TOPSTARCHANGE"] = Any[]
 for i in 1:num_top_star
     pkgname, cur_star, pre_star = star_top_change[i]
+    url = pkgdict[NIGHTLY][pkgname]["url"]
     push!(temp_data["TOPSTARCHANGE"], Dict(
-                "url"       => pkgdict[VERSION_FOR_CHANGES][pkgname]["url"],
+                "url"       => url,
                 "name"      => pkgname,
                 "count"     => cur_star,
                 "change"    => cur_star - pre_star ))
