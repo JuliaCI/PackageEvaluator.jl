@@ -34,7 +34,7 @@ end
 println("Number of packages: ", length(pkg_repos))
 
 # Authenticate with Github
-gh_auth = authenticate(readall("token"))
+gh_auth = authenticate(readchomp("token"))
 
 # Retrieve information from Github
 pkg_repo_infos = Dict()
