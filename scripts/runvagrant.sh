@@ -27,6 +27,7 @@ if [ "$1" == "three" ]
 then
     vagrant up --no-provision all03
     vagrant up --no-provision all04
+    vagrant up --no-provision all05
 
     # Provision in parallel
     cat <<EOF | parallel_provision
