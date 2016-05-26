@@ -18,8 +18,8 @@ function makebackup(prefix)
             continue
         else
             mkdir(message)
-            run(`sh -c "cp -r *.out.txt $message"`)
-            run(ignorestatus(`sh -c "cp -r 0.* $message"`))
+            run(`sh -c "cp -a *.out.txt $message"`)
+            run(ignorestatus(`sh -c "cp -a 0.* $message"`))
             return message
         end
     end
