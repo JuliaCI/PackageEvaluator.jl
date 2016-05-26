@@ -18,7 +18,8 @@ function makebackup(prefix)
             continue
         else
             mkdir(message)
-            run(`sh -c "cp -r 0.* *.out.txt $message"`)
+            run(`sh -c "cp -r *.out.txt $message"`)
+            run(ignorestatus(`sh -c "cp -r 0.* $message"`))
             return message
         end
     end
@@ -40,7 +41,7 @@ run(`git checkout metadata-v2`) # don't leave any work detached on this machine
 run(`git pull`) # also update metadata?
 
 cd(joinpath(pkgevalpath, "website"))
-run(`./clean.sh`)
+run(ignorestatus(`./clean.sh`))
 run(`./build.sh`)
 token = readchomp("token")
 
