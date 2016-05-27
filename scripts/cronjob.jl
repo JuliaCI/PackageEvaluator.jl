@@ -58,3 +58,4 @@ run(`git push $token gh-pages`)
 run(`git remote rm $token`)
 
 println("Done!")
+run(ignorestatus(`mv $pkgevalpath/scripts/log.txt $pkgevalpath/scripts/$message`))
