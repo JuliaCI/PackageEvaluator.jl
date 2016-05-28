@@ -50,7 +50,7 @@ run(`./clean.sh`)
 
 cd(websitepath)
 run(`git config user.name "The Nanosoldier"`)
-run(`git config user.email nanosoldier@mit.edu`)
+run(`git config user.email jrevels@csail.mit.edu`)
 run(`git add .`)
 run(`git commit -m "$message"`)
 run(`git remote add $token https://$token:x-oauth-basic@github.com/JuliaCI/pkg.julialang.org`)
