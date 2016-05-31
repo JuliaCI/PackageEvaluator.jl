@@ -68,7 +68,8 @@
         <table class="changes" style="margin: 0 auto;">
           {{#CHANGESLEFT}}
           <tr>
-            <td> <a href="{{url}}">{{name}}</a> </td>
+            <td> <span class="glyphicon glyphicon-{{icon}}"></span>
+                 <a href="{{url}}">{{name}}</a> </td>
             <td> {{pre}} </td>
             <td> <a href="{{url}}/tree/{{sha}}">{{post}}</a> </td>
           </tr>
@@ -79,7 +80,8 @@
         <table class="changes" style="margin: 0 auto;">
           {{#CHANGESRIGHT}}
           <tr>
-            <td> <a href="{{url}}">{{name}}</a> </td>
+            <td> <span class="glyphicon glyphicon-{{icon}}"></span>
+                 <a href="{{url}}">{{name}}</a> </td>
             <td> {{pre}} </td>
             <td> <a href="{{url}}/tree/{{sha}}">{{post}}</a> </td>
           </tr>

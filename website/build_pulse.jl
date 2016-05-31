@@ -100,7 +100,7 @@ for c in changes
     end
     temp_change["url"] = pd["url"]
     temp_change["sha"] = pd["gitsha"]
-    change_type == :new && push!(disp_changes, temp_change)
+    push!(disp_changes, temp_change)
 end
 temp_data["CHANGESLEFT"]  = disp_changes[1:div(length(disp_changes),2)+1]
 temp_data["CHANGESRIGHT"] = disp_changes[div(length(disp_changes),2)+2:end]
