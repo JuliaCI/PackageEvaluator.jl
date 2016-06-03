@@ -36,7 +36,7 @@ function prepare_test()
     if get(PKGOPTS, pkg_name, :NORMAL) == :XVFB
         print(fp, "xvfb-run ")
     end
-    print(fp, "$TIMEOUTPATH 600s ")
+    print(fp, "$TIMEOUTPATH 1200s ")
     print(fp, "julia -e 'versioninfo(); Pkg.test(\"", pkg_name, "\")'")
     print(fp, " 2>&1 | tee PKGEVAL_", pkg_name, "_test.log")
     close(fp)
