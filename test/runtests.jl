@@ -1,7 +1,4 @@
 # Check src/constants.jl loads
-# On 0.3 it should be OK
-# On 0.4 it has deprecation warnings
-# On 0.5 it still loads, but will eventually not work
 src_dir = joinpath(splitdir(@__FILE__)[1], "..", "src")
 include(joinpath(src_dir, "constants.jl"))
 
