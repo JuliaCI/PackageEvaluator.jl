@@ -80,7 +80,7 @@ function prepare_json()
     log_str *= test_log
     log_str *= "\n>>> End of log"
 
-    output_dict = Dict([(
+    output_dict = Dict([
         ("jlver"            , string(VERSION.major,".",VERSION.minor)),
         ("name"             , pkg_name),
         ("url"              , url),
