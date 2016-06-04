@@ -80,19 +80,19 @@ function prepare_json()
     log_str *= test_log
     log_str *= "\n>>> End of log"
 
-    output_dict = {
-        "jlver"             => string(VERSION.major,".",VERSION.minor),
-        "name"              => pkg_name,
-        "url"               => url,
-        "version"           => string(Pkg.installed(pkg_name)),
-        "gitsha"            => chomp(git_sha),
-        "gitdate"           => chomp(git_date),
-        "license"           => license,
-        "licfile"           => lic_file,
-        "status"            => test_status,
-        "exit_code"         => exit_code,
-        "log"               => log_str
-    }
+    output_dict = Dict([(
+        ("jlver"            , string(VERSION.major,".",VERSION.minor)),
+        ("name"             , pkg_name),
+        ("url"              , url),
+        ("version"          , string(Pkg.installed(pkg_name))),
+        ("gitsha"           , chomp(git_sha)),
+        ("gitdate"          , chomp(git_date)),
+        ("license"          , license),
+        ("licfile"          , lic_file),
+        ("status"           , test_status),
+        ("exit_code"        , exit_code),
+        ("log"              , log_str)
+    ])
     open(joinpath(json_path,pkg_name*".json"),"w") do fp
         JSON.print(fp, output_dict)
     end

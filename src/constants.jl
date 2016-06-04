@@ -60,7 +60,7 @@ const LICFILES=["LICENSE", "LICENSE.md", "License.md", "LICENSE.txt", "LICENSE.r
 # PYTHON = requires a Python package that we haven't got installed
 # BREAKS = something about the package doesn't play nice
 # OPENGL = Needs OpenGL support, which XVFB can't handle
-const PKGOPTS= Dict([
+const PKGOPTS = Dict([
     ("AppleAccelerate"        , :OSX),
     ("ApproxFun"              , :BINARY),    # Seems to need plotting for tests?
     ("Arduino"                , :BINARY),    # Needs libarduino
