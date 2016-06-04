@@ -1,7 +1,7 @@
 PackageEvaluator
 ================
 
-[![Build Status](https://travis-ci.org/JuliaCI/PackageEvaluator.jl.svg?branch=master)](https://travis-ci.org/IainNZ/PackageEvaluator.jl)
+[![Build Status](https://travis-ci.org/JuliaCI/PackageEvaluator.jl.svg?branch=master)](https://travis-ci.org/JuliaCI/PackageEvaluator.jl)
 
 The purpose of PackageEvaluator is to attempt to test every Julia package nightly, and to provide the information required to generate the [Julia package listing](http://pkg.julialang.org/).
 
