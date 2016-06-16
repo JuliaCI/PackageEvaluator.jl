@@ -128,6 +128,7 @@ const PKGOPTS = Dict([
     ("PyLexYacc"              , :PYTHON),    # Needs PLY and attrdict
     ("PyPlot"                 , :XVFB),      # GUI
     ("PySide"                 , :PYTHON),    # Needs PySide/Qt
+    ("PyX"                    , :PYTHON),    # Needs PyX
     ("QuartzImageIO"          , :OSX),
     ("RdRand"                 , :BINARY),    # Needs latest Intel CPU
     ("REPLCompletions"        , :DEP),       # Deprecated, just throws error (???)
