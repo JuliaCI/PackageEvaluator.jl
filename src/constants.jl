@@ -79,6 +79,7 @@ const PKGOPTS = Dict([
     ("CLFFT"                  , :BINARY),    # OpenCL
     ("CUBLAS"                 , :BINARY),    # NVIDIA CUDA
     ("CUDA"                   , :BINARY),    # NVIDIA CUDA
+    ("CUDAdrv"                , :BINARY),    # NVIDIA CUDA
     ("CUDNN"                  , :BINARY),    # NVIDIA CUDA
     ("CUDArt"                 , :BINARY),    # NVIDIA CUDA
     ("CUFFT"                  , :BINARY),    # NVIDIA CUDA
