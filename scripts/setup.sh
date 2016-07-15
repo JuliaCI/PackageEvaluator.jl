@@ -90,7 +90,6 @@ sudo apt-get install wamerican
 # Need xmllint (and others?) for XMLDict.jl
 sudo apt-get install libxml2-utils
 # ArrayFire
-# ArrayFire
 sudo apt-get install libfreeimage-dev libatlas3gf-base libfftw3-dev cmake
 wget http://ci.arrayfire.org/userContent/Linux/ArrayFire-no-gl-v3.3.2_Linux_x86_64.sh
 sudo chmod +x ArrayFire-no-gl-v3.3.2_Linux_x86_64.sh
