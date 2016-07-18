@@ -151,6 +151,10 @@ star_top_change = sort(star_changes, by=f->(f[2]-f[3]), rev=true)
 temp_data["TOPSTARCHANGE"] = Any[]
 for i in 1:num_top_star
     pkgname, cur_star, pre_star = star_top_change[i]
+    if !haskey(pkgdict[NIGHTLY], pkgname)
+        warn("$pkgname not found in pkgdict[NIGHTLY], skipping!")
+        continue
+    end
     url = pkgdict[NIGHTLY][pkgname]["url"]
     push!(temp_data["TOPSTARCHANGE"], Dict(
                 "url"       => url,
