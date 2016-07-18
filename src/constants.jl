@@ -101,6 +101,7 @@ const PKGOPTS = Dict([
     ("Homebrew"               , :OSX),
     ("IJulia"                 , :PYTHON),    # Could be interesting to revist
     ("ImageView"              , :XVFB),      # GUI via Tk.jl
+    ("InspectDR"              , :XVFB),      # Plotting package
     ("Instruments"            , :BINARY),    # Needs NI-VISA
     ("JuliaWebAPI"            , :BINARY),    # Was freezing PkgEval
     ("KNITRO"                 , :BINARY),    # Commercial software
