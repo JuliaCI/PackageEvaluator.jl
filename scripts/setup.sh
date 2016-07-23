@@ -189,6 +189,8 @@ do
     # overall process run faster, if my understanding of how
     # the .trash folder works is correct.
     julia -e "Pkg.rm(\"${PKGNAME}\")"
+    # In case something confusing happens?
+    julia -e "Pkg.status()"
 done
 
 
