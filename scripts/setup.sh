@@ -40,16 +40,17 @@ sudo apt-get upgrade   # Upgrade system packages
 # Use first argument to script to distinguish between the versions
 if [ "$1" == "0.3" ]
 then
-    wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.3/julia-0.3-latest-linux-x86_64.tar.gz
+    wget -q -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.3/julia-0.3-latest-linux-x86_64.tar.gz
 elif [ "$1" == "0.4" ]
 then
-    wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4-latest-linux-x86_64.tar.gz
+    wget -q -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4-latest-linux-x86_64.tar.gz
 else
     # Nightly
-    wget -O julia.tar.gz https://status.julialang.org/download/linux-x86_64
+    wget -q -O julia.tar.gz https://status.julialang.org/download/linux-x86_64
 fi
 mkdir julia
-tar -zxvf julia.tar.gz -C ./julia --strip-components=1
+tar -zxf julia.tar.gz -C ./julia --strip-components=1
+rm julia.tar.gz
 export PATH="${PATH}:/home/vagrant/julia/bin/"
 # Retain PATH to make it easier to use VM for debugging
 echo "export PATH=\"\${PATH}:/home/vagrant/julia/bin/\"" >> /home/vagrant/.profile
@@ -137,7 +138,16 @@ do
     # standard for build time and memory consumption, see
     # https://github.com/IainNZ/PackageEvaluator.jl/issues/83
     # The log for adding the package will go in the results folder.
-    timeout 1800s julia -e "Pkg.add(\"${PKGNAME}\")" 2>&1 | tee PKGEVAL_${PKGNAME}_add.log
+    timeout 1800s julia -e "pkg = \"${PKGNAME}\"
+        for v in reverse(Pkg.available(pkg))
+            try
+                Pkg.add(pkg, v)
+                break
+            catch err
+                warn(err)
+            end
+        end
+        Pkg.add(pkg)" 2>&1 | tee PKGEVAL_${PKGNAME}_add.log
     # A package can have four states:
     # - Not testable: for some reason, we can't even analyze how
     #   broken or not the package is, usually due to a limitation
