@@ -198,7 +198,8 @@ do
     # it in the sense of deleting the files - this helps the
     # overall process run faster, if my understanding of how
     # the .trash folder works is correct.
-    julia -e "Pkg.rm(\"${PKGNAME}\")"
+    # Called twice in case the package makes itself dirty
+    julia -e "Pkg.rm(\"${PKGNAME}\"); Pkg.rm(\"${PKGNAME}\")"
     # In case something confusing happens?
     julia -e "Pkg.status()"
 done
