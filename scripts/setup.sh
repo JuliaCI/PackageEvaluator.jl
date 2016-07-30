@@ -55,6 +55,10 @@ export PATH="${PATH}:/home/vagrant/julia/bin/"
 # Retain PATH to make it easier to use VM for debugging
 echo "export PATH=\"\${PATH}:/home/vagrant/julia/bin/\"" >> /home/vagrant/.profile
 
+# Set a 10 minute absolute timeout and 2 minute low speed timeout
+# for curl because of unreliable downloads like wcslib, graphviz
+echo "max-time = 600" >> ~/.curlrc
+echo "speed-time = 120" >> ~/.curlrc
 
 #######################################################################
 # Install any dependencies that aren't handled by BinDeps
@@ -138,7 +142,7 @@ do
     # standard for build time and memory consumption, see
     # https://github.com/IainNZ/PackageEvaluator.jl/issues/83
     # The log for adding the package will go in the results folder.
-    timeout 1800s julia -e "Pkg.add(\"${PKGNAME}\")" 2>&1 | tee PKGEVAL_${PKGNAME}_add.log
+    timeout 2000s julia -e "Pkg.add(\"${PKGNAME}\")" 2>&1 | tee PKGEVAL_${PKGNAME}_add.log
     # A package can have four states:
     # - Not testable: for some reason, we can't even analyze how
     #   broken or not the package is, usually due to a limitation
