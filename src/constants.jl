@@ -96,6 +96,7 @@ const PKGOPTS = Dict([
     ("GLWindow"               , :OPENGL),
     ("GLVisualize"            , :OPENGL),
     ("GR"                     , :XVFB),      # Plotting package
+    ("GraphViz"               , :BREAKS),    # Very unreliable download
     ("Gtk"                    , :XVFB),      # GUI package
     ("Gurobi"                 , :BINARY),    # Commercial software
     ("Homebrew"               , :OSX),
