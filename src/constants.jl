@@ -96,7 +96,6 @@ const PKGOPTS = Dict([
     ("GLWindow"               , :OPENGL),
     ("GLVisualize"            , :OPENGL),
     ("GR"                     , :XVFB),      # Plotting package
-    ("GraphViz"               , :BREAKS),    # Very unreliable download
     ("Gtk"                    , :XVFB),      # GUI package
     ("Gurobi"                 , :BINARY),    # Commercial software
     ("Homebrew"               , :OSX),
@@ -148,7 +147,6 @@ const PKGOPTS = Dict([
     ("Tk"                     , :XVFB),      # GUI package
     ("Twitter"                , :BREAKS),    # Needs authentication
     ("Watcher"                , :BREAKS),    # Seems to cause hangs
-    ("WCSLIB"                 , :BREAKS),    # Very unreliable download
     ("Winston"                , :XVFB),      # GUI via Tk.jl
     ("VML"                    , :BINARY),    # Needs MKL
     ("YT"                     , :PYTHON),    # Needs yt

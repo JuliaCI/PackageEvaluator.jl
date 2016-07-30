@@ -15,7 +15,7 @@ function prepare_test()
     pkg_path = Pkg.dir(pkg_name)
 
     # Are tests even meaningful?
-    if pkg_name in keys(PKGOPTS) && PKGOPTS[pkg_name] != :XVFB
+    if (pkg_name in keys(PKGOPTS)) && PKGOPTS[pkg_name] != :XVFB
         # They can't be run for some reason
         print_with_color(:yellow, "PKGEVAL: Cannot run tests, code: $(PKGOPTS[pkg_name])\n")
         exit(255)
