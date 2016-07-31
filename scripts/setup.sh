@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #######################################################################
 # PackageEvaluator
-# https://github.com/IainNZ/PackageEvaluator.jl
+# https://github.com/JuliaCI/PackageEvaluator.jl
 # (c) Iain Dunning and contributors 2015
 # Licensed under the MIT License
 #######################################################################
@@ -105,7 +105,7 @@ rm ArrayFire-no-gl-v3.3.2_Linux_x86_64.sh
 #######################################################################
 # Get PackageEvaluator scripts
 PKGEVALDIR="/home/vagrant/pkgeval"
-git clone https://github.com/IainNZ/PackageEvaluator.jl.git $PKGEVALDIR
+git clone https://github.com/JuliaCI/PackageEvaluator.jl.git $PKGEVALDIR
 # Make results folders. Folder name is second argument to this script.
 # These folders are shared - i.e. we are writing to outside the VM,
 # most likely the PackageEvaluator.jl/scripts folder.
@@ -140,7 +140,7 @@ do
     # Attempt to add the package. We give it half an hour - most
     # use far less, some do push it. CoinOptServices.jl set the
     # standard for build time and memory consumption, see
-    # https://github.com/IainNZ/PackageEvaluator.jl/issues/83
+    # https://github.com/JuliaCI/PackageEvaluator.jl/issues/83
     # The log for adding the package will go in the results folder.
     timeout 2000s julia -e "Pkg.add(\"${PKGNAME}\")" 2>&1 | tee PKGEVAL_${PKGNAME}_add.log
     # A package can have four states:
