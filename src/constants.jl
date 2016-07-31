@@ -62,8 +62,6 @@ const LICFILES=["LICENSE", "LICENSE.md", "License.md", "LICENSE.txt", "LICENSE.r
 # OPENGL = Needs OpenGL support, which XVFB can't handle
 const PKGOPTS = Dict([
     ("AppleAccelerate"        , :OSX),
-    ("ApproxFun"              , :BINARY),    # Seems to need plotting for tests?
-    ("Arduino"                , :BINARY),    # Needs libarduino
     ("AWSCore"                , :BINARY),    # Needs credentials (#119)
     ("AWSEC2"                 , :BINARY),    # Needs credentials (#119)
     ("AWSIAM"                 , :BINARY),    # Needs credentials (#119)
@@ -71,10 +69,6 @@ const PKGOPTS = Dict([
     ("AWSS3"                  , :BINARY),    # Needs credentials (#119)
     ("AWSSNS"                 , :BINARY),    # Needs credentials (#119)
     ("AWSSQS"                 , :BINARY),    # Needs credentials (#119)
-    ("CasaCore"               , :BINARY),    # Needs http://casacore.github.io/casacore/
-    ("Clang"                  , :BINARY),    # Needs libclang
-    ("CommonCrawl"            , :BREAKS),    # Needs AWS auth & downloads a lot
-    ("CoreNLP"                , :PYTHON),    # Needs CoreNLP via corenlp-python
     ("CPLEX"                  , :BINARY),    # Commercial software
     ("CLFFT"                  , :BINARY),    # OpenCL
     ("CUBLAS"                 , :BINARY),    # NVIDIA CUDA
@@ -87,8 +81,6 @@ const PKGOPTS = Dict([
     ("CUSOLVER"               , :BINARY),    # NVIDIA CUDA
     ("CUSPARSE"               , :BINARY),    # NVIDIA CUDA
     ("EEG"                    , :XVFB),      # GUI via Tk.jl
-    ("Elemental"              , :BINARY),    # Depends on MPI.jl
-    ("Expect"                 , :BREAKS),    # Used to cause hangs
     ("GLAbstraction"          , :OPENGL),
     ("GLFW"                   , :OPENGL),
     ("GLPlot"                 , :OPENGL),
@@ -99,55 +91,21 @@ const PKGOPTS = Dict([
     ("Gtk"                    , :XVFB),      # GUI package
     ("Gurobi"                 , :BINARY),    # Commercial software
     ("Homebrew"               , :OSX),
-    ("IJulia"                 , :PYTHON),    # Could be interesting to revist
     ("ImageView"              , :XVFB),      # GUI via Tk.jl
     ("InspectDR"              , :XVFB),      # Plotting package
-    ("Instruments"            , :BINARY),    # Needs NI-VISA
-    ("JuliaWebAPI"            , :BINARY),    # Was freezing PkgEval
     ("KNITRO"                 , :BINARY),    # Commercial software
-    ("LibTrading"             , :BINARY),    # Needs libtrading
-    ("Mandrill"               , :BREAKS),    # Needs API Key
     ("Mathematica"            , :BINARY),    # Commercial software
     ("MATLAB"                 , :BINARY),    # Commercial software
     ("MATLABCluster"          , :BINARY),    # Commercial software
-    ("Memcache"               , :BINARY),    # Needs memcache
     ("ModernGL"               , :OPENGL),
-    ("MolecularDynamics"      , :BINARY),    # Needs xdrfile
-    ("Mongo"                  , :BINARY),    # Needs mongo C library
-    ("Mongrel2"               , :BINARY),    # Needs... something
-    ("Mosek"                  , :BINARY),    # Commercial software
-    ("MPI"                    , :BINARY),    # Needs MPI install and config
-    ("Neovim"                 , :BINARY),    # Needs Neovim installed
-    ("NIDAQ"                  , :BINARY),    # Needs NIDAQmx
     ("OpenCL"                 , :BINARY),
     ("OpenGL"                 , :BINARY),
     ("OpenStreetMap"          , :XVFB),      # Graphics via Winston
-    ("Pandas"                 , :PYTHON),    # Needs pandas
     ("Pardiso"                , :BINARY),    # Commercial software
-    ("Plots"                  , :BINARY),    # Too many plotting package dependecies https://github.com/tbreloff/Plots.jl/issues/243
-    ("Polyglot"               , :BINARY),    # Froze PkgEval https://github.com/wavexx/Polyglot.jl/issues/1
     ("ProfileView"            , :XVFB),
-    ("PyLexYacc"              , :PYTHON),    # Needs PLY and attrdict
     ("PyPlot"                 , :XVFB),      # GUI
-    ("PySide"                 , :PYTHON),    # Needs PySide/Qt
-    ("PyX"                    , :PYTHON),    # Needs PyX
     ("QuartzImageIO"          , :OSX),
-    ("RdRand"                 , :BINARY),    # Needs latest Intel CPU
-    ("REPLCompletions"        , :DEP),       # Deprecated, just throws error (???)
-    ("RobotOS"                , :PYTHON),    # Needs rospy
     ("Rsvg"                   , :XVFB),      # Needs Gtk -> X11
-    ("RudeOil"                , :BINARY),    # Needs Docker
-    ("SemidefiniteProgramming", :BINARY),    # Needs CSDP
-    ("Snappy"                 , :BINARY),    # Needs libsnappy
-    ("Sodium"                 , :BINARY),    # Needs libsodium
-    ("Sparrow"                , :BINARY),    # Needs ctioga2
-    ("SystemImageBuilder"     , :BREAKS),    # Freezes PkgEval
-    ("ThingSpeak"             , :BREAKS),    # Needs API key
-    ("Thrift"                 , :BINARY),    # Needs Thrift compiler
     ("Tk"                     , :XVFB),      # GUI package
-    ("Twitter"                , :BREAKS),    # Needs authentication
-    ("Watcher"                , :BREAKS),    # Seems to cause hangs
     ("Winston"                , :XVFB),      # GUI via Tk.jl
-    ("VML"                    , :BINARY),    # Needs MKL
-    ("YT"                     , :PYTHON),    # Needs yt
 ])
