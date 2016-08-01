@@ -18,7 +18,7 @@ const LASTVER = "0.3"
 const CURVER  = "0.4"
 const NEXTVER = "0.5"
 const JULIA_VERSIONS = [LASTVER,CURVER,NEXTVER]
-const VERSION_FOR_CHANGES = CURVER
+const VERSION_FOR_CHANGES = NEXTVER
 
 # Load test history
 date_str     = ARGS[1]
