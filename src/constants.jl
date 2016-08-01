@@ -62,7 +62,6 @@ const LICFILES=["LICENSE", "LICENSE.md", "License.md", "LICENSE.txt", "LICENSE.r
 # OPENGL = Needs OpenGL support, which XVFB can't handle
 const PKGOPTS = Dict([
     ("AppleAccelerate"        , :OSX),
-    ("ApproxFun"              , :BINARY),    # Seems to need plotting for tests?
     ("Arduino"                , :BINARY),    # Needs libarduino
     ("AWSCore"                , :BINARY),    # Needs credentials (#119)
     ("AWSEC2"                 , :BINARY),    # Needs credentials (#119)
@@ -88,7 +87,7 @@ const PKGOPTS = Dict([
     ("CUSPARSE"               , :BINARY),    # NVIDIA CUDA
     ("EEG"                    , :XVFB),      # GUI via Tk.jl
     ("Elemental"              , :BINARY),    # Depends on MPI.jl
-    ("Expect"                 , :BREAKS),    # Used to cause hangs
+    ("Expect"                 , :BREAKS),    # causes hangs on julia 0.3
     ("GLAbstraction"          , :OPENGL),
     ("GLFW"                   , :OPENGL),
     ("GLPlot"                 , :OPENGL),
@@ -103,7 +102,6 @@ const PKGOPTS = Dict([
     ("ImageView"              , :XVFB),      # GUI via Tk.jl
     ("InspectDR"              , :XVFB),      # Plotting package
     ("Instruments"            , :BINARY),    # Needs NI-VISA
-    ("JuliaWebAPI"            , :BINARY),    # Was freezing PkgEval
     ("KNITRO"                 , :BINARY),    # Commercial software
     ("LibTrading"             , :BINARY),    # Needs libtrading
     ("Mandrill"               , :BREAKS),    # Needs API Key
@@ -138,7 +136,6 @@ const PKGOPTS = Dict([
     ("Rsvg"                   , :XVFB),      # Needs Gtk -> X11
     ("RudeOil"                , :BINARY),    # Needs Docker
     ("SemidefiniteProgramming", :BINARY),    # Needs CSDP
-    ("Snappy"                 , :BINARY),    # Needs libsnappy
     ("Sodium"                 , :BINARY),    # Needs libsodium
     ("Sparrow"                , :BINARY),    # Needs ctioga2
     ("SystemImageBuilder"     , :BREAKS),    # Freezes PkgEval
@@ -146,7 +143,6 @@ const PKGOPTS = Dict([
     ("Thrift"                 , :BINARY),    # Needs Thrift compiler
     ("Tk"                     , :XVFB),      # GUI package
     ("Twitter"                , :BREAKS),    # Needs authentication
-    ("Watcher"                , :BREAKS),    # Seems to cause hangs
     ("Winston"                , :XVFB),      # GUI via Tk.jl
     ("VML"                    , :BINARY),    # Needs MKL
     ("YT"                     , :PYTHON),    # Needs yt
