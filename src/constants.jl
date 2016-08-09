@@ -61,6 +61,7 @@ const LICFILES=["LICENSE", "LICENSE.md", "License.md", "LICENSE.txt", "LICENSE.r
 # BREAKS = something about the package doesn't play nice
 # OPENGL = Needs OpenGL support, which XVFB can't handle
 const PKGOPTS = Dict([
+    ("ActiveAppearanceModels" , :XVFB),      # GUI via Tk.jl
     ("AppleAccelerate"        , :OSX),
     ("Arduino"                , :BINARY),    # Needs libarduino
     ("AWSCore"                , :BINARY),    # Needs credentials (#119)
@@ -70,6 +71,7 @@ const PKGOPTS = Dict([
     ("AWSS3"                  , :BINARY),    # Needs credentials (#119)
     ("AWSSNS"                 , :BINARY),    # Needs credentials (#119)
     ("AWSSQS"                 , :BINARY),    # Needs credentials (#119)
+    ("BSplines"               , :XVFB),      # GUI via Tk.jl
     ("CasaCore"               , :BINARY),    # Needs http://casacore.github.io/casacore/
     ("Clang"                  , :BINARY),    # Needs libclang
     ("CommonCrawl"            , :BREAKS),    # Needs AWS auth & downloads a lot
@@ -85,7 +87,9 @@ const PKGOPTS = Dict([
     ("CURAND"                 , :BINARY),    # NVIDIA CUDA
     ("CUSOLVER"               , :BINARY),    # NVIDIA CUDA
     ("CUSPARSE"               , :BINARY),    # NVIDIA CUDA
+    ("Drawing"                , :XVFB),      # GUI via Tk.jl
     ("EEG"                    , :XVFB),      # GUI via Tk.jl
+    ("ElasticFDA"             , :XVFB),      # GUI via Tk.jl
     ("Elemental"              , :BINARY),    # Depends on MPI.jl
     ("Expect"                 , :BREAKS),    # causes hangs on julia 0.3
     ("GLAbstraction"          , :OPENGL),
@@ -96,9 +100,11 @@ const PKGOPTS = Dict([
     ("GLVisualize"            , :OPENGL),
     ("GR"                     , :XVFB),      # Plotting package
     ("Gtk"                    , :XVFB),      # GUI package
+    ("GUITestRunner"          , :XVFB),      # GUI via Tk.jl
     ("Gurobi"                 , :BINARY),    # Commercial software
     ("Homebrew"               , :OSX),
     ("IJulia"                 , :PYTHON),    # Could be interesting to revist
+    ("ImageRegistration"      , :XVFB),      # GUI via Tk.jl
     ("ImageView"              , :XVFB),      # GUI via Tk.jl
     ("InspectDR"              , :XVFB),      # Plotting package
     ("Instruments"            , :BINARY),    # Needs NI-VISA
@@ -108,6 +114,7 @@ const PKGOPTS = Dict([
     ("Mathematica"            , :BINARY),    # Commercial software
     ("MATLAB"                 , :BINARY),    # Commercial software
     ("MATLABCluster"          , :BINARY),    # Commercial software
+    ("MatlabCompat"           , :XVFB),      # GUI via Tk.jl
     ("Memcache"               , :BINARY),    # Needs memcache
     ("ModernGL"               , :OPENGL),
     ("MolecularDynamics"      , :BINARY),    # Needs xdrfile
@@ -143,6 +150,7 @@ const PKGOPTS = Dict([
     ("Thrift"                 , :BINARY),    # Needs Thrift compiler
     ("Tk"                     , :XVFB),      # GUI package
     ("Twitter"                , :BREAKS),    # Needs authentication
+    ("Weave"                  , :XVFB),      # GUI via Tk.jl
     ("Winston"                , :XVFB),      # GUI via Tk.jl
     ("VML"                    , :BINARY),    # Needs MKL
     ("YT"                     , :PYTHON),    # Needs yt
