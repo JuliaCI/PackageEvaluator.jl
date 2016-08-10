@@ -138,14 +138,16 @@ star_top_alltime = sort(star_changes, by=f->f[2], rev=true)
 temp_data["TOPSTARALLTIME"] = Any[]
 for i in 1:num_top_star
     pkgname, cur_star, pre_star = star_top_alltime[i]
-    if haskey(pkgdict[NIGHTLY], pkgname)
-        url = pkgdict[NIGHTLY][pkgname]["url"]
-        push!(temp_data["TOPSTARALLTIME"], Dict(
+    if !haskey(pkgdict[NIGHTLY], pkgname)
+        warn("$pkgname not found in pkgdict[NIGHTLY], skipping!")
+        continue
+    end
+    url = pkgdict[NIGHTLY][pkgname]["url"]
+    push!(temp_data["TOPSTARALLTIME"], Dict(
                 "url"       => url,
                 "name"      => pkgname,
                 "count"     => cur_star,
                 "change"    => cur_star - pre_star ))
-    end
 end
 
 # Get top by change
