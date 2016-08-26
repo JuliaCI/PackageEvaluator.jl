@@ -57,9 +57,9 @@ run(`git remote add $token https://$token:x-oauth-basic@github.com/JuliaCI/pkg.j
 run(`git push $token gh-pages`)
 run(`git remote rm $token`)
 
-println("Done pushing website!")
-run(ignorestatus(`mv $pkgevalpath/scripts/log.txt $pkgevalpath/scripts/$message`))
 println("Compressing logs at $message")
 run(`tar -cJf $pkgevalpath/scripts/$message.tar.xz $pkgevalpath/scripts/$message`)
 println("Deleting uncompressed logs from $message")
 run(`rm -rf $pkgevalpath/scripts/$message`)
+println("Done!")
+run(ignorestatus(`mv $pkgevalpath/scripts/log.txt $pkgevalpath/scripts/$message`))
