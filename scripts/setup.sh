@@ -43,7 +43,7 @@ then
     wget -q -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4-latest-linux-x86_64.tar.gz
 elif [ "$2" == "MZ" ]
 then
-    wget -q -O julia.tar.gz https://julianightlies.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4.6-081c049d28-linux64.tar.gz
+    wget -q -O julia.tar.gz https://julianightlies.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4.7-bff701147f-linux64.tar.gz
 else
     # Nightly
     wget -q -O julia.tar.gz https://julianightlies.s3.amazonaws.com/bin/linux/x64/julia-latest-linux64.tar.gz
