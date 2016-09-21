@@ -98,7 +98,7 @@ sudo apt-get install wamerican
 # Need xmllint (and others?) for XMLDict.jl
 sudo apt-get install libxml2-utils
 # ArrayFire
-export AFVERSION=v3.4.0
+AFVERSION=v3.4.0
 wget -q http://ci.arrayfire.org/userContent/Linux/ArrayFire-no-gl-${AFVERSION}_Linux_x86_64.sh
 sudo chmod +x ArrayFire-no-gl-${AFVERSION}_Linux_x86_64.sh
 sudo ./ArrayFire-no-gl-${AFVERSION}_Linux_x86_64.sh --exclude-subdir --prefix=/usr/local
