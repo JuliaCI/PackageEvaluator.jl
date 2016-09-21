@@ -12,13 +12,13 @@ print_with_color(:magenta, "Building pulse page...\n")
 import JSON, Mustache
 
 include("shared.jl")
-const RELEASE = "0.4"
-const NIGHTLY = "0.5"
-const LASTVER = "0.3"
-const CURVER  = "0.4"
-const NEXTVER = "0.5"
+const RELEASE = "0.5"
+const NIGHTLY = "0.6"
+const LASTVER = "0.4"
+const CURVER  = "0.5"
+const NEXTVER = "0.6"
 const JULIA_VERSIONS = [LASTVER,CURVER,NEXTVER]
-const VERSION_FOR_CHANGES = NEXTVER
+const VERSION_FOR_CHANGES = CURVER
 
 # Load test history
 date_str     = ARGS[1]
