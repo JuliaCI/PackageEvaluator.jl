@@ -103,7 +103,7 @@ wget -q http://ci.arrayfire.org/userContent/Linux/ArrayFire-no-gl-${AFVERSION}_L
 sudo chmod +x ArrayFire-no-gl-${AFVERSION}_Linux_x86_64.sh
 sudo ./ArrayFire-no-gl-${AFVERSION}_Linux_x86_64.sh --exclude-subdir --prefix=/usr/local
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/
-rm ArrayFire-no-gl-v3.3.2_Linux_x86_64.sh
+rm ArrayFire-no-gl-${AFVERSION}_Linux_x86_64.sh
 
 
 #######################################################################
