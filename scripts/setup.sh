@@ -34,22 +34,29 @@ sudo su -c 'echo "APT::Get::force-yes \"true\";" >> /etc/apt/apt.conf.d/pkgevalf
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
 sudo add-apt-repository -y "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/"
 
+# Set a 10 minute absolute timeout and 2 minute low speed timeout
+# for curl because of unreliable downloads like wcslib, graphviz
+echo "max-time = 600" >> ~/.curlrc
+echo "speed-time = 120" >> ~/.curlrc
+# Make wget non-verbose because progress bars mess with text file logging
+echo "verbose = off" >> ~/.wgetrc
+
 # Upgrade the installation and install Julia
 sudo apt-get update    # Pull in latest versions
 sudo apt-get upgrade   # Upgrade system packages
 # Use first argument to script to distinguish between the versions
 if [ "$1" == "0.3" ]
 then
-    wget -q -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.3/julia-0.3-latest-linux-x86_64.tar.gz
+    wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.3/julia-0.3-latest-linux-x86_64.tar.gz
 elif [ "$1" == "0.4" ]
 then
-    wget -q -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4-latest-linux-x86_64.tar.gz
+    wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4-latest-linux-x86_64.tar.gz
 elif [ "$1" == "0.5" ]
 then
-    wget -q -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.5/julia-0.5-latest-linux-x86_64.tar.gz
+    wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.5/julia-0.5-latest-linux-x86_64.tar.gz
 else
     # Nightly
-    wget -q -O julia.tar.gz https://julianightlies.s3.amazonaws.com/bin/linux/x64/julia-latest-linux64.tar.gz
+    wget -O julia.tar.gz https://julianightlies.s3.amazonaws.com/bin/linux/x64/julia-latest-linux64.tar.gz
 fi
 mkdir julia
 tar -zxf julia.tar.gz -C ./julia --strip-components=1
@@ -57,11 +64,6 @@ rm julia.tar.gz
 export PATH="${PATH}:/home/vagrant/julia/bin/"
 # Retain PATH to make it easier to use VM for debugging
 echo "export PATH=\"\${PATH}:/home/vagrant/julia/bin/\"" >> /home/vagrant/.profile
-
-# Set a 10 minute absolute timeout and 2 minute low speed timeout
-# for curl because of unreliable downloads like wcslib, graphviz
-echo "max-time = 600" >> ~/.curlrc
-echo "speed-time = 120" >> ~/.curlrc
 
 #######################################################################
 # Install any dependencies that aren't handled by BinDeps
@@ -98,12 +100,12 @@ sudo apt-get install wamerican
 # Need xmllint (and others?) for XMLDict.jl
 sudo apt-get install libxml2-utils
 # ArrayFire
-AFVERSION=v3.4.0
-wget -q http://ci.arrayfire.org/userContent/Linux/ArrayFire-no-gl-${AFVERSION}_Linux_x86_64.sh
-sudo chmod +x ArrayFire-no-gl-${AFVERSION}_Linux_x86_64.sh
-sudo ./ArrayFire-no-gl-${AFVERSION}_Linux_x86_64.sh --exclude-subdir --prefix=/usr/local
+AFSCRIPT=ArrayFire-no-gl-v3.4.0_Linux_x86_64.sh
+wget http://ci.arrayfire.org/userContent/Linux/$AFSCRIPT
+sudo chmod +x $AFSCRIPT
+sudo ./$AFSCRIPT --exclude-subdir --prefix=/usr/local
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/
-rm ArrayFire-no-gl-${AFVERSION}_Linux_x86_64.sh
+rm $AFSCRIPT
 
 
 #######################################################################
