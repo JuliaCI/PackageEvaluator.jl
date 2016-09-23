@@ -5,7 +5,7 @@ PackageEvaluator
 
 The purpose of PackageEvaluator is to attempt to test every Julia package nightly, and to provide the information required to generate the [Julia package listing](http://pkg.julialang.org/).
 
-This is currently done for both Julia 0.3 and 0.4, and the tests are run in Ubuntu 14.04 LTS ("Trusty Tahr") virtual machines managed with [Vagrant](https://www.vagrantup.com/). This allows users to debug why their tests are failing, and allows PackageEvaluator to be run almost anywhere.
+This is currently done for Julia 0.4, 0.5, and nightly, and the tests are run in Ubuntu 14.04 LTS ("Trusty Tahr") virtual machines managed with [Vagrant](https://www.vagrantup.com/). This allows users to debug why their tests are failing, and allows PackageEvaluator to be run almost anywhere.
 
 The code itself, in particular `scripts/setup.sh`, is heavily commented, so check that out for more information.
 
@@ -34,7 +34,7 @@ Possible reasons include:
 * The configuration of the virtual machine, including the operating system to use, live in the [`Vagrantfile`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/scripts/Vagrantfile).
 * When the virtual machine(s) are launched with `vagrant up`, a *provisioning script* called [`setup.sh`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/scripts/setup.sh) is run.
 * This script takes two arguments. The first is the version of Julia
-  to use (`0.3` or `0.4`)
+  to use (`0.4` or `0.5` or `0.6`)
 * The second determines the mode to operate in:
     * `setup`: set up the machine with Julia and the same
       dependencies that are used for a full PackageEvaluator run, but

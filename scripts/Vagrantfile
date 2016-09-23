@@ -11,14 +11,6 @@ Vagrant.configure("2") do |config|
 
   #---------------------------------------------------------------------
   # SETUP ONLY
-  config.vm.define :setup03 do |setup03|
-    config.vm.provision :shell,
-      path: "setup.sh",
-      args: ["0.3", "setup"],
-      keep_color: true,
-      privileged: false
-  end
-
   config.vm.define :setup04 do |setup04|
     config.vm.provision :shell,
       path: "setup.sh",
@@ -35,16 +27,16 @@ Vagrant.configure("2") do |config|
       privileged: false
   end
 
-  #---------------------------------------------------------------------
-  # ALL PACKAGES
-  config.vm.define :all03 do |all03|
+  config.vm.define :setup06 do |setup06|
     config.vm.provision :shell,
       path: "setup.sh",
-      args: ["0.3", "all"],
+      args: ["0.6", "setup"],
       keep_color: true,
       privileged: false
   end
 
+  #---------------------------------------------------------------------
+  # ALL PACKAGES
   config.vm.define :all04 do |all04|
     config.vm.provision :shell,
       path: "setup.sh",
@@ -61,23 +53,16 @@ Vagrant.configure("2") do |config|
       privileged: false
   end
 
-  #---------------------------------------------------------------------
-  # HALF PACKAGES
-  config.vm.define :halfAL03 do |halfAL03|
+  config.vm.define :all06 do |all06|
     config.vm.provision :shell,
       path: "setup.sh",
-      args: ["0.3", "AL"],
-      keep_color: true,
-      privileged: false
-  end
-  config.vm.define :halfMZ03 do |halfMZ03|
-    config.vm.provision :shell,
-      path: "setup.sh",
-      args: ["0.3", "MZ"],
+      args: ["0.6", "all"],
       keep_color: true,
       privileged: false
   end
 
+  #---------------------------------------------------------------------
+  # HALF PACKAGES
   config.vm.define :halfAL04 do |halfAL04|
     config.vm.provision :shell,
       path: "setup.sh",
@@ -104,6 +89,21 @@ Vagrant.configure("2") do |config|
     config.vm.provision :shell,
       path: "setup.sh",
       args: ["0.5", "MZ"],
+      keep_color: true,
+      privileged: false
+  end
+
+  config.vm.define :halfAL06 do |halfAL06|
+    config.vm.provision :shell,
+      path: "setup.sh",
+      args: ["0.6", "AL"],
+      keep_color: true,
+      privileged: false
+  end
+  config.vm.define :halfMZ06 do |halfMZ06|
+    config.vm.provision :shell,
+      path: "setup.sh",
+      args: ["0.6", "MZ"],
       keep_color: true,
       privileged: false
   end

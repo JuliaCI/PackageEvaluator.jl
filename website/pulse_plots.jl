@@ -27,8 +27,8 @@ print_with_color(:magenta, "  Totals and sanity checks...\n")
 
 # Collect totals for each Julia version by date and status
 totals = Dict()
-for ver in ["0.2","0.3","0.4","0.5"]
-    totals[ver] = Dict([date => Dict([status => 0 for status in keys(HUMANSTATUS)])
+for ver in ["0.2","0.3","0.4","0.5","0.6"]
+    totals[ver] = Dict([(date, Dict([(status, 0) for status in keys(HUMANSTATUS)]))
                         for date in dates])
     for pkg in pkgnames
         key = (pkg, ver)
@@ -57,8 +57,8 @@ end
 print_with_color(:magenta, "  Printing main plot...\n")
 
 # Build an x-axis and y-axis for each version
-x_dates  = Dict([ver=>Date[] for ver in keys(totals)])
-y_totals = Dict([ver=>Int[]  for ver in keys(totals)])
+x_dates  = Dict([(ver,Date[]) for ver in keys(totals)])
+y_totals = Dict([(ver,Int[])  for ver in keys(totals)])
 for ver in keys(totals), date in dates
     y = totals[ver][date]["total"]
     y <= 0 && continue
@@ -85,12 +85,15 @@ jl_date_vers = [Date(2014,08,20)  "v0.3.0"  250  true;
                 Date(2016,01,12)  "v0.4.3"  450  false;
                 Date(2016,03,17)  "v0.4.5"  400  false;
                 Date(2016,06,19)  "v0.4.6"  450  false;
+                Date(2016,09,18)  "v0.4.7"  400  false;
+                Date(2016,09,19)  "v0.5.0"  250  true;
 ]
 fig = figure(figsize=(10,4))  # inches
 plot(x_dates["0.2"], y_totals["0.2"], "r-",
      x_dates["0.3"], y_totals["0.3"], "g-",
      x_dates["0.4"], y_totals["0.4"], "b-",
      x_dates["0.5"], y_totals["0.5"], "k-",
+     x_dates["0.6"], y_totals["0.6"], "r-",
      linewidth=2)
 for i in 1:size(jl_date_vers,1)
     annotate(xy=(jl_date_vers[i,1],jl_date_vers[i,3]), s=jl_date_vers[i,2],
@@ -100,7 +103,7 @@ for i in 1:size(jl_date_vers,1)
 end
 xticks(rotation="vertical")
 ylabel("Number of Tagged Packages")
-legend(["0.2","0.3","0.4","0.5"], loc=2, fontsize="small")
+legend(["0.2","0.3","0.4","0.5","0.6"], loc=2, fontsize="small")
 open(joinpath(output_path,"allver.svg"), "w") do fp
     writemime(fp, "image/svg+xml", fig)
 end
@@ -154,6 +157,7 @@ const NEWCODES = ["tests_pass","tests_fail",
 # Build an x-axis and y-axis for each version
 jlv3 = Date(2014,08,20)
 jlv4 = Date(2015,10,08)
+jlv5 = Date(2016,09,19)
 
 for ver in keys(totals), aspercent in [true,false]
     x_dates_old  = Date[]
@@ -206,6 +210,11 @@ for ver in keys(totals), aspercent in [true,false]
         annotate(xy=(jlv4,aspercent?35:550), s="v0.4",
                  size="small", ha="left", backgroundcolor="w")
         axvline(x=jlv4, alpha=1.0, color="#333333")
+    end
+    if ver == "0.3" || ver == "0.4" || ver == "0.5"
+        annotate(xy=(jlv5,aspercent?35:550), s="v0.5",
+                 size="small", ha="left", backgroundcolor="w")
+        axvline(x=jlv5, alpha=1.0, color="#333333")
     end
     xticks(rotation="vertical")
     ylabel(string(aspercent?"Percentage":"Number", " of Packages"))

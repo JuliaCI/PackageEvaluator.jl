@@ -10,15 +10,16 @@
 print_with_color(:magenta, "Building pulse page...\n")
 
 import JSON, Mustache
+using Compat
 
 include("shared.jl")
-const RELEASE = "0.4"
-const NIGHTLY = "0.5"
-const LASTVER = "0.3"
-const CURVER  = "0.4"
-const NEXTVER = "0.5"
+const RELEASE = "0.5"
+const NIGHTLY = "0.6"
+const LASTVER = "0.4"
+const CURVER  = "0.5"
+const NEXTVER = "0.6"
 const JULIA_VERSIONS = [LASTVER,CURVER,NEXTVER]
-const VERSION_FOR_CHANGES = NEXTVER
+const VERSION_FOR_CHANGES = CURVER
 
 # Load test history
 date_str     = ARGS[1]
@@ -28,7 +29,7 @@ output_path  = ARGS[4]
 
 # Load package listing, turn into a more useful dictionary
 pkgs = JSON.parsefile("final.json")
-pkgdict = Dict([ver => Dict() for ver in JULIA_VERSIONS])
+pkgdict = Dict([(ver, Dict()) for ver in JULIA_VERSIONS])
 for pkg in pkgs
     pkgdict[pkg["jlver"]][pkg["name"]] = pkg
 end
@@ -37,7 +38,7 @@ end
 hist_db, pkgnames, hist_dates = load_hist_db(hist_db_file)
 
 # Load template, initialize template dictionary
-template = readall("html/pulse_temp.html")
+template = readstring("html/pulse_temp.html")
 temp_data = Dict{Any,Any}("UPDATEDATE" => string(dbdate_to_date(date_str)))
 
 #-----------------------------------------------------------------------
@@ -173,7 +174,7 @@ end
 
 print_with_color(:magenta, "  Status totals...\n")
 
-totals = Dict([ver => Dict() for ver in JULIA_VERSIONS])
+totals = Dict([(ver, Dict()) for ver in JULIA_VERSIONS])
 for JULIA_VERSION in JULIA_VERSIONS
     for pkgname in pkgnames
         hist_key = (pkgname, JULIA_VERSION)
@@ -227,8 +228,8 @@ print_with_color(:magenta, "  Status changes...\n")
 
 MAX_DAYS_HIST = 3
 
-changes = Dict(RELEASE => Dict(), NIGHTLY => Dict())
-for JULIA_VERSION in [RELEASE, NIGHTLY]
+changes = Dict(LASTVER => Dict(), RELEASE => Dict(), NIGHTLY => Dict())
+for JULIA_VERSION in [LASTVER, RELEASE, NIGHTLY]
     for date in hist_dates[1:MAX_DAYS_HIST]
         changes[JULIA_VERSION][date] = []
     end
@@ -267,6 +268,9 @@ for JULIA_VERSION in [RELEASE, NIGHTLY]
     end
 end
 
+temp_data["LASTVERCHANGES"] = [Dict(
+    "TESTDATE"      => hist_dates[i],
+    "STATUSCHANGE"  => changes[LASTVER][hist_dates[i]]) for i in 1:MAX_DAYS_HIST]
 temp_data["RELEASECHANGES"] = [Dict(
     "TESTDATE"      => hist_dates[i],
     "STATUSCHANGE"  => changes[RELEASE][hist_dates[i]]) for i in 1:MAX_DAYS_HIST]

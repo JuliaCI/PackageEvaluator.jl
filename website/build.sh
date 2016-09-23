@@ -23,7 +23,7 @@ IMGPATH=$HOME/github/pkg.julialang.org/img
 #scp nanosoldier1.csail.mit.edu:~/PkgEval/scripts/*.json ./
 cp $(dirname "$0")/../scripts/*.json .
 
-$JULIA --color=yes pull_repo_info.jl 0.3AL.json 0.3MZ.json 0.4AL.json 0.4MZ.json 0.5AL.json 0.5MZ.json
+$JULIA --color=yes pull_repo_info.jl 0.4AL.json 0.4MZ.json 0.5AL.json 0.5MZ.json 0.6AL.json 0.6MZ.json
 
 $JULIA --color=yes build_site_data.jl $LOGPATH $BADGEPATH $HISTPATH
 
