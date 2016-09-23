@@ -196,7 +196,19 @@
       </table>
 
       <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-4">
+        <h4 style="text-align:center">Julia 0.4</h4>
+        {{#LASTVERCHANGES}}
+        <b>{{TESTDATE}}</b>
+        <ul>
+          {{#STATUSCHANGE}}
+          <li><a href="{{url}}/issues">{{name}}</a>: {{prev}} → <a href="{{purl}}"><span class="{{cur}}"><b>{{cur}}</b></span></a>.</li>
+          {{/STATUSCHANGE}}
+        </ul>
+        {{/LASTVERCHANGES}}
+      </div>
+
+      <div class="col-sm-4">
         <h4 style="text-align:center">Julia 0.5</h4>
         {{#RELEASECHANGES}}
         <b>{{TESTDATE}}</b>
@@ -208,7 +220,7 @@
         {{/RELEASECHANGES}}
       </div>
 
-      <div class="col-sm-6">
+      <div class="col-sm-4">
         <h4 style="text-align:center">Julia 0.6</h4>
         {{#NIGHTLYCHANGES}}
         <b>{{TESTDATE}}</b>

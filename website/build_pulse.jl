@@ -227,8 +227,8 @@ print_with_color(:magenta, "  Status changes...\n")
 
 MAX_DAYS_HIST = 3
 
-changes = Dict(RELEASE => Dict(), NIGHTLY => Dict())
-for JULIA_VERSION in [RELEASE, NIGHTLY]
+changes = Dict(LASTVER => Dict(), RELEASE => Dict(), NIGHTLY => Dict())
+for JULIA_VERSION in [LASTVER, RELEASE, NIGHTLY]
     for date in hist_dates[1:MAX_DAYS_HIST]
         changes[JULIA_VERSION][date] = []
     end
@@ -267,6 +267,9 @@ for JULIA_VERSION in [RELEASE, NIGHTLY]
     end
 end
 
+temp_data["LASTVERCHANGES"] = [Dict(
+    "TESTDATE"      => hist_dates[i],
+    "STATUSCHANGE"  => changes[LASTVER][hist_dates[i]]) for i in 1:MAX_DAYS_HIST]
 temp_data["RELEASECHANGES"] = [Dict(
     "TESTDATE"      => hist_dates[i],
     "STATUSCHANGE"  => changes[RELEASE][hist_dates[i]]) for i in 1:MAX_DAYS_HIST]
