@@ -1,0 +1,10 @@
+julia 0.4
+JSON
+Humanize
+Mustache
+MetadataTools
+Requests
+GitHub
+JLD
+PyPlot
+Compat
