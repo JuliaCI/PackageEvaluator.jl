@@ -14,6 +14,7 @@
 print_with_color(:magenta, "Building index page and detail pages...\n")
 
 import JSON, Humanize, Mustache
+using Compat
 include("shared.jl")
 
 # Load test history
@@ -37,26 +38,26 @@ end
 pkg_names = sort(collect(keys(pkgs_by_name)))
 
 # Load logo
-jllogo_svg = readall("html/jllogo.svg")
+jllogo_svg = readstring("html/jllogo.svg")
 
 # Load stylesheet
-pkg_css = readall("html/pkg.css")
+pkg_css = readstring("html/pkg.css")
 
 # Load and render header
-index_head = Mustache.render(readall("html/indexhead.html"),
+index_head = Mustache.render(readstring("html/indexhead.html"),
     Dict("JLLOGO"      => jllogo_svg,
          "PKGCSS"      => pkg_css,
          "LASTUPDATED" => string(Dates.today()),  # YYYY-MM-DD
          "PKGCOUNT"    => string(length(pkg_names))) )
 
 # Load footer (no templates used)
-index_foot = readall("html/indexfoot.html")
+index_foot = readstring("html/indexfoot.html")
 
 # Load the template for a package
-index_pkg = readall("html/indexpkg.html")
+index_pkg = readstring("html/indexpkg.html")
 
 # Load the package detail template
-pkg_detail = readall("html/pkgdetail.html")
+pkg_detail = readstring("html/pkgdetail.html")
 
 # Helper function to produce history listings for each package
 function hist_table(hist_db, pkg_name, jl_ver)

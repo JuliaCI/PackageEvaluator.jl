@@ -28,7 +28,7 @@ print_with_color(:magenta, "  Totals and sanity checks...\n")
 # Collect totals for each Julia version by date and status
 totals = Dict()
 for ver in ["0.2","0.3","0.4","0.5","0.6"]
-    totals[ver] = Dict([date => Dict([status => 0 for status in keys(HUMANSTATUS)])
+    totals[ver] = Dict([(date, Dict([(status, 0) for status in keys(HUMANSTATUS)]))
                         for date in dates])
     for pkg in pkgnames
         key = (pkg, ver)
@@ -57,8 +57,8 @@ end
 print_with_color(:magenta, "  Printing main plot...\n")
 
 # Build an x-axis and y-axis for each version
-x_dates  = Dict([ver=>Date[] for ver in keys(totals)])
-y_totals = Dict([ver=>Int[]  for ver in keys(totals)])
+x_dates  = Dict([(ver,Date[]) for ver in keys(totals)])
+y_totals = Dict([(ver,Int[])  for ver in keys(totals)])
 for ver in keys(totals), date in dates
     y = totals[ver][date]["total"]
     y <= 0 && continue

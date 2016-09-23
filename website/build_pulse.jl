@@ -10,6 +10,7 @@
 print_with_color(:magenta, "Building pulse page...\n")
 
 import JSON, Mustache
+using Compat
 
 include("shared.jl")
 const RELEASE = "0.5"
@@ -28,7 +29,7 @@ output_path  = ARGS[4]
 
 # Load package listing, turn into a more useful dictionary
 pkgs = JSON.parsefile("final.json")
-pkgdict = Dict([ver => Dict() for ver in JULIA_VERSIONS])
+pkgdict = Dict([(ver, Dict()) for ver in JULIA_VERSIONS])
 for pkg in pkgs
     pkgdict[pkg["jlver"]][pkg["name"]] = pkg
 end
@@ -37,7 +38,7 @@ end
 hist_db, pkgnames, hist_dates = load_hist_db(hist_db_file)
 
 # Load template, initialize template dictionary
-template = readall("html/pulse_temp.html")
+template = readstring("html/pulse_temp.html")
 temp_data = Dict{Any,Any}("UPDATEDATE" => string(dbdate_to_date(date_str)))
 
 #-----------------------------------------------------------------------
@@ -173,7 +174,7 @@ end
 
 print_with_color(:magenta, "  Status totals...\n")
 
-totals = Dict([ver => Dict() for ver in JULIA_VERSIONS])
+totals = Dict([(ver, Dict()) for ver in JULIA_VERSIONS])
 for JULIA_VERSION in JULIA_VERSIONS
     for pkgname in pkgnames
         hist_key = (pkgname, JULIA_VERSION)
