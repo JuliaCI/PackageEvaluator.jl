@@ -24,6 +24,7 @@ Possible reasons include:
 * **Your package's tests or installation take too long**. There is a time limit of 30 minutes for installation, and a seperate 10 minute time limit for testing. You can either reduce your testing time, or exclude your package from testing.
 * **Your package requires too much memory**. The VMs only have 2 GB of RAM. You can either reduce your test memory usage, or exclude your package from testing.
 * **Your tests aren't being found / wrong test file is being run**. Your package needs a `test/runtests.jl` file. PackageEvaluator will execute it with `Pkg.test`.
+* **You don't want to run some of your tests on PackageEvaluator**. Wrap those tests inside `if get(ENV, "JULIA_PKGEVAL", "false") !== "true"; protected_tests; end`.
 * **Something else**. You'll probably need to check manually on the testing VM. See next section.
 
 (**Licenses** are searched for in the files listed in [`src/constants.jl`](https://github.com/IainNZ/PackageEvaluator.jl/blob/master/src/constants.jl). The goal is to support a variety of licenses. If your license isn't detected, please file a pull request with detection logic.)

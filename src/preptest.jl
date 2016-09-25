@@ -37,7 +37,7 @@ function prepare_test()
         print(fp, "xvfb-run ")
     end
     print(fp, "$TIMEOUTPATH 1200s ")
-    print(fp, "julia -e 'versioninfo(true); Pkg.test(\"", pkg_name, "\")'")
+    print(fp, "JULIA_PKGEVAL=true julia -e 'versioninfo(true); Pkg.test(\"", pkg_name, "\")'")
     print(fp, " 2>&1 | tee PKGEVAL_", pkg_name, "_test.log")
     close(fp)
 end
