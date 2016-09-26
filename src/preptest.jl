@@ -8,7 +8,9 @@
 #######################################################################
 
 include("constants.jl")
-const TIMEOUTPATH = @osx? "gtimeout" : "timeout"
+# TODO: uncomment this (and deal with deprecation) if pkgeval gets generalized to run on mac
+#const TIMEOUTPATH = @osx? "gtimeout" : "timeout"
+const TIMEOUTPATH = "timeout"
 
 function prepare_test()
     pkg_name = ARGS[1]
