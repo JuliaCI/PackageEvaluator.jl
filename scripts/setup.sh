@@ -141,13 +141,13 @@ julia -e "Pkg.init(); println(Pkg.dir())"
 
 #######################################################################
 # Run PackageEvaluator
-if [ "$1" == "0.3" ]
+if [ "$1" == "0.4" ]
 then
     LOOPOVER=/home/vagrant/.julia/v0.6/METADATA/[A-F,a-f]*
-elif [ "$1" == "0.4" ]
+elif [ "$1" == "0.5" ]
 then
     LOOPOVER=/home/vagrant/.julia/v0.6/METADATA/[G-N,g-n]*;
-elif [ "$1" == "0.5" ]
+elif [ "$1" == "0.6" ]
 then
     LOOPOVER=/home/vagrant/.julia/v0.6/METADATA/[O-Z,o-z]*;
 fi
