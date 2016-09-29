@@ -107,6 +107,14 @@ sudo ./$AFSCRIPT --exclude-subdir --prefix=/usr/local
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/
 rm $AFSCRIPT
 
+#######################################################################
+# Setup environment for HDFS, Yarn and Hive
+HADOOPSCRIPTDIR="/home/vagrant/hadoop"
+git clone -b 'v0.0.1' --single-branch https://github.com/JuliaCI/PkgEvalHadoopEnv.git $HADOOPSCRIPTDIR
+echo $'\nJAVA_HOME=/usr/lib/jvm/java-7-oracle' >> /home/vagrant/.ssh/environment
+echo $'\nPermitUserEnvironment yes' | sudo tee --append /etc/ssh/sshd_config
+$HADOOPSCRIPTDIR/hadoop/setup_hdfs.sh
+$HADOOPSCRIPTDIR/hive/setup_hive.sh
 
 #######################################################################
 # Get PackageEvaluator scripts
