@@ -133,10 +133,10 @@ then
     LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/*
 elif [ "$2" == "AL" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/[A-L]*;
+    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/[A-L,a-l]*;
 elif [ "$2" == "MZ" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/[m-Z]*;
+    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/[M-Z,m-z]*;
 fi
 # For every package name...
 for f in $LOOPOVER;
