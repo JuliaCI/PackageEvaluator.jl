@@ -36,9 +36,10 @@ message = makebackup(today) # make backup of new logs
 
 cd(websitepath)
 run(`git pull`) # update website repo to latest before building new content
-cd(Pkg.dir("METADATA"))
-run(`git checkout metadata-v2`) # don't leave any work detached on this machine
-run(`git pull`) # also update metadata?
+run(`git checkout -b dataframes`)
+#cd(Pkg.dir("METADATA"))
+#run(`git checkout metadata-v2`) # don't leave any work detached on this machine
+#run(`git pull`) # also update metadata?
 
 cd(joinpath(pkgevalpath, "website"))
 run(ignorestatus(`./clean.sh`))
@@ -54,7 +55,7 @@ run(`git config user.email jrevels@csail.mit.edu`)
 run(`git add .`)
 run(`git commit -m "$message"`)
 run(`git remote add $token https://$token:x-oauth-basic@github.com/JuliaCI/pkg.julialang.org`)
-run(`git push $token gh-pages`)
+run(`git push $token dataframes`)
 run(`git remote rm $token`)
 
 println("Done pushing website!")

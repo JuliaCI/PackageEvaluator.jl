@@ -123,7 +123,7 @@ cd /vagrant/${1}${2}
 # that seems to mess with symlinks quite badly.
 # See https://github.com/JuliaOpt/Ipopt.jl/issues/31 for discussion
 # about this breaking a build.
-julia -e "Pkg.init(); println(Pkg.dir())"
+julia -e 'Pkg.init("https://github.com/quinnj/METADATA.jl", "jq/testdf"); println(Pkg.dir())'
 
 
 #######################################################################
