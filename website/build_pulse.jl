@@ -139,11 +139,11 @@ star_top_alltime = sort(star_changes, by=f->f[2], rev=true)
 temp_data["TOPSTARALLTIME"] = Any[]
 for i in 1:num_top_star
     pkgname, cur_star, pre_star = star_top_alltime[i]
-    if !haskey(pkgdict[NIGHTLY], pkgname)
-        warn("$pkgname not found in pkgdict[NIGHTLY], skipping!")
+    if !haskey(pkgdict[RELEASE], pkgname)
+        warn("$pkgname not found in pkgdict[RELEASE], skipping!")
         continue
     end
-    url = pkgdict[NIGHTLY][pkgname]["url"]
+    url = pkgdict[RELEASE][pkgname]["url"]
     push!(temp_data["TOPSTARALLTIME"], Dict(
                 "url"       => url,
                 "name"      => pkgname,
@@ -156,11 +156,11 @@ star_top_change = sort(star_changes, by=f->(f[2]-f[3]), rev=true)
 temp_data["TOPSTARCHANGE"] = Any[]
 for i in 1:num_top_star
     pkgname, cur_star, pre_star = star_top_change[i]
-    if !haskey(pkgdict[NIGHTLY], pkgname)
-        warn("$pkgname not found in pkgdict[NIGHTLY], skipping!")
+    if !haskey(pkgdict[RELEASE], pkgname)
+        warn("$pkgname not found in pkgdict[RELEASE], skipping!")
         continue
     end
-    url = pkgdict[NIGHTLY][pkgname]["url"]
+    url = pkgdict[RELEASE][pkgname]["url"]
     push!(temp_data["TOPSTARCHANGE"], Dict(
                 "url"       => url,
                 "name"      => pkgname,
