@@ -87,6 +87,10 @@ temp_data["NUMNEWPKG"] = 0
 temp_data["NUMUPDPKG"] = 0
 for c in changes
     change_type, pkgname, pre_ver, cur_ver = c
+    if !haskey(pkgdict[VERSION_FOR_CHANGES], pkgname)
+        warn("$pkgname not found in pkgdict[VERSION_FOR_CHANGES], skipping!")
+        continue
+    end
     pd = pkgdict[VERSION_FOR_CHANGES][pkgname]
     temp_change = Dict()
     temp_change["icon"] = (change_type == :new) ? "star" : "arrow-up"
