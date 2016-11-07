@@ -37,12 +37,12 @@ all06
 EOF
 
 else
-    vagrant up --no-provision halfAK04
-    vagrant up --no-provision halfLZ04
-    vagrant up --no-provision halfAK05
-    vagrant up --no-provision halfLZ05
-    vagrant up --no-provision halfAK06
-    vagrant up --no-provision halfLZ06
+    vagrant up --provider=libvirt --no-provision halfAK04
+    vagrant up --provider=libvirt --no-provision halfLZ04
+    vagrant up --provider=libvirt --no-provision halfAK05
+    vagrant up --provider=libvirt --no-provision halfLZ05
+    vagrant up --provider=libvirt --no-provision halfAK06
+    vagrant up --provider=libvirt --no-provision halfLZ06
 
     # Provision in parallel
     cat <<EOF | parallel_provision

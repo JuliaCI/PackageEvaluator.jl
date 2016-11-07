@@ -2,9 +2,10 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "wholebits/ubuntu-16.10-64"
+  config.vm.synced_folder ".", "/vagrant", type: "sshfs", sshfs_opts_append: "-o cache=no"
 
-  config.vm.provider "virtualbox" do |v|
+  config.vm.provider "libvirt" do |v|
     v.memory = 3072
     v.cpus = 2
   end
