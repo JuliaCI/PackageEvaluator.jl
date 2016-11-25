@@ -21,9 +21,21 @@ hist_db_file = ARGS[2]
 output_path  = ARGS[3]
 
 # Load history databases
-hist_db, pkgnames, dates = load_hist_db(hist_db_file)
+hist_db, pkgnames, dates_all = load_hist_db(hist_db_file)
 
 print_with_color(:magenta, "  Totals and sanity checks...\n")
+
+# Days something went wrong
+blacklist_dates = [
+    "20161017",
+    "20161018",
+    "20161019",
+    "20161020",
+    "20161021",
+    "20161029",
+    "20161110",
+]
+dates = setdiff(dates_all, blacklist_dates)
 
 # Collect totals for each Julia version by date and status
 totals = Dict()
@@ -36,6 +48,7 @@ for ver in ["0.2","0.3","0.4","0.5","0.6"]
         results = hist_db[key]
         for i in 1:size(results,1)
             date   = results[i,1]
+            (date in blacklist_dates) && continue
             status = results[i,3]
             totals[ver][date][status]  += 1
             totals[ver][date]["total"] += 1
@@ -115,7 +128,7 @@ end
 print_with_color(:magenta, "  Printing star plot...\n")
 
 star_hist, star_dates = load_star_db(star_db_file)
-star_totals = [d => 0 for d in dates]
+star_totals = [d => 0 for d in dates_all]
 for pkg in keys(star_hist)
     for (date,stars) in star_hist[pkg]
         star_totals[date] += stars
