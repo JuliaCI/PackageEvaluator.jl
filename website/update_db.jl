@@ -1,6 +1,6 @@
 #-----------------------------------------------------------------------
 # PackageEvaluator
-# https://github.com/IainNZ/PackageEvaluator.jl
+# https://github.com/JuliaCI/PackageEvaluator.jl
 # (c) Iain Dunning 2015. MIT License.
 #-----------------------------------------------------------------------
 # website/update_db.jl
