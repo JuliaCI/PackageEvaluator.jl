@@ -148,7 +148,7 @@ do
     # standard for build time and memory consumption, see
     # https://github.com/JuliaCI/PackageEvaluator.jl/issues/83
     # The log for adding the package will go in the results folder.
-    timeout 2000s julia -e "Pkg.add(\"${PKGNAME}\")" 2>&1 | tee PKGEVAL_${PKGNAME}_add.log
+    timeout --kill-after=30s 2000s julia -e "Pkg.add(\"${PKGNAME}\")" 2>&1 | tee PKGEVAL_${PKGNAME}_add.log
     # A package can have four states:
     # - Not testable: for some reason, we can't even analyze how
     #   broken or not the package is, usually due to a limitation
