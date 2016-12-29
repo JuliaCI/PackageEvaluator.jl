@@ -95,6 +95,8 @@ export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 echo "export JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /home/vagrant/.profile
 # Use the Conda Package as Python environment
 export PYTHON=""
+# needed by GeographicLibPy.jl
+sudo pip install geographiclib
 # need /usr/share/dict/words for TextAnalysis.jl
 sudo apt-get install wamerican
 # Need xmllint (and others?) for XMLDict.jl
