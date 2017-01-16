@@ -74,7 +74,15 @@ for pkg in all_pkgs
     # Make log file
     log_file = joinpath(log_path, string(pkg["name"],"_",pkg["jlver"],".log"))
     open(log_file,"w") do logfp
-        println(logfp, pkg["log"])
+        if length(pkg["log"]) <= 40_000_000
+            println(logfp, pkg["log"])
+        else
+            println(logfp, pkg["log"][1:20_000_000])
+            println(logfp)
+            println(logfp, "... log truncated to make github less angry ...")
+            println(logfp)
+            println(logfp, pkg["log"][end-20_000_000:end])
+        end
     end
 
     # Add description and stars
