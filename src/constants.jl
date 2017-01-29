@@ -106,6 +106,7 @@ const PKGOPTS = Dict([
     ("IJulia"                 , :PYTHON),    # Could be interesting to revist
     ("ImageRegistration"      , :XVFB),      # GUI via Tk.jl
     ("ImageView"              , :XVFB),      # GUI via Tk.jl
+    ("Immerse"                , :XVFB),      # GUI via Gtk.jl
     ("InspectDR"              , :XVFB),      # Plotting package
     ("Instruments"            , :BINARY),    # Needs NI-VISA
     ("KNITRO"                 , :BINARY),    # Commercial software
