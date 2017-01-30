@@ -13,7 +13,7 @@ import JSON
 include("constants.jl")
 
 function check_license(filename)
-    text = lowercase(readall(filename))
+    text = lowercase(readchomp(filename))
     for license in LICENSES
         for regex in license[2]
             if ismatch(regex, text)
@@ -31,7 +31,7 @@ function prepare_json()
     json_path = ARGS[3]
 
     url_path = joinpath(Pkg.dir(),"METADATA",pkg_name,"url")
-    url      = chomp(readall(url_path))
+    url      = readchomp(url_path)
     url      = (url[1:3] == "git")   ? url[7:(end-4)] :
                (url[1:5] == "https") ? url[9:(end-4)] : ""
     url      = string("http://", url)
@@ -39,7 +39,7 @@ function prepare_json()
     old_dir = pwd()
     cd(Pkg.dir(pkg_name))
     # gitlog = "08ab40...c96c40 2014-05-22 17:17:40 -0400"
-    gitlog   = readall(`git log -1 --format="%H %ci"`)
+    gitlog   = readchomp(`git log -1 --format="%H %ci"`)
     spl      = split(gitlog, " ")
     git_sha  = spl[1]
     git_date = string(spl[2]," ",spl[3]," ",spl[4])
@@ -54,7 +54,7 @@ function prepare_json()
         end
     end
 
-    add_log = readall("PKGEVAL_$(pkg_name)_add.log")
+    add_log = readchomp("PKGEVAL_$(pkg_name)_add.log")
 
     if exit_code == "255"
         # No tests were run because they couldn't be
@@ -66,19 +66,19 @@ function prepare_json()
         test_status = "no_tests"
     elseif exit_code == "0"
         # Tests ran and passed
-        test_log = readall("PKGEVAL_$(pkg_name)_test.log")
+        test_log = readchomp("PKGEVAL_$(pkg_name)_test.log")
         test_status = "tests_pass"
     elseif exit_code == "1" || exit_code == "124"
         # Test ran and failed or timed out
-        test_log = readall("PKGEVAL_$(pkg_name)_test.log")
+        test_log = readchomp("PKGEVAL_$(pkg_name)_test.log")
         test_status = "tests_fail"
     end
 
     log_str  = ">>> 'Pkg.add(\"$(pkg_name)\")' log\n"
     log_str *= add_log
-    log_str *= "\n>>> 'Pkg.test(\"$(pkg_name)\")' log\n"
+    log_str *= "\n\n>>> 'Pkg.test(\"$(pkg_name)\")' log\n"
     log_str *= test_log
-    log_str *= "\n>>> End of log"
+    log_str *= "\n\n>>> End of log"
 
     output_dict = Dict([
         ("jlver"            , string(VERSION.major,".",VERSION.minor)),
