@@ -20,6 +20,9 @@ BADGEPATH=$HOME/github/pkg.julialang.org/badges
 INDPATH=$HOME/github/pkg.julialang.org/
 IMGPATH=$HOME/github/pkg.julialang.org/img
 
+gunzip $STARPATH.gz
+gunzip $HISTPATH.gz
+
 #scp nanosoldier1.csail.mit.edu:~/PkgEval/scripts/*.json ./
 cp $(dirname "$0")/../scripts/*.json .
 
@@ -34,3 +37,6 @@ $JULIA --color=yes build_index.jl $HISTPATH $INDPATH
 $JULIA --color=yes pulse_plots.jl $STARPATH $HISTPATH $IMGPATH
 
 $JULIA --color=yes build_pulse.jl $CURDATE $STARPATH $HISTPATH $INDPATH
+
+gzip $STARPATH
+gzip $HISTPATH
