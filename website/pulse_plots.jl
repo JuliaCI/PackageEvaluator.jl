@@ -236,7 +236,7 @@ for ver in keys(totals), aspercent in [true,false]
     end
     xticks(rotation="vertical")
     ylabel(string(aspercent?"Percentage":"Number", " of Packages"))
-    ylim(ymin = 0, ymax = aspercent ? 80 : 800 )
+    ylim(ymin = 0, ymax = aspercent ? 80 : 1000 )
     title(string("Julia v$(ver)", aspercent ? " (relative)" : ""))
     open(joinpath(output_path,"$(ver)_$(aspercent).svg"), "w") do fp
         writemime(fp, "image/svg+xml", fig)
