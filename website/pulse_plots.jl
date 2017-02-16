@@ -39,6 +39,7 @@ blacklist_dates = [
     "20170207",
     "20170214",
     "20170215",
+    "20170216",
 ]
 dates = setdiff(dates_all, blacklist_dates)
 
