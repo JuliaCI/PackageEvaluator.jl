@@ -84,6 +84,8 @@ sudo apt-get install unzip
 sudo apt-get install cmake
 # Install R for e.g. Rif.jl, RCall.jl
 sudo apt-get install r-base r-base-dev
+# Install gmsh and libav-tools for EllipticFEM.jl
+sudo apt-get install gmsh libav-tools
 # Install Java for e.g. JavaCall.jl, Taro.jl
 # From: http://stackoverflow.com/q/19275856/3822752
 sudo add-apt-repository -y ppa:webupd8team/java
