@@ -100,10 +100,12 @@ export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 echo "export JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /home/vagrant/.profile
 # Use the Conda Package as Python environment
 export PYTHON=""
-# need /usr/share/dict/words for TextAnalysis.jl
+# Need /usr/share/dict/words for TextAnalysis.jl
 sudo apt-get install wamerican
 # Need xmllint (and others?) for XMLDict.jl
 sudo apt-get install libxml2-utils
+# Need lualatex for TikzGraphs.jl
+sudo apt-get install texlive-latex-base
 # ArrayFire
 AFSCRIPT=ArrayFire-no-gl-v3.4.2_Linux_x86_64.sh
 wget http://ci.arrayfire.org/userContent/Linux/$AFSCRIPT
