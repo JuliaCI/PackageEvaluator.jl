@@ -34,6 +34,9 @@ sudo su -c 'echo "APT::Get::force-yes \"true\";" >> /etc/apt/apt.conf.d/pkgevalf
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
 sudo add-apt-repository -y "deb http://cran.rstudio.com/bin/linux/ubuntu trusty/"
 
+# Newer cmake ppa
+sudo add-apt-repository -y ppa:adrozdoff/cmake
+
 # Set a 10 minute absolute timeout and 2 minute low speed timeout
 # for curl because of unreliable downloads like wcslib, graphviz
 echo "max-time = 600" >> ~/.curlrc
