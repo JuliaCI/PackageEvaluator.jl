@@ -86,34 +86,34 @@ for ver in keys(totals), date in dates
     push!(y_totals[ver], y)
 end
 # Julia releases so far (release date, name, vertical height on plot, bold)
-jl_date_vers = [Date(2014,08,20)  "v0.3.0"  250  true;
-                Date(2014,09,21)  "v0.3.1"  300  false;
-                Date(2014,10,21)  "v0.3.2"  250  false;
-                Date(2014,11,23)  "v0.3.3"  300  false;
-                Date(2014,12,26)  "v0.3.4"  250  false;
-                Date(2015,01,08)  "v0.3.5"  300  false;
-                Date(2015,02,17)  "v0.3.6"  250  false;
-                Date(2015,03,23)  "v0.3.7"  300  false;
-                Date(2015,04,30)  "v0.3.8"  250  false;
-                Date(2015,05,30)  "v0.3.9"  300  false;
-                Date(2015,06,24)  "v0.3.10" 250  false;
-                Date(2015,07,27)  "v0.3.11" 300  false;
-                Date(2015,10,26)  "v0.3.12" 250  false;
+jl_date_vers = [Date(2014,08,20)  "v0.3.0"  800  true;
+                Date(2014,09,21)  "v0.3.1"  900  false;
+                Date(2014,10,21)  "v0.3.2"  800  false;
+                Date(2014,11,23)  "v0.3.3"  900  false;
+                Date(2014,12,26)  "v0.3.4"  800  false;
+                Date(2015,01,08)  "v0.3.5"  900  false;
+                Date(2015,02,17)  "v0.3.6"  800  false;
+                Date(2015,03,23)  "v0.3.7"  900  false;
+                Date(2015,04,30)  "v0.3.8"  800  false;
+                Date(2015,05,30)  "v0.3.9"  900  false;
+                Date(2015,06,24)  "v0.3.10" 800  false;
+                Date(2015,07,27)  "v0.3.11" 900  false;
+                Date(2015,10,26)  "v0.3.12" 800  false;
                 Date(2015,10,08)  "v0.4.0"  400  true;
-                Date(2015,11,08)  "v0.4.1"  450  false;
+                Date(2015,11,08)  "v0.4.1"  500  false;
                 Date(2015,12,06)  "v0.4.2"  400  false;
-                Date(2016,01,12)  "v0.4.3"  450  false;
+                Date(2016,01,12)  "v0.4.3"  500  false;
                 Date(2016,03,17)  "v0.4.5"  400  false;
-                Date(2016,06,19)  "v0.4.6"  450  false;
+                Date(2016,06,19)  "v0.4.6"  500  false;
                 Date(2016,09,18)  "v0.4.7"  400  false;
-                Date(2016,09,19)  "v0.5.0"  250  true;
+                Date(2016,09,19)  "v0.5.0"  800  true;
 ]
 fig = figure(figsize=(10,4))  # inches
 plot(x_dates["0.2"], y_totals["0.2"], "r-",
      x_dates["0.3"], y_totals["0.3"], "g-",
      x_dates["0.4"], y_totals["0.4"], "b-",
      x_dates["0.5"], y_totals["0.5"], "k-",
-     x_dates["0.6"], y_totals["0.6"], "r-",
+     x_dates["0.6"], y_totals["0.6"], "y-",
      linewidth=2)
 for i in 1:size(jl_date_vers,1)
     annotate(xy=(jl_date_vers[i,1],jl_date_vers[i,3]), s=jl_date_vers[i,2],
