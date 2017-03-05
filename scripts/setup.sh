@@ -25,6 +25,8 @@
 # easiest way to sudo the whole thing is to do it in this style.
 sudo su -c 'echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/pkgevalforceyes'
 sudo su -c 'echo "APT::Get::force-yes \"true\";" >> /etc/apt/apt.conf.d/pkgevalforceyes'
+# Don't install "recommends" junk
+sudo su -c 'echo "APT::Install-Recommends \"false\";" >> /etc/apt/apt.conf.d/pkgevalforceyes'
 # Uncomment following line to check it did indeed work
 #cat /etc/apt/apt.conf.d/pkgevalforceyes
 
@@ -105,7 +107,7 @@ sudo apt-get install wamerican
 # Need xmllint (and others?) for XMLDict.jl
 sudo apt-get install libxml2-utils
 # Need lualatex for TikzGraphs.jl (this is a big download and takes a long time)
-#sudo apt-get install texlive-latex-base texlive-latex-extra
+sudo apt-get install texlive-latex-base texlive-latex-extra
 # Install ubuntu's netcdf since conda likes breaking theirs
 sudo apt-get install libnetcdf-dev
 # ArrayFire
