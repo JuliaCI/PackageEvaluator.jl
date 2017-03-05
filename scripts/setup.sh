@@ -104,8 +104,8 @@ export PYTHON=""
 sudo apt-get install wamerican
 # Need xmllint (and others?) for XMLDict.jl
 sudo apt-get install libxml2-utils
-# Need lualatex for TikzGraphs.jl
-sudo apt-get install texlive-latex-base texlive-latex-extra
+# Need lualatex for TikzGraphs.jl (this is a big download and takes a long time)
+#sudo apt-get install texlive-latex-base texlive-latex-extra
 # Install ubuntu's netcdf since conda likes breaking theirs
 sudo apt-get install libnetcdf-dev
 # ArrayFire
