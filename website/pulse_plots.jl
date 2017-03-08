@@ -86,26 +86,26 @@ for ver in keys(totals), date in dates
     push!(y_totals[ver], y)
 end
 # Julia releases so far (release date, name, vertical height on plot, bold)
-jl_date_vers = [Date(2014,08,20)  "v0.3.0"  850  true;
-                Date(2014,09,21)  "v0.3.1"  950  false;
-                Date(2014,10,21)  "v0.3.2"  850  false;
-                Date(2014,11,23)  "v0.3.3"  950  false;
-                Date(2014,12,26)  "v0.3.4"  850  false;
-                Date(2015,01,08)  "v0.3.5"  950  false;
-                Date(2015,02,17)  "v0.3.6"  850  false;
-                Date(2015,03,23)  "v0.3.7"  950  false;
-                Date(2015,04,30)  "v0.3.8"  850  false;
-                Date(2015,05,30)  "v0.3.9"  950  false;
-                Date(2015,06,24)  "v0.3.10" 850  false;
-                Date(2015,07,27)  "v0.3.11" 950  false;
-                Date(2015,10,26)  "v0.3.12" 850  false;
-                Date(2015,10,08)  "v0.4.0"  300  true;
-                Date(2015,11,08)  "v0.4.1"  400  false;
-                Date(2015,12,06)  "v0.4.2"  300  false;
-                Date(2016,01,12)  "v0.4.3"  400  false;
-                Date(2016,03,17)  "v0.4.5"  300  false;
-                Date(2016,06,19)  "v0.4.6"  400  false;
-                Date(2016,09,18)  "v0.4.7"  300  false;
+jl_date_vers = [Date(2014,08,20)  "v0.3.0"  950  true;
+                Date(2014,09,21)  "v0.3.1"  1050 false;
+                Date(2014,10,21)  "v0.3.2"  950  false;
+                Date(2014,11,23)  "v0.3.3"  1050 false;
+                Date(2014,12,26)  "v0.3.4"  950  false;
+                Date(2015,01,08)  "v0.3.5"  1050 false;
+                Date(2015,02,17)  "v0.3.6"  950  false;
+                Date(2015,03,23)  "v0.3.7"  1050 false;
+                Date(2015,04,30)  "v0.3.8"  950  false;
+                Date(2015,05,30)  "v0.3.9"  1050 false;
+                Date(2015,06,24)  "v0.3.10" 950  false;
+                Date(2015,07,27)  "v0.3.11" 1050 false;
+                Date(2015,10,26)  "v0.3.12" 950  false;
+                Date(2015,10,08)  "v0.4.0"  400  true;
+                Date(2015,11,08)  "v0.4.1"  500  false;
+                Date(2015,12,06)  "v0.4.2"  400  false;
+                Date(2016,01,12)  "v0.4.3"  500  false;
+                Date(2016,03,17)  "v0.4.5"  400  false;
+                Date(2016,06,19)  "v0.4.6"  500  false;
+                Date(2016,09,18)  "v0.4.7"  400  false;
                 Date(2016,09,19)  "v0.5.0"  850  true;
                 Date(2017,03,05)  "v0.5.1"  950  false;
 ]
