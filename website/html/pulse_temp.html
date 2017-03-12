@@ -54,7 +54,7 @@
       <h1><big>Julia Package Ecosystem Pulse</big></h1>
       <p style="text-align:center"><i>Last updated {{UPDATEDATE}}</i></p>
 
-      <h3>Total number of packages by Julia version</h3>
+      <h3 id="total-packages">Total number of packages by Julia version</h3>
       <div class="row">
       <div class="col-sm-12">
       <img src="../img/allver.svg" class="img-responsive center-block" alt="Total packages by Julia version">
@@ -63,7 +63,7 @@
       </div>
 
 
-      <h3>METADATA changes in last 7 days</h3>
+      <h3 id="metadata-changes">METADATA changes in last 7 days</h3>
       <h4>{{NUMNEWPKG}} new, {{NUMUPDPKG}} updated</h4>
       <div class="row">
       <div class="col-sm-6" style="text-align:center">
@@ -94,7 +94,7 @@
       </div>
 
 
-      <h3>Stars</h3>
+      <h3 id="stars">Stars</h3>
       <p style="text-align:center"><small>
           "Stars" are something you can give a package on Github.
           This plot is the total number of stars across all packages.
@@ -110,7 +110,7 @@
 
       <div class="row">
       <div class="col-sm-6" style="text-align:center">
-        <h4 class="left">Top twenty all-time <small>with 14-day change</small></h4>
+        <h4 class="left" id="stars-top20-alltime">Top twenty all-time <small>with 14-day change</small></h4>
         <table class="changes" style="margin: 0 auto;">
           {{#TOPSTARALLTIME}} <tr>
           <td> <a href="{{url}}">{{name}}</a> </td>
@@ -121,7 +121,7 @@
         </table>
       </div>
       <div class="col-sm-6" style="text-align:center">
-        <h4 class="left">Top twenty 14-day change <small>with total</small></h4>
+        <h4 class="left" id="stars-top20-14days">Top twenty 14-day change <small>with total</small></h4>
         <table class="changes" style="margin: 0 auto;">
           {{#TOPSTARCHANGE}} <tr>
           <td> <a href="{{url}}">{{name}}</a> </td>
@@ -137,7 +137,7 @@
             <span class="glyphicon glyphicon-star"></span> count}}
             (<span class="glyphicon glyphicon-arrow-up"></span> change}}) <br>-->
 
-      <h3>Testing status changes</h3>
+      <h3 id="testing-status-changes">Testing status changes</h3>
       <div class="row">
       <div class="col-sm-4">
         <img src="../img/0.4_false.svg"  class="img-responsive center-block" alt="Julia 0.4 Package Test Status">
@@ -172,7 +172,7 @@
           <td width="17%" style="color: grey;">Total</td>
         </tr>
         <tr>
-          <td style="border-right: 1px solid">Julia 0.4</td>
+          <td style="border-right: 1px solid" id="testing-status-changes-0.4">Julia 0.4</td>
           <td>{{LASTVERPASS}}</td>
           <td>{{LASTVERFAIL}}</td>
           <td>{{LASTVERNOTEST}}</td>
@@ -180,7 +180,7 @@
           <td>{{LASTVERTOTAL}}</td>
         </tr>
         <tr>
-          <td style="border-right: 1px solid">Julia 0.5</td>
+          <td style="border-right: 1px solid" id="testing-status-changes-0.5">Julia 0.5</td>
           <td>{{CURVERPASS}}</td>
           <td>{{CURVERFAIL}}</td>
           <td>{{CURVERNOTEST}}</td>
@@ -188,7 +188,7 @@
           <td>{{CURVERTOTAL}}</td>
         </tr>
         <tr>
-          <td style="border-right: 1px solid">Julia 0.6</td>
+          <td style="border-right: 1px solid" id="testing-status-changes-0.6">Julia 0.6</td>
           <td>{{NEXTVERPASS}}</td>
           <td>{{NEXTVERFAIL}}</td>
           <td>{{NEXTVERNOTEST}}</td>
