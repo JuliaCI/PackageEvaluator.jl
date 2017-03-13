@@ -81,6 +81,8 @@ const PKGOPTS = Dict([
     ("CUBLAS"                 , :BINARY),    # NVIDIA CUDA
     ("CUDA"                   , :BINARY),    # NVIDIA CUDA
     ("CUDAdrv"                , :BINARY),    # NVIDIA CUDA
+    ("CUDAnative"             , :BINARY),    # NVIDIA CUDA
+    ("CUDAnativelib"          , :BINARY),    # NVIDIA CUDA
     ("CUDNN"                  , :BINARY),    # NVIDIA CUDA
     ("CUDArt"                 , :BINARY),    # NVIDIA CUDA
     ("CUFFT"                  , :BINARY),    # NVIDIA CUDA
@@ -111,6 +113,7 @@ const PKGOPTS = Dict([
     ("Instruments"            , :BINARY),    # Needs NI-VISA
     ("KNITRO"                 , :BINARY),    # Commercial software
     ("LibTrading"             , :BINARY),    # Needs libtrading
+    ("LLVM"                   , :BINARY),    # Needs llvm-config
     ("Mandrill"               , :BREAKS),    # Needs API Key
     ("Mathematica"            , :BINARY),    # Commercial software
     ("MATLAB"                 , :BINARY),    # Commercial software
