@@ -108,7 +108,7 @@ sudo apt-get install wamerican
 sudo apt-get install libxml2-utils
 # Need lualatex for TikzGraphs.jl (this is a big download and takes a long time)
 sudo apt-get install texlive-latex-base texlive-latex-extra \
-    texlive-luatex texlive-xetex pgf
+    texlive-luatex texlive-xetex pgf lmodern
 # Install ubuntu's netcdf since conda likes breaking theirs
 sudo apt-get install libnetcdf-dev
 # ArrayFire
