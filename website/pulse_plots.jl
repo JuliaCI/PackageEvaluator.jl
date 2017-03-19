@@ -223,18 +223,18 @@ for ver in keys(totals), aspercent in [true,false]
     plot(x_dates, y_totals["no_tests"],     color="blue",   marker=".")
     plot(x_dates, y_totals["not_possible"], color="grey",   marker=".")
     if ver == "0.3"
-        annotate(xy=(jlv3,aspercent?35:550), s="v0.3",
-                 size="small", ha="left", backgroundcolor="w")
+        annotate(xy=(jlv3,aspercent?40:850), s="v0.3",
+                 size="small", ha="left")
         axvline(x=jlv3, alpha=1.0, color="#333333")
     end
     if ver == "0.3" || ver == "0.4"
-        annotate(xy=(jlv4,aspercent?35:550), s="v0.4",
-                 size="small", ha="left", backgroundcolor="w")
+        annotate(xy=(jlv4,aspercent?40:850), s="v0.4",
+                 size="small", ha="left")
         axvline(x=jlv4, alpha=1.0, color="#333333")
     end
     if ver == "0.3" || ver == "0.4" || ver == "0.5"
-        annotate(xy=(jlv5,aspercent?35:550), s="v0.5",
-                 size="small", ha="left", backgroundcolor="w")
+        annotate(xy=(jlv5,aspercent?40:850), s="v0.5",
+                 size="small", ha="left")
         axvline(x=jlv5, alpha=1.0, color="#333333")
     end
     xticks(rotation="vertical")
