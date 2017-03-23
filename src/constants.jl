@@ -100,6 +100,9 @@ const PKGOPTS = Dict([
     ("GLVisualize"            , :OPENGL),
     ("GR"                     , :XVFB),      # Plotting package
     ("Gtk"                    , :XVFB),      # GUI package
+    ("GtkBuilderAid"          , :XVFB),      # GUI via Gtk.jl
+    ("GtkReactive"            , :XVFB),      # GUI via Gtk.jl
+    ("GtkUtilities"           , :XVFB),      # GUI via Gtk.jl
     ("GUITestRunner"          , :XVFB),      # GUI via Tk.jl
     ("Gurobi"                 , :BINARY),    # Commercial software
     ("Homebrew"               , :OSX),
