@@ -140,6 +140,7 @@ const PKGOPTS = Dict([
     ("PyPlot"                 , :XVFB),      # GUI
     ("PySide"                 , :PYTHON),    # Needs PySide/Qt
     ("PyX"                    , :PYTHON),    # Needs PyX
+    ("QML"                    , :XVFB),      # GUI via Qt
     ("QuartzImageIO"          , :OSX),
     ("RdRand"                 , :BINARY),    # Needs latest Intel CPU
     ("REPLCompletions"        , :DEP),       # Deprecated, just throws error (???)
