@@ -52,10 +52,11 @@ sudo apt-get upgrade   # Upgrade system packages
 # Use first argument to script to distinguish between the versions
 if [ "$2" == "AL" ]
 then
-    wget -O julia.tar.gz https://julianightlies.s3.amazonaws.com/bin/linux/x64/julia-latest-linux64.tar.gz
+    wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.6/julia-0.6-latest-linux-x86_64.tar.gz
 elif [ "$2" == "MZ" ]
 then
-    wget -O julia.tar.gz https://julianightlies.s3.amazonaws.com/bin/linux/x64/0.6/julia-0.6.0-dbdaae292e-linux64.tar.gz
+    wget -O julia.tar.gz https://julianightlies.s3.amazonaws.com/bin/linux/x64/julia-latest-linux64.tar.gz
+#    wget -O julia.tar.gz https://julianightlies.s3.amazonaws.com/bin/linux/x64/0.6/julia-0.6.0-dbdaae292e-linux64.tar.gz
 elif [ "$1" == "0.5" ]
 then
     wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.5/julia-0.5-latest-linux-x86_64.tar.gz
