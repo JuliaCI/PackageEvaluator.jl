@@ -261,7 +261,7 @@ for JULIA_VERSION in [LASTVER, RELEASE, NIGHTLY]
                     "name"  =>  pkgname,
                     "prev"  =>  pre_status,
                     "cur"   =>  cur_status,
-                    "url"   =>  pkgdict[JULIA_VERSION][pkgname]["url"],
+                    "url"   =>  "../detail/$(pkgname).html",
                     "purl"  =>  "../logs/$(pkgname)_$(JULIA_VERSION).log"
                     ))
             end
