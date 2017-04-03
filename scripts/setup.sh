@@ -111,6 +111,8 @@ sudo apt-get install libxml2-utils
 #    texlive-luatex texlive-xetex pgf lmodern
 # Install ubuntu's netcdf since conda likes breaking theirs
 sudo apt-get install libnetcdf-dev
+# Need gnuplot for Gaston.jl
+sudo apt-get install gnuplot
 # ArrayFire
 AFSCRIPT=ArrayFire-no-gl-v3.4.2_Linux_x86_64.sh
 wget http://ci.arrayfire.org/userContent/Linux/$AFSCRIPT
