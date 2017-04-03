@@ -99,6 +99,7 @@ const PKGOPTS = Dict([
     ("GLWindow"               , :OPENGL),
     ("GLVisualize"            , :OPENGL),
     ("GR"                     , :XVFB),      # Plotting package
+    ("Gaston"                 , :XVFB),      # Plotting package
     ("Gtk"                    , :XVFB),      # GUI package
     ("GtkBuilderAid"          , :XVFB),      # GUI via Gtk.jl
     ("GtkReactive"            , :XVFB),      # GUI via Gtk.jl
