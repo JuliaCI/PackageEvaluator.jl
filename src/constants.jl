@@ -60,8 +60,7 @@ const LICFILES=["LICENSE", "LICENSE.md", "License.md", "LICENSE.txt", "LICENSE.r
 # PYTHON = requires a Python package that we haven't got installed
 # BREAKS = something about the package doesn't play nice
 # OPENGL = Needs OpenGL support, which XVFB can't handle
-const PKGOPTS = Dict(vcat([
-    # Packages that break in all versions of Julia
+const PKGOPTS = Dict([
     ("ActiveAppearanceModels" , :XVFB),      # GUI via Tk.jl
     ("AppleAccelerate"        , :OSX),
     ("Arduino"                , :BINARY),    # Needs libarduino
@@ -92,6 +91,7 @@ const PKGOPTS = Dict(vcat([
     ("EEG"                    , :XVFB),      # GUI via Tk.jl
     ("ElasticFDA"             , :XVFB),      # GUI via Tk.jl
     ("Elemental"              , :BINARY),    # Depends on MPI.jl
+    ("Expect"                 , :BREAKS),    # causes hangs on julia 0.3
     ("GLAbstraction"          , :OPENGL),
     ("GLFW"                   , :OPENGL),
     ("GLPlot"                 , :OPENGL),
@@ -135,6 +135,7 @@ const PKGOPTS = Dict(vcat([
     ("Pandas"                 , :PYTHON),    # Needs pandas
     ("Pardiso"                , :BINARY),    # Commercial software
     ("Plots"                  , :BINARY),    # Too many plotting package dependecies https://github.com/tbreloff/Plots.jl/issues/243
+    ("Polyglot"               , :BINARY),    # Froze PkgEval https://github.com/wavexx/Polyglot.jl/issues/1
     ("ProfileView"            , :XVFB),
     ("PyLexYacc"              , :PYTHON),    # Needs PLY and attrdict
     ("PyPlot"                 , :XVFB),      # GUI
@@ -159,9 +160,4 @@ const PKGOPTS = Dict(vcat([
     ("Winston"                , :XVFB),      # GUI via Tk.jl
     ("VML"                    , :BINARY),    # Needs MKL
     ("YT"                     , :PYTHON),    # Needs yt
-],
-VERSION >= v"0.5"? []: [
-    # Packages that break in Julia<0.5
-    ("Expect"                 , :BREAKS),    # Freezes PkgEval
-    ("Polyglot"               , :BREAKS),    # Freezes PkgEval
-]))
+])
