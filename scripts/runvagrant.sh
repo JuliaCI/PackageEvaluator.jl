@@ -37,21 +37,21 @@ all06
 EOF
 
 else
-    vagrant up --no-provision halfAL04
-    vagrant up --no-provision halfMZ04
-    vagrant up --no-provision halfAL05
-    vagrant up --no-provision halfMZ05
-    vagrant up --no-provision halfAL06
-    vagrant up --no-provision halfMZ06
+    vagrant up --no-provision halfAK04
+    vagrant up --no-provision halfLZ04
+    vagrant up --no-provision halfAK05
+    vagrant up --no-provision halfLZ05
+    vagrant up --no-provision halfAK06
+    vagrant up --no-provision halfLZ06
 
     # Provision in parallel
     cat <<EOF | parallel_provision
-halfAL04
-halfMZ04
-halfAL05
-halfMZ05
-halfAL06
-halfMZ06
+halfAK04
+halfLZ04
+halfAK05
+halfLZ05
+halfAK06
+halfLZ06
 EOF
 
 fi

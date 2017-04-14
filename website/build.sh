@@ -26,7 +26,7 @@ gunzip -f -k $HISTPATH.gz
 #scp nanosoldier1.csail.mit.edu:~/PkgEval/scripts/*.json ./
 cp $(dirname "$0")/../scripts/*.json .
 
-$JULIA --color=yes pull_repo_info.jl 0.4AL.json 0.4MZ.json 0.5AL.json 0.5MZ.json 0.6AL.json 0.6MZ.json
+$JULIA --color=yes pull_repo_info.jl 0.4AK.json 0.4LZ.json 0.5AK.json 0.5LZ.json 0.6AK.json 0.6LZ.json
 
 $JULIA --color=yes build_site_data.jl $LOGPATH $BADGEPATH $HISTPATH
 
