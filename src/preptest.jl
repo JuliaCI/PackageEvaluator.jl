@@ -7,7 +7,6 @@
 # See description in scripts/setup.sh for the purpose of this file
 #######################################################################
 
-using Compat
 include("constants.jl")
 
 function prepare_test()
@@ -34,16 +33,9 @@ function prepare_test()
     fp = open(string(pkg_name,".sh"),"w")
     println(fp, "set -o pipefail")  # So tee doesn't swallow the exit code
 
-    if is_apple()
-        # Force usage of coreutils' timeout
-        print(fp, "gtimeout -s9 $(TEST_TIMEOUT)s ")
-    elseif is_linux()
-        # Separate PID namespace to prevent any child process to escape
-        # the timeout invocation and lock our tests
-        print(fp, "sudo -E timeout -s9 $(TEST_TIMEOUT)s unshare -fp runuser -u \$USER -- ")
-    else
-        print(fp, "timeout -s9 $(TEST_TIMEOUT)s ")
-    end
+    # Separate PID namespace to prevent any child process to escape
+    # the timeout invocation and lock our tests
+    print(fp, "sudo -E timeout -s9 $(TEST_TIMEOUT)s unshare -fp runuser -u \$USER -- ")
 
     if get(PKGOPTS, pkg_name, :NORMAL) == :XVFB
         print(fp, "xvfb-run ")
