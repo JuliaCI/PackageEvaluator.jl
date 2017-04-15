@@ -53,6 +53,9 @@ const LICFILES=["LICENSE", "LICENSE.md", "License.md", "LICENSE.txt", "LICENSE.r
                  "README",  "README.md",                "README.txt",
                 "COPYING", "COPYING.md",               "COPYING.txt"]
 
+# Package testing defaults
+const TEST_TIMEOUT = 1200
+
 # Special package treatments
 # XVFB   = requires X virtual framebuffer
 # BINARY = can't run due to a binary dependency that can't be satisfied
