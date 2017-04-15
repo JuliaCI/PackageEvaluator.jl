@@ -7,6 +7,7 @@
 # See description in scripts/setup.sh for the purpose of this file
 #######################################################################
 
+using Compat
 include("constants.jl")
 
 function prepare_test()
