@@ -18,8 +18,8 @@ const LICENSES=[("MIT",[
                     r"mit \"expat\" license",
                     r"permission is hereby granted, free of charge,"]),
                 ("MPL v2",[
-                    r"mpl version 2",
-                    r"mozilla public license version 2"]),
+                    r"mpl,? version 2",
+                    r"mozilla public license,? version 2"]),
                 ("GPL v2",[
                     r"gpl version 2",
                     r"gpl ?v2",
