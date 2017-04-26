@@ -53,6 +53,9 @@ const LICFILES=["LICENSE", "LICENSE.md", "License.md", "LICENSE.txt", "LICENSE.r
                  "README",  "README.md",                "README.txt",
                 "COPYING", "COPYING.md",               "COPYING.txt"]
 
+# Package testing defaults
+const TEST_TIMEOUT = 1200
+
 # Special package treatments
 # XVFB   = requires X virtual framebuffer
 # BINARY = can't run due to a binary dependency that can't be satisfied
@@ -91,7 +94,6 @@ const PKGOPTS = Dict([
     ("EEG"                    , :XVFB),      # GUI via Tk.jl
     ("ElasticFDA"             , :XVFB),      # GUI via Tk.jl
     ("Elemental"              , :BINARY),    # Depends on MPI.jl
-    ("Expect"                 , :BREAKS),    # causes hangs on julia 0.3
     ("GLAbstraction"          , :OPENGL),
     ("GLFW"                   , :OPENGL),
     ("GLPlot"                 , :OPENGL),
@@ -135,7 +137,6 @@ const PKGOPTS = Dict([
     ("Pandas"                 , :PYTHON),    # Needs pandas
     ("Pardiso"                , :BINARY),    # Commercial software
     ("Plots"                  , :BINARY),    # Too many plotting package dependecies https://github.com/tbreloff/Plots.jl/issues/243
-    ("Polyglot"               , :BINARY),    # Froze PkgEval https://github.com/wavexx/Polyglot.jl/issues/1
     ("ProfileView"            , :XVFB),
     ("PyLexYacc"              , :PYTHON),    # Needs PLY and attrdict
     ("PyPlot"                 , :XVFB),      # GUI

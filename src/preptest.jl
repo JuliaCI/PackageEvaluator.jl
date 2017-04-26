@@ -8,9 +8,6 @@
 #######################################################################
 
 include("constants.jl")
-# TODO: uncomment this (and deal with deprecation) if pkgeval gets generalized to run on mac
-#const TIMEOUTPATH = @osx? "gtimeout" : "timeout"
-const TIMEOUTPATH = "timeout"
 
 function prepare_test()
     pkg_name = ARGS[1]
@@ -35,10 +32,14 @@ function prepare_test()
     # Tests exist, so lets create a shell script to run them
     fp = open(string(pkg_name,".sh"),"w")
     println(fp, "set -o pipefail")  # So tee doesn't swallow the exit code
+
+    # Separate PID namespace to prevent any child process to escape
+    # the timeout invocation and lock our tests
+    print(fp, "sudo -E timeout -s9 $(TEST_TIMEOUT)s unshare -fp runuser -u \$USER -- ")
+
     if get(PKGOPTS, pkg_name, :NORMAL) == :XVFB
         print(fp, "xvfb-run ")
     end
-    print(fp, "$TIMEOUTPATH -s 9 1200s ")
     print(fp, "julia -e 'versioninfo(true); Pkg.test(\"", pkg_name, "\")'")
     print(fp, " 2>&1 | tee PKGEVAL_", pkg_name, "_test.log")
     close(fp)
