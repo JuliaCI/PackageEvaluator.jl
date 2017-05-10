@@ -108,6 +108,7 @@ jl_date_vers = [Date(2014,08,20)  "v0.3.0"  950  true;
                 Date(2016,09,18)  "v0.4.7"  400  false;
                 Date(2016,09,19)  "v0.5.0"  900  true;
                 Date(2017,03,05)  "v0.5.1"  1000 false;
+                Date(2017,05,06)  "v0.5.2"  900  false;
 ]
 fig = figure(figsize=(10,4))  # inches
 plot(x_dates["0.2"], y_totals["0.2"], "r-",
