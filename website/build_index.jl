@@ -129,7 +129,7 @@ for pkg_name in pkg_names
     temp_data["FWDDEP"]      = pkg["fwddep"]
     temp_data["REVDEP"]      = pkg["revdep"]
     # For per-package detail page
-    temp_data["PKG_LINK"]    = string("http://pkg.julialang.org/?pkg=", pkg["name"])
+    temp_data["PKG_LINK"]    = string("http://pkg.julialang.org/detail/", pkg["name"])
 
     # Now add per-version information
     temp_data["PERVERSION"] = Dict[]
