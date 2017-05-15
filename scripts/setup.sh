@@ -50,21 +50,12 @@ echo "verbose = off" >> ~/.wgetrc
 sudo apt-get update    # Pull in latest versions
 sudo apt-get upgrade   # Upgrade system packages
 # Use first argument to script to distinguish between the versions
-if [ "$1" == "0.3" ]
+if [ "$1" == "0.7" ]
 then
-    wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.3/julia-0.3-latest-linux-x86_64.tar.gz
-elif [ "$1" == "0.4" ]
-then
-    wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.4/julia-0.4-latest-linux-x86_64.tar.gz
-elif [ "$1" == "0.5" ]
-then
-    wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.5/julia-0.5-latest-linux-x86_64.tar.gz
-elif [ "$1" == "0.6" ]
-then
-    wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.6/julia-0.6-latest-linux-x86_64.tar.gz
-else
     # Nightly
     wget -O julia.tar.gz https://julianightlies.s3.amazonaws.com/bin/linux/x64/julia-latest-linux64.tar.gz
+else
+    wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/${1}/julia-${1}-latest-linux-x86_64.tar.gz
 fi
 mkdir julia
 tar -zxf julia.tar.gz -C ./julia --strip-components=1
