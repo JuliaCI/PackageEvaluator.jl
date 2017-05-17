@@ -53,9 +53,9 @@ sudo apt-get upgrade   # Upgrade system packages
 if [ "$1" == "0.7" ]
 then
     # Nightly
-    wget -O julia.tar.gz https://julianightlies.s3.amazonaws.com/bin/linux/x64/julia-latest-linux64.tar.gz
+    wget -O julia.tar.gz https://julialangnightlies-s3.julialang.org/bin/linux/x64/julia-latest-linux64.tar.gz
 else
-    wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/${1}/julia-${1}-latest-linux-x86_64.tar.gz
+    wget -O julia.tar.gz https://julialang-s3.julialang.org/bin/linux/x64/${1}/julia-${1}-latest-linux-x86_64.tar.gz
 fi
 mkdir julia
 tar -zxf julia.tar.gz -C ./julia --strip-components=1
