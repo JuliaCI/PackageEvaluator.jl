@@ -91,7 +91,7 @@ sudo add-apt-repository -y ppa:webupd8team/java
 sudo apt-get update
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-sudo apt-get -y install oracle-java7-installer
+sudo apt-get -y install oracle-java7-installer || sudo apt-get remove oracle-java7-installer
 export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 echo "export JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /home/vagrant/.profile
 # Use the Conda Package as Python environment
