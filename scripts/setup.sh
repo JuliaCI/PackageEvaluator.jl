@@ -53,10 +53,10 @@ sudo apt-get upgrade   # Upgrade system packages
 if [ "$2" == "LZ" ]
 then
     # backport
-#    wget -O julia.tar.gz https://julianightlies.s3.amazonaws.com/bin/linux/x64/julia-latest-linux64.tar.gz
-    wget -O julia.tar.gz https://julianightlies.s3.amazonaws.com/bin/linux/x64/0.6/julia-0.6.0-be004c1bfe-linux64.tar.gz
+#    wget -O julia.tar.gz https://julialangnightlies-s3.julialang.org/bin/linux/x64/julia-latest-linux64.tar.gz
+    wget -O julia.tar.gz https://julialangnightlies-s3.julialang.org/bin/linux/x64/0.6/julia-0.6.0-be004c1bfe-linux64.tar.gz
 else
-    wget -O julia.tar.gz https://julialang.s3.amazonaws.com/bin/linux/x64/0.6/julia-0.6-latest-linux-x86_64.tar.gz
+    wget -O julia.tar.gz https://julialang-s3.julialang.org/bin/linux/x64/0.6/julia-0.6-latest-linux-x86_64.tar.gz
 fi
 mkdir julia
 tar -zxf julia.tar.gz -C ./julia --strip-components=1
@@ -92,7 +92,7 @@ sudo add-apt-repository -y ppa:webupd8team/java
 sudo apt-get update
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-sudo apt-get -y install oracle-java7-installer
+sudo apt-get -y install oracle-java7-installer || sudo apt-get remove oracle-java7-installer
 export JAVA_HOME=/usr/lib/jvm/java-7-oracle
 echo "export JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /home/vagrant/.profile
 # Use the Conda Package as Python environment
