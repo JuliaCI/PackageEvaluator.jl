@@ -54,7 +54,7 @@ if [ "$2" == "LZ" ]
 then
     # backport
 #    wget -O julia.tar.gz https://julialangnightlies-s3.julialang.org/bin/linux/x64/julia-latest-linux64.tar.gz
-    wget -O julia.tar.gz https://julialangnightlies-s3.julialang.org/bin/linux/x64/0.6/julia-0.6.0-be004c1bfe-linux64.tar.gz
+    wget -O julia.tar.gz https://julialangnightlies-s3.julialang.org/bin/linux/x64/0.6/julia-0.6.0-e531c84f61-linux64.tar.gz
 else
     wget -O julia.tar.gz https://julialang-s3.julialang.org/bin/linux/x64/0.6/julia-0.6-latest-linux-x86_64.tar.gz
 fi
