@@ -50,17 +50,21 @@ echo "verbose = off" >> ~/.wgetrc
 sudo apt-get update    # Pull in latest versions
 sudo apt-get upgrade   # Upgrade system packages
 # Use first argument to script to distinguish between the versions
-if [ "$2" == "LZ" ]
-then
+#if [ "$2" == "LZ" ]
+#then
     # backport
 #    wget -O julia.tar.gz https://julialangnightlies-s3.julialang.org/bin/linux/x64/julia-latest-linux64.tar.gz
-    wget -O julia.tar.gz https://julialangnightlies-s3.julialang.org/bin/linux/x64/0.6/julia-0.6.0-e531c84f61-linux64.tar.gz
-else
+#    wget -O julia.tar.gz https://julialangnightlies-s3.julialang.org/bin/linux/x64/0.6/julia-0.6.0-73b5504ad4-linux64.tar.gz
+#else
     wget -O julia.tar.gz https://julialang-s3.julialang.org/bin/linux/x64/0.6/julia-0.6-latest-linux-x86_64.tar.gz
-fi
+#fi
 mkdir julia
 tar -zxf julia.tar.gz -C ./julia --strip-components=1
 rm julia.tar.gz
+if [ "$2" == "LZ" ]
+then
+cp -f /home/vagrant/julia/bin/julia-debug /home/vagrant/julia/bin/julia
+fi
 export PATH="${PATH}:/home/vagrant/julia/bin/"
 # Retain PATH to make it easier to use VM for debugging
 echo "export PATH=\"\${PATH}:/home/vagrant/julia/bin/\"" >> /home/vagrant/.profile
