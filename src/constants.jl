@@ -113,6 +113,7 @@ const PKGOPTS = Dict([
     ("Immerse"                , :XVFB),      # GUI via Gtk.jl
     ("InspectDR"              , :XVFB),      # Plotting package
     ("Instruments"            , :BINARY),    # Needs NI-VISA
+    ("IterableTables"         , :XVFB),      # Test-depends on VegaLite
     ("KNITRO"                 , :BINARY),    # Commercial software
     ("LibTrading"             , :BINARY),    # Needs libtrading
     ("Mandrill"               , :BREAKS),    # Needs API Key
@@ -156,6 +157,7 @@ const PKGOPTS = Dict([
     ("Thrift"                 , :BINARY),    # Needs Thrift compiler
     ("Tk"                     , :XVFB),      # GUI package
     ("Twitter"                , :BREAKS),    # Needs authentication
+    ("VegaLite"               , :XVFB),      # Depends on Rsvg
     ("Weave"                  , :XVFB),      # GUI via Tk.jl
     ("Winston"                , :XVFB),      # GUI via Tk.jl
     ("VML"                    , :BINARY),    # Needs MKL
