@@ -86,14 +86,11 @@ sudo apt-get install r-base r-base-dev
 # Install gmsh and libav-tools for EllipticFEM.jl
 sudo apt-get install gmsh libav-tools
 # Install Java for e.g. JavaCall.jl, Taro.jl
-# From: http://stackoverflow.com/q/19275856/3822752
-sudo add-apt-repository -y ppa:webupd8team/java
+sudo add-apt-repository -y ppa:openjdk-r/ppa
 sudo apt-get update
-echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
-echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-sudo apt-get -y install oracle-java7-installer || sudo apt-get remove oracle-java7-installer
-export JAVA_HOME=/usr/lib/jvm/java-7-oracle
-echo "export JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /home/vagrant/.profile
+sudo apt-get install openjdk-8-jdk
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> /home/vagrant/.profile
 # Use the Conda Package as Python environment
 export PYTHON=""
 # Need /usr/share/dict/words for TextAnalysis.jl
