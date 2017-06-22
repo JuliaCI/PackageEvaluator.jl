@@ -181,6 +181,7 @@ const NEWCODES = ["tests_pass","tests_fail",
 jlv3 = Date(2014,08,20)
 jlv4 = Date(2015,10,08)
 jlv5 = Date(2016,09,19)
+jlv6 = Date(2017,06,19)
 
 for ver in keys(totals), aspercent in [true,false]
     x_dates_old  = Date[]
@@ -224,20 +225,25 @@ for ver in keys(totals), aspercent in [true,false]
     plot(x_dates, y_totals["tests_fail"],   color="red",    marker=".")
     plot(x_dates, y_totals["no_tests"],     color="blue",   marker=".")
     plot(x_dates, y_totals["not_possible"], color="grey",   marker=".")
-    if ver == "0.3"
+    if ver in ("0.3",)
         annotate(xy=(jlv3,aspercent?40:850), s="v0.3",
                  size="small", ha="left")
         axvline(x=jlv3, alpha=1.0, color="#333333")
     end
-    if ver == "0.3" || ver == "0.4"
+    if ver in ("0.3", "0.4")
         annotate(xy=(jlv4,aspercent?40:850), s="v0.4",
                  size="small", ha="left")
         axvline(x=jlv4, alpha=1.0, color="#333333")
     end
-    if ver == "0.3" || ver == "0.4" || ver == "0.5"
+    if ver in ("0.3", "0.4", "0.5")
         annotate(xy=(jlv5,aspercent?40:850), s="v0.5",
                  size="small", ha="left")
         axvline(x=jlv5, alpha=1.0, color="#333333")
+    end
+    if ver in ("0.3", "0.4", "0.5", "0.6")
+        annotate(xy=(jlv6,aspercent?40:850), s="v0.6",
+                 size="small", ha="left")
+        axvline(x=jlv6, alpha=1.0, color="#333333")
     end
     xticks(rotation="vertical")
     ylabel(string(aspercent?"Percentage":"Number", " of Packages"))
