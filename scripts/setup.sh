@@ -84,7 +84,7 @@ sudo apt-get install cmake
 # Install R for e.g. Rif.jl, RCall.jl
 sudo apt-get install r-base r-base-dev
 # R packages for BioBridgeR.jl
-sudo Rscript -e 'install.packages("ape", repos = ""http://cran.rstudio.com/"")'
+sudo Rscript -e 'install.packages("ape", repos = "http://cran.rstudio.com/")'
 # Install gmsh and libav-tools for EllipticFEM.jl
 sudo apt-get install gmsh libav-tools
 # Install Java for e.g. JavaCall.jl, Taro.jl
