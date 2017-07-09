@@ -81,6 +81,8 @@ sudo apt-get install gfortran pkg-config
 sudo apt-get install unzip
 # Need cmake for e.g. GLFW.jl, Metis.jl
 sudo apt-get install cmake
+# Need libtool for LibHealpix.jl
+sudo apt-get install libtool
 # Install R for e.g. Rif.jl, RCall.jl
 sudo apt-get install r-base r-base-dev
 # R packages for BioBridgeR.jl
