@@ -53,7 +53,9 @@ sudo apt-get upgrade   # Upgrade system packages
 if [ "$2" == "LZ" ]
 then
     # backport
-    wget -O julia.tar.gz https://s3.amazonaws.com/julialangnightlies/buildog/bin/linux/x64/0.6/julia-9b348ff635-linux64.tar.gz
+    # wget -O julia.tar.gz https://s3.amazonaws.com/julialangnightlies/buildog/bin/linux/x64/0.6/julia-9b348ff635-linux64.tar.gz
+    # aa/revert
+    wget -O julia.tar.gz https://julialangnightlies.s3.amazonaws.com/buildog/bin/linux/x64/0.6/julia-d7f0924dde-linux64.tar.gz
 else
     wget -O julia.tar.gz https://julialang-s3.julialang.org/bin/linux/x64/0.6/julia-0.6-latest-linux-x86_64.tar.gz
 fi
