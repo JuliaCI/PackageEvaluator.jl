@@ -2,8 +2,8 @@
 
 Depending on the configuration it is run in, PkgEval will produce either
 
-* `0.4all.json`, `0.5all.json`, `0.6all.json`, or
-* `0.4AK.json`, `0.4LZ.json`, `0.5AK.json`, `0.5LZ.json`, `0.6AK.json`, `0.6LZ.json`
+* `0.5all.json`, `0.6all.json`, `0.7all.json`, or
+* `0.5AK.json`, `0.5LZ.json`, `0.6AK.json`, `0.6LZ.json`, `0.7AK.json`, `0.7LZ.json`
 
 The scripts in this folder take these results, enhance them, and construct
 the HTML and images for the website. If you have everything installed,

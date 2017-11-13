@@ -10,7 +10,7 @@
 # then runs it to produce the JSON result files.
 #
 # Commandline arguments for this script, passed through by Vagrant.
-# 1st: Julia version:   0.4 | 0.5 | 0.6
+# 1st: Julia version:   0.5 | 0.6 | 0.7
 # 2nd: Test set to run: setup | all | AK | LZ
 #######################################################################
 
