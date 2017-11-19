@@ -31,7 +31,33 @@ if any(x->endswith(x,".out.txt"), readdir())
 end
 
 run(`git pull`) # update pkgeval repo to latest before running
-run(`./runvagrant.sh`)
+
+# Recent versions of Vagrant exit with a nonzero status from `vagrant destroy` if a
+# VM isn't running (https://github.com/hashicorp/vagrant/issues/9137). Vagrant knows
+# about more VMs than we actually spawn, so the status is nonzero even if everything
+# finished normally. Thus we have to ignore the status and instead manually check
+# whether it's safe to continue.
+isfile("vagrant.out.txt") && rm("vagrant.out.txt")
+run(pipeline(ignorestatus(`./runvagrant.sh`),
+             stdout="vagrant.out.txt",
+             stderr="vagrant.out.txt",
+             append=true))
+prevline = ""
+for line in eachline("vagrant.out.txt")
+    # If the last thing that happened before tearing down the VMs wasn't provisioning
+    # them, something must have gone wrong
+    if ismatch(r"^==> [^:]+: Forcing shutdown", line) &&
+        !ismatch(r"^Provisioning '[^']+'. Output will be in", prevline)
+        error("Something went wrong while running Vagrant. See vagrant.out.txt.")
+    end
+    prevline = line
+end
+# prevline now contains the last line, so make sure it's a typical Vagrant message
+if !ismatch(r"^==> [^:]+: (Destroying VM and|VM not created)", prevline)
+    error("Something went wrong while running Vagrant. See vagrant.out.txt")
+end
+# TODO: Remove this whole terrible hack once Vagrant issue #9137 is fixed.
+
 message = makebackup(today) # make backup of new logs
 
 cd(websitepath)
