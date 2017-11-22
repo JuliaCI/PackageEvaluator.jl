@@ -53,7 +53,8 @@ sudo apt-get upgrade   # Upgrade system packages
 if [ "$2" == "LZ" ]
 then
     # Backport 0.6.2
-    wget -O julia.tar.gz https://julialangnightlies.s3.amazonaws.com/buildog/bin/linux/x64/0.6/julia-f25cc60132-linux64.tar.gz
+    wget -O julia.tar.gz https://julialangnightlies.s3.amazonaws.com/bin/linux/x64/0.6/julia-3522df129c-linux64.tar.gz
+    #wget -O julia.tar.gz https://julialangnightlies.s3.amazonaws.com/buildog/bin/linux/x64/0.6/julia-f25cc60132-linux64.tar.gz
 else
     wget -O julia.tar.gz https://julialang-s3.julialang.org/bin/linux/x64/0.6/julia-0.6-latest-linux-x86_64.tar.gz
 fi
