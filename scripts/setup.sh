@@ -53,8 +53,7 @@ sudo apt-get upgrade   # Upgrade system packages
 if [ "$2" == "LZ" ]
 then
     # Backport 0.6.2
-    wget -O julia.tar.gz https://julialangnightlies.s3.amazonaws.com/bin/linux/x64/0.6/julia-3522df129c-linux64.tar.gz
-    #wget -O julia.tar.gz https://julialangnightlies.s3.amazonaws.com/buildog/bin/linux/x64/0.6/julia-f25cc60132-linux64.tar.gz
+    wget -O julia.tar.gz https://julialangnightlies.s3.amazonaws.com/bin/linux/x64/0.6/julia-6736f45eb1-linux64.tar.gz
 else
     wget -O julia.tar.gz https://julialang-s3.julialang.org/bin/linux/x64/0.6/julia-0.6-latest-linux-x86_64.tar.gz
 fi
@@ -138,7 +137,7 @@ julia -e "Pkg.init(); println(Pkg.dir())"
 # Run PackageEvaluator
 if [ "$1" == "0.4" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v0.6/METADATA/[A-F,a-f]*
+    LOOPOVER=/home/vagrant/.julia/v0.6/METADATA/[A-F,a-f]*;
 elif [ "$1" == "0.5" ]
 then
     LOOPOVER=/home/vagrant/.julia/v0.6/METADATA/[G-N,g-n]*;
