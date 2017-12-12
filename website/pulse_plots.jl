@@ -232,27 +232,27 @@ for ver in keys(totals), aspercent in [true,false]
     plot(x_dates, y_totals["no_tests"],     color="blue",   marker=".")
     plot(x_dates, y_totals["not_possible"], color="grey",   marker=".")
     if ver in ("0.3",)
-        annotate(xy=(jlv3,aspercent?40:850), s="v0.3",
+        annotate(xy=(jlv3,aspercent ? 40 : 850), s="v0.3",
                  size="small", ha="left")
         axvline(x=jlv3, alpha=1.0, color="#333333")
     end
     if ver in ("0.3", "0.4")
-        annotate(xy=(jlv4,aspercent?40:850), s="v0.4",
+        annotate(xy=(jlv4,aspercent ? 40 : 850), s="v0.4",
                  size="small", ha="left")
         axvline(x=jlv4, alpha=1.0, color="#333333")
     end
     if ver in ("0.3", "0.4", "0.5")
-        annotate(xy=(jlv5,aspercent?40:850), s="v0.5",
+        annotate(xy=(jlv5,aspercent ? 40 : 850), s="v0.5",
                  size="small", ha="left")
         axvline(x=jlv5, alpha=1.0, color="#333333")
     end
     if ver in ("0.3", "0.4", "0.5", "0.6")
-        annotate(xy=(jlv6,aspercent?40:850), s="v0.6",
+        annotate(xy=(jlv6,aspercent ? 40 : 850), s="v0.6",
                  size="small", ha="left")
         axvline(x=jlv6, alpha=1.0, color="#333333")
     end
     xticks(rotation="vertical")
-    ylabel(string(aspercent?"Percentage":"Number", " of Packages"))
+    ylabel(string(aspercent ? "Percentage" : "Number", " of Packages"))
     ylim(ymin = 0, ymax = aspercent ? 80 : 1000 )
     title(string("Julia v$(ver)", aspercent ? " (relative)" : ""))
     open(joinpath(output_path,"$(ver)_$(aspercent).svg"), "w") do fp
