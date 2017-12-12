@@ -134,7 +134,7 @@ xticks(rotation="vertical")
 ylabel("Number of Tagged Packages")
 legend(["0.2","0.3","0.4","0.5","0.6"], loc=2, fontsize="small")
 open(joinpath(output_path,"allver.svg"), "w") do fp
-    writemime(fp, "image/svg+xml", fig)
+    show(fp, "image/svg+xml", fig)
 end
 
 
@@ -144,7 +144,7 @@ end
 print_with_color(:magenta, "  Printing star plot...\n")
 
 star_hist, star_dates = load_star_db(star_db_file)
-star_totals = [d => 0 for d in dates_all]
+star_totals = Dict(d => 0 for d in dates_all)
 for pkg in keys(star_hist)
     for (date,stars) in star_hist[pkg]
         star_totals[date] += stars
@@ -169,7 +169,7 @@ plot(x_dates, y_totals,
 xticks(rotation="vertical")
 ylabel("Number of stars")
 open(joinpath(output_path,"stars.svg"), "w") do fp
-    writemime(fp, "image/svg+xml", fig)
+    show(fp, "image/svg+xml", fig)
 end
 
 
@@ -191,9 +191,9 @@ jlv6 = Date(2017,06,19)
 
 for ver in keys(totals), aspercent in [true,false]
     x_dates_old  = Date[]
-    y_totals_old = [key=>Any[] for key in OLDCODES]
+    y_totals_old = Dict(key=>Any[] for key in OLDCODES)
     x_dates      = Date[]
-    y_totals     = [key=>Any[] for key in NEWCODES]
+    y_totals     = Dict(key=>Any[] for key in NEWCODES)
     for i in 1:length(dates)
         v = totals[ver][dates[i]]
         d = dbdate_to_date(dates[i])
@@ -256,6 +256,6 @@ for ver in keys(totals), aspercent in [true,false]
     ylim(ymin = 0, ymax = aspercent ? 80 : 1000 )
     title(string("Julia v$(ver)", aspercent ? " (relative)" : ""))
     open(joinpath(output_path,"$(ver)_$(aspercent).svg"), "w") do fp
-        writemime(fp, "image/svg+xml", fig)
+        show(fp, "image/svg+xml", fig)
     end
 end

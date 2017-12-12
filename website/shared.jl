@@ -41,7 +41,7 @@ dbdate_to_date(dbdate) =
 function load_hist_db(hist_db_file)
     all_hist = readcsv(hist_db_file, AbstractString)
     # Remove all the whitespace from all fields
-    map!(strip, all_hist)
+    map!(strip, all_hist, all_hist)
     # Form the dictionaries and sets
     hist_db  = Dict()
     pkg_set  = Set()
@@ -79,7 +79,7 @@ function load_star_db(hist_file)
     # Load CSV
     all_hist = readcsv(hist_file, AbstractString)
     # Remove all the whitespace
-    map!(strip, all_hist)
+    map!(strip, all_hist, all_hist)
     # Store results in a dictionary keyed on on package
     # names, with values being an array of (date,stars)
     hist = Dict()

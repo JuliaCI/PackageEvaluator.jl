@@ -13,8 +13,7 @@
 
 print_with_color(:magenta, "Building index page and detail pages...\n")
 
-import JSON, Humanize, Mustache
-using Compat
+using Compat, JSON, Humanize, Mustache, TimeZones
 include("shared.jl")
 
 # Load test history
@@ -96,11 +95,10 @@ function hist_table(hist_db, pkg_name, jl_ver)
     return join(reverse(output_strs))
 end
 
+parsedate(s::AbstractString) =
+    TimeZones.utc(parse(ZonedDateTime, s, dateformat"yyyy-mm-dd HH:MM:SS zzzzz"))
 
-
-
-
-listings = UTF8String[]
+listings = String[]
 
 # For each package in the data set
 for pkg_name in pkg_names
@@ -139,8 +137,7 @@ for pkg_name in pkg_names
             "STATUS"        => pkg["status"],
             "SHA"           => pkg["gitsha"],
             "VER"           => pkg["version"],
-            "DTSTR"         => Humanize.timedelta(Dates.now() -
-                                    DateTime(pkg["gitdate"],"y-m-d H:M:S")),
+            "DTSTR"         => Humanize.timedelta(Dates.now() - parsedate(pkg["gitdate"])),
             "HUMAN_STATUS"  => HUMANSTATUS[pkg["status"]],
             # For per-package detail page
             "SVG_URL"      => string("../badges/",
