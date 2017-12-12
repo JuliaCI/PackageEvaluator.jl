@@ -37,10 +37,10 @@ end
 pkg_names = sort(collect(keys(pkgs_by_name)))
 
 # Load logo
-jllogo_svg = readstring("html/jllogo.svg")
+jllogo_svg = read("html/jllogo.svg", String)
 
 # Load stylesheet
-pkg_css = readstring("html/pkg.css")
+pkg_css = read("html/pkg.css", String)
 
 # Load and render header
 index_head = Mustache.render(readstring("html/indexhead.html"),
@@ -50,13 +50,13 @@ index_head = Mustache.render(readstring("html/indexhead.html"),
          "PKGCOUNT"    => string(length(pkg_names))) )
 
 # Load footer (no templates used)
-index_foot = readstring("html/indexfoot.html")
+index_foot = read("html/indexfoot.html", String)
 
 # Load the template for a package
-index_pkg = readstring("html/indexpkg.html")
+index_pkg = read("html/indexpkg.html", String)
 
 # Load the package detail template
-pkg_detail = readstring("html/pkgdetail.html")
+pkg_detail = read("html/pkgdetail.html", String)
 
 # Helper function to produce history listings for each package
 function hist_table(hist_db, pkg_name, jl_ver)

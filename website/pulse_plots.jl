@@ -52,7 +52,7 @@ dates = setdiff(dates_all, blacklist_dates)
 
 # Collect totals for each Julia version by date and status
 totals = Dict()
-for ver in ["0.2","0.3","0.4","0.5","0.6"]
+for ver in ["0.2","0.3","0.4","0.5","0.6","0.7"]
     totals[ver] = Dict([(date, Dict([(status, 0) for status in keys(HUMANSTATUS)]))
                         for date in dates])
     for pkg in pkgnames

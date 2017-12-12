@@ -13,11 +13,11 @@ import JSON, Mustache
 using Compat
 
 include("shared.jl")
-const RELEASE = "0.5"
-const NIGHTLY = "0.6"
-const LASTVER = "0.4"
-const CURVER  = "0.5"
-const NEXTVER = "0.6"
+const RELEASE = "0.6"
+const NIGHTLY = "0.7"
+const LASTVER = "0.5"
+const CURVER  = "0.6"
+const NEXTVER = "0.7"
 const JULIA_VERSIONS = [LASTVER,CURVER,NEXTVER]
 const VERSION_FOR_CHANGES = CURVER
 
