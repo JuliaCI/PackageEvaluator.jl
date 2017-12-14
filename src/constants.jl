@@ -118,7 +118,6 @@ const PKGOPTS = Dict([
     ("IterableTables"         , :XVFB),      # Test-depends on VegaLite
     ("KNITRO"                 , :BINARY),    # Commercial software
     ("LibTrading"             , :BINARY),    # Needs libtrading
-    ("LLVM"                   , :BINARY),    # Needs llvm-config
     ("Mandrill"               , :BREAKS),    # Needs API Key
     ("Mathematica"            , :BINARY),    # Commercial software
     ("MATLAB"                 , :BINARY),    # Commercial software
