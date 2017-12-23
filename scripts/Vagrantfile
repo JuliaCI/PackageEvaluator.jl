@@ -7,6 +7,12 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |v|
     v.memory = 3072
     v.cpus = 2
+    v.customize [
+      "setextradata",
+      :id,
+      "VBoxInternal/CPUM/CMPXCHG16B",
+      "1"
+    ]
   end
 
   #---------------------------------------------------------------------
