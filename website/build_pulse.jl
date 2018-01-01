@@ -60,13 +60,13 @@ for pkgname in pkgnames
     cur_ver  = hist[1,2]
     cur_date = dbdate_to_date(hist[1,1])
     # Get rid of entries that possibly only briefly existed in METADATA
-    abs(convert(Int, cur_date - dbdate_to_date(date_str))) >= 2 && continue
+    abs(convert(Int, Dates.value(cur_date - dbdate_to_date(date_str)))) >= 2 && continue
     # Try to get version a week ago
     pre_ver = cur_ver
     new_this_week = true
     for i in 2:size(hist, 1)
         pre_date = dbdate_to_date(hist[i,1])
-        if convert(Int, cur_date - pre_date) >= 7
+        if convert(Int, Dates.value(cur_date - pre_date)) >= 7
             pre_ver = hist[i,2]
             new_this_week = false  # Becaue it existed then
             break
@@ -107,8 +107,14 @@ for c in changes
     temp_change["sha"] = pd["gitsha"]
     push!(disp_changes, temp_change)
 end
-temp_data["CHANGESLEFT"]  = disp_changes[1:div(length(disp_changes),2)+1]
-temp_data["CHANGESRIGHT"] = disp_changes[div(length(disp_changes),2)+2:end]
+
+if !isempty(disp_changes)
+    temp_data["CHANGESLEFT"]  = disp_changes[1:div(length(disp_changes),2)+1]
+    temp_data["CHANGESRIGHT"] = disp_changes[div(length(disp_changes),2)+2:end]
+else
+    temp_data["CHANGESLEFT"]  = Any[]
+    temp_data["CHANGESRIGHT"] = Any[]
+end
 
 println("new: ", temp_data["NUMNEWPKG"], ", updated: ", temp_data["NUMUPDPKG"])
 
@@ -180,6 +186,9 @@ print_with_color(:magenta, "  Status totals...\n")
 
 totals = Dict([(ver, Dict()) for ver in JULIA_VERSIONS])
 for JULIA_VERSION in JULIA_VERSIONS
+    if !haskey(totals[JULIA_VERSION], "total")
+        totals[JULIA_VERSION]["total"] = 0
+    end
     for pkgname in pkgnames
         hist_key = (pkgname, JULIA_VERSION)
         # If no history for this package, just punt
@@ -193,8 +202,7 @@ for JULIA_VERSION in JULIA_VERSIONS
         if cur_date == date_str
             totals[JULIA_VERSION][cur_stat] =
                 get(totals[JULIA_VERSION], cur_stat, 0) + 1
-            totals[JULIA_VERSION]["total"] =
-                get(totals[JULIA_VERSION], "total", 0) + 1
+            totals[JULIA_VERSION]["total"] += 1
         end
     end
 end
