@@ -8,7 +8,9 @@
 # exist, as well as other useful information about the package.
 #######################################################################
 
-import JSON
+using JSON
+using Compat
+using Compat.Unicode
 
 include("constants.jl")
 
