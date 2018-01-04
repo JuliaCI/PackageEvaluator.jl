@@ -11,6 +11,7 @@ print_with_color(:magenta, "Building pulse page...\n")
 
 import JSON, Mustache
 using Compat
+using Compat.Printf
 
 include("shared.jl")
 const RELEASE = "0.6"
@@ -38,7 +39,7 @@ end
 hist_db, pkgnames, hist_dates = load_hist_db(hist_db_file)
 
 # Load template, initialize template dictionary
-template = readstring("html/pulse_temp.html")
+template = read("html/pulse_temp.html", String)
 temp_data = Dict{Any,Any}("UPDATEDATE" => string(dbdate_to_date(date_str)))
 
 #-----------------------------------------------------------------------
