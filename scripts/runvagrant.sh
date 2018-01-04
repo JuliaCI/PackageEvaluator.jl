@@ -25,20 +25,16 @@ parallel_provision() {
 
 if [ "$1" == "three" ]
 then
-    vagrant up --no-provision all05
     vagrant up --no-provision all06
     vagrant up --no-provision all07
 
     # Provision in parallel
     cat <<EOF | parallel_provision
-all05
 all06
 all07
 EOF
 
 else
-    vagrant up --no-provision halfAK05
-    vagrant up --no-provision halfLZ05
     vagrant up --no-provision halfAK06
     vagrant up --no-provision halfLZ06
     vagrant up --no-provision halfAK07
@@ -46,8 +42,6 @@ else
 
     # Provision in parallel
     cat <<EOF | parallel_provision
-halfAK05
-halfLZ05
 halfAK06
 halfLZ06
 halfAK07
