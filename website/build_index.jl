@@ -43,7 +43,7 @@ jllogo_svg = read("html/jllogo.svg", String)
 pkg_css = read("html/pkg.css", String)
 
 # Load and render header
-index_head = Mustache.render(readstring("html/indexhead.html"),
+index_head = Mustache.render(read("html/indexhead.html", String),
     Dict("JLLOGO"      => jllogo_svg,
          "PKGCSS"      => pkg_css,
          "LASTUPDATED" => string(Dates.today()),  # YYYY-MM-DD
