@@ -11,7 +11,7 @@
 #
 # Commandline arguments for this script, passed through by Vagrant.
 # 1st: Julia version:   0.6 | 0.7
-# 2nd: Test set to run: setup | all | AK | LZ
+# 2nd: Test set to run: setup | all | AF | GO | PZ
 #######################################################################
 
 
@@ -138,12 +138,15 @@ julia -e "Pkg.init(); println(Pkg.dir())"
 if [ "$2" == "all" ]
 then
     LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/*
-elif [ "$2" == "AK" ]
+elif [ "$2" == "AF" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/[A-K,a-k]*;
-elif [ "$2" == "LZ" ]
+    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/[A-F,a-f]*;
+elif [ "$2" == "GO" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/[L-Z,l-z]*;
+    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/[G-O,g-o]*;
+elif [ "$2" == "PZ" ]
+then
+    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/[P-Z,p-z]*;
 fi
 # For every package name...
 for f in $LOOPOVER;

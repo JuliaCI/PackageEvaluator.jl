@@ -40,5 +40,5 @@ Possible reasons include:
       dependencies that are used for a full PackageEvaluator run, but
       do not do any testing.
     * `all`: do `setup` and evaluate all the packages.
-    * `AK` or `LZ`: evaluate only packages with names beginning with those letters.
+    * `AF`, `GO`, `PZ`: evaluate only packages with names beginning with those letters.
 * Each combination of settings corresponds to a named virtual machine - see `scripts/Vagrantfile` for the list of the VMs.
