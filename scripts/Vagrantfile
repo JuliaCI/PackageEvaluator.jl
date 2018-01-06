@@ -17,14 +17,6 @@ Vagrant.configure("2") do |config|
 
   #---------------------------------------------------------------------
   # SETUP ONLY
-  config.vm.define :setup05 do |setup05|
-    config.vm.provision :shell,
-      path: "setup.sh",
-      args: ["0.5", "setup"],
-      keep_color: true,
-      privileged: false
-  end
-
   config.vm.define :setup06 do |setup06|
     config.vm.provision :shell,
       path: "setup.sh",
@@ -43,14 +35,6 @@ Vagrant.configure("2") do |config|
 
   #---------------------------------------------------------------------
   # ALL PACKAGES
-  config.vm.define :all05 do |all05|
-    config.vm.provision :shell,
-      path: "setup.sh",
-      args: ["0.5", "all"],
-      keep_color: true,
-      privileged: false
-  end
-
   config.vm.define :all06 do |all06|
     config.vm.provision :shell,
       path: "setup.sh",
@@ -68,50 +52,52 @@ Vagrant.configure("2") do |config|
   end
 
   #---------------------------------------------------------------------
-  # HALF PACKAGES
-  config.vm.define :halfAK05 do |halfAK05|
+  # THIRD PACKAGES
+  config.vm.define :thirdAF06 do |thirdAF06|
     config.vm.provision :shell,
       path: "setup.sh",
-      args: ["0.5", "AK"],
-      keep_color: true,
-      privileged: false
-  end
-  config.vm.define :halfLZ05 do |halfLZ05|
-    config.vm.provision :shell,
-      path: "setup.sh",
-      args: ["0.5", "LZ"],
+      args: ["0.6", "AF"],
       keep_color: true,
       privileged: false
   end
 
-  config.vm.define :halfAK06 do |halfAK06|
+  config.vm.define :thirdGO06 do |thirdGO06|
     config.vm.provision :shell,
       path: "setup.sh",
-      args: ["0.6", "AK"],
-      keep_color: true,
-      privileged: false
-  end
-  config.vm.define :halfLZ06 do |halfLZ06|
-    config.vm.provision :shell,
-      path: "setup.sh",
-      args: ["0.6", "LZ"],
+      args: ["0.6", "GO"],
       keep_color: true,
       privileged: false
   end
 
-  config.vm.define :halfAK07 do |halfAK07|
+  config.vm.define :thirdPZ06 do |thirdPZ06|
     config.vm.provision :shell,
       path: "setup.sh",
-      args: ["0.7", "AK"],
-      keep_color: true,
-      privileged: false
-  end
-  config.vm.define :halfLZ07 do |halfLZ07|
-    config.vm.provision :shell,
-      path: "setup.sh",
-      args: ["0.7", "LZ"],
+      args: ["0.6", "PZ"],
       keep_color: true,
       privileged: false
   end
 
+  config.vm.define :thirdAF07 do |thirdAF07|
+    config.vm.provision :shell,
+      path: "setup.sh",
+      args: ["0.7", "AF"],
+      keep_color: true,
+      privileged: false
+  end
+
+  config.vm.define :thirdGO07 do |thirdGO07|
+    config.vm.provision :shell,
+      path: "setup.sh",
+      args: ["0.7", "GO"],
+      keep_color: true,
+      privileged: false
+  end
+
+  config.vm.define :thirdPZ07 do |thirdPZ07|
+    config.vm.provision :shell,
+      path: "setup.sh",
+      args: ["0.7", "PZ"],
+      keep_color: true,
+      privileged: false
+  end
 end

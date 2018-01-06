@@ -5,7 +5,7 @@ PackageEvaluator
 
 The purpose of PackageEvaluator is to attempt to test every Julia package nightly, and to provide the information required to generate the [Julia package listing](http://pkg.julialang.org/).
 
-This is currently done for Julia 0.5, 0.6, and nightly, and the tests are run in Ubuntu 14.04 LTS ("Trusty Tahr") virtual machines managed with [Vagrant](https://www.vagrantup.com/). This allows users to debug why their tests are failing, and allows PackageEvaluator to be run almost anywhere.
+This is currently done for Julia 0.6 and nightly, and the tests are run in Ubuntu 14.04 LTS ("Trusty Tahr") virtual machines managed with [Vagrant](https://www.vagrantup.com/). This allows users to debug why their tests are failing, and allows PackageEvaluator to be run almost anywhere.
 
 The code itself, in particular `scripts/setup.sh`, is heavily commented, so check that out for more information.
 
@@ -34,11 +34,11 @@ Possible reasons include:
 * The configuration of the virtual machine, including the operating system to use, live in the [`Vagrantfile`](https://github.com/JuliaCI/PackageEvaluator.jl/blob/master/scripts/Vagrantfile).
 * When the virtual machine(s) are launched with `vagrant up`, a *provisioning script* called [`setup.sh`](https://github.com/JuliaCI/PackageEvaluator.jl/blob/master/scripts/setup.sh) is run.
 * This script takes two arguments. The first is the version of Julia
-  to use (`0.5` or `0.6` or `0.7`)
+  to use (`0.6` or `0.7`)
 * The second determines the mode to operate in:
     * `setup`: set up the machine with Julia and the same
       dependencies that are used for a full PackageEvaluator run, but
       do not do any testing.
     * `all`: do `setup` and evaluate all the packages.
-    * `AK` or `LZ`: evaluate only packages with names beginning with those letters.
+    * `AF`, `GO`, `PZ`: evaluate only packages with names beginning with those letters.
 * Each combination of settings corresponds to a named virtual machine - see `scripts/Vagrantfile` for the list of the VMs.
