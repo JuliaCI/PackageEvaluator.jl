@@ -116,6 +116,8 @@ jl_date_vers = [Date(2014,08,20)  "v0.3.0"  950  true;
                 Date(2017,03,05)  "v0.5.1"  1000 false;
                 Date(2017,05,06)  "v0.5.2"  900  false;
                 Date(2017,06,19)  "v0.6.0"  400  true;
+                Date(2017,10,24)  "v0.6.1"  700  false;
+                Date(2017,12,13)  "v0.6.2"  850  false;
 ]
 fig = figure(figsize=(10,4))  # inches
 plot(x_dates["0.2"], y_totals["0.2"], "r-",
@@ -123,6 +125,7 @@ plot(x_dates["0.2"], y_totals["0.2"], "r-",
      x_dates["0.4"], y_totals["0.4"], "b-",
      x_dates["0.5"], y_totals["0.5"], "k-",
      x_dates["0.6"], y_totals["0.6"], "y-",
+     x_dates["0.7"], y_totals["0.7"], "m-",
      linewidth=2)
 for i in 1:size(jl_date_vers,1)
     annotate(xy=(jl_date_vers[i,1],jl_date_vers[i,3]), s=jl_date_vers[i,2],
@@ -132,7 +135,7 @@ for i in 1:size(jl_date_vers,1)
 end
 xticks(rotation="vertical")
 ylabel("Number of Tagged Packages")
-legend(["0.2","0.3","0.4","0.5","0.6"], loc=2, fontsize="small")
+legend(["0.2","0.3","0.4","0.5","0.6","0.7"], loc=2, fontsize="small")
 open(joinpath(output_path,"allver.svg"), "w") do fp
     show(fp, "image/svg+xml", fig)
 end
