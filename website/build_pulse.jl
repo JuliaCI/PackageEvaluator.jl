@@ -138,7 +138,7 @@ for pkgname in keys(star_hist)
         pre_info = star_hist[pkgname][i]
         pre_date = dbdate_to_date(pre_info[1])
         pre_star = pre_info[2]
-        convert(Int, cur_date - pre_date) >= 14 && break
+        convert(Int, Dates.value(cur_date - pre_date)) >= 14 && break
     end
     push!(star_changes, (pkgname, cur_star, pre_star))
 end
@@ -185,11 +185,10 @@ end
 
 print_with_color(:magenta, "  Status totals...\n")
 
-totals = Dict([(ver, Dict()) for ver in JULIA_VERSIONS])
+const STATUSES = ["tests_pass", "tests_fail", "no_tests", "not_possible", "total"]
+
+totals = Dict(ver => Dict(status => 0 for status in STATUSES) for ver in JULIA_VERSIONS)
 for JULIA_VERSION in JULIA_VERSIONS
-    if !haskey(totals[JULIA_VERSION], "total")
-        totals[JULIA_VERSION]["total"] = 0
-    end
     for pkgname in pkgnames
         hist_key = (pkgname, JULIA_VERSION)
         # If no history for this package, just punt
