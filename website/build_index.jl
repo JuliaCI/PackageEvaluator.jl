@@ -137,7 +137,7 @@ for pkg_name in pkg_names
             "STATUS"        => pkg["status"],
             "SHA"           => pkg["gitsha"],
             "VER"           => pkg["version"],
-            "DTSTR"         => Humanize.timedelta(Dates.now() - parsedate(pkg["gitdate"])),
+            "DTSTR"         => Humanize.timedelta(Dates.value(Dates.now() - parsedate(pkg["gitdate"]))),
             "HUMAN_STATUS"  => HUMANSTATUS[pkg["status"]],
             # For per-package detail page
             "SVG_URL"      => string("../badges/",
