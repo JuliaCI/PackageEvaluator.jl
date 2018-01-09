@@ -25,7 +25,7 @@ function makebackup(prefix)
     end
 end
 
-today = Date(now())
+today = Dates.today()
 if any(x->endswith(x,".out.txt"), readdir())
     makebackup("$today-fail") # make backup of old pkgeval logs if present
 end
@@ -42,7 +42,12 @@ run(`git pull`) # also update metadata?
 
 cd(joinpath(pkgevalpath, "website"))
 run(ignorestatus(`./clean.sh`))
-run(`./build.sh`)
+
+# Pass the date the build started to make sure that logs are cleaned up properly
+# for long-running jobs
+today_fmt = Dates.format(today, "YYYYmmdd")
+run(`./build.sh $today_fmt`)
+
 token = readchomp("token")
 
 cd("../scripts")

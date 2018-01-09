@@ -10,7 +10,15 @@
 #-----------------------------------------------------------------------
 
 set -e # stop on failure
-CURDATE=$(date +%Y%m%d)
+
+# The script expects the first argument to be the date the job started,
+# but we can be a little lenient and just use the current date if no
+# argument is provided.
+if [ -z "$1" ]; then
+    CURDATE=$(date +%Y%m%d)
+else
+    CURDATE=$1
+fi
 
 JULIA=$(which julia)
 STARPATH=$HOME/github/pkg.julialang.org/db/star_db.csv
