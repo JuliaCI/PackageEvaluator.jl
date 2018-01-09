@@ -96,7 +96,7 @@
 
       <h3 id="stars">Stars</h3>
       <p style="text-align:center"><small>
-          "Stars" are something you can give a package on Github.
+          "Stars" are something you can give a package on GitHub.
           This plot is the total number of stars across all packages.
       </small></p>
 
@@ -140,9 +140,6 @@
       <h3 id="testing-status-changes">Testing status changes</h3>
       <div class="row">
       <div class="col-sm-4">
-        <img src="../img/0.5_false.svg"  class="img-responsive center-block" alt="Julia 0.5 Package Test Status">
-      </div>
-      <div class="col-sm-4">
         <img src="../img/0.6_false.svg"  class="img-responsive center-block" alt="Julia 0.6 Package Test Status">
       </div>
       <div class="col-sm-4">
@@ -151,9 +148,6 @@
       </div>
 
       <div class="row">
-      <div class="col-sm-4">
-        <img src="../img/0.5_true.svg"  class="img-responsive center-block" alt="Julia 0.5 Package Test Status">
-      </div>
       <div class="col-sm-4">
         <img src="../img/0.6_true.svg"  class="img-responsive center-block" alt="Julia 0.6 Package Test Status">
       </div>
@@ -170,14 +164,6 @@
           <td width="17%" style="color: blue;">No tests</td>
           <td width="17%" style="color: grey;">Package untestable</td>
           <td width="17%" style="color: grey;">Total</td>
-        </tr>
-        <tr>
-          <td style="border-right: 1px solid" id="testing-status-changes-0.5">Julia 0.5</td>
-          <td>{{LASTVERPASS}}</td>
-          <td>{{LASTVERFAIL}}</td>
-          <td>{{LASTVERNOTEST}}</td>
-          <td>{{LASTVERUNTEST}}</td>
-          <td>{{LASTVERTOTAL}}</td>
         </tr>
         <tr>
           <td style="border-right: 1px solid" id="testing-status-changes-0.6">Julia 0.6</td>
@@ -198,18 +184,6 @@
       </table>
 
       <div class="row">
-      <div class="col-sm-4">
-        <h4>Julia 0.5</h4>
-        {{#LASTVERCHANGES}}
-        <b>{{TESTDATE}}</b>
-        <ul>
-          {{#STATUSCHANGE}}
-          <li><a href="{{url}}">{{name}}</a>: {{prev}} → <a href="{{purl}}"><span class="{{cur}}"><b>{{cur}}</b></span></a>.</li>
-          {{/STATUSCHANGE}}
-        </ul>
-        {{/LASTVERCHANGES}}
-      </div>
-
       <div class="col-sm-4">
         <h4>Julia 0.6</h4>
         {{#RELEASECHANGES}}
