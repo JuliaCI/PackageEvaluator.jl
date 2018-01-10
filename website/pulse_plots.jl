@@ -46,7 +46,8 @@ blacklist_dates = [
     "20170712",
     "20170830",
     "20170924",
-    "20171001"
+    "20171001",
+    "20180108", # 0.7 was double counted
 ]
 dates = setdiff(dates_all, blacklist_dates)
 
@@ -73,8 +74,8 @@ end
 println("    ", dates[1], "  ", dates[2])
 for status in keys(HUMANSTATUS)
     @printf("    %20s   %4d   %4d\n", status,
-        totals["0.4"][dates[1]][status],
-        totals["0.4"][dates[2]][status])
+        totals["0.6"][dates[1]][status],
+        totals["0.6"][dates[2]][status])
 end
 
 #-----------------------------------------------------------------------
