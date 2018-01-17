@@ -71,6 +71,7 @@ const PKGOPTS = Dict([
     ("AWSS3"                  , :BINARY),    # Needs credentials (#119)
     ("AWSSNS"                 , :BINARY),    # Needs credentials (#119)
     ("AWSSQS"                 , :BINARY),    # Needs credentials (#119)
+    ("BeaData"                , :BREAKS),    # Needs private API key
     ("BSplines"               , :XVFB),      # GUI via Tk.jl
     ("CasaCore"               , :BINARY),    # Needs http://casacore.github.io/casacore/
     ("Clang"                  , :BINARY),    # Needs libclang
