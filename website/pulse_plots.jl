@@ -48,6 +48,7 @@ blacklist_dates = [
     "20170924",
     "20171001",
     "20180108", # 0.7 was double counted
+    "20180110",
 ]
 dates = setdiff(dates_all, blacklist_dates)
 
@@ -160,6 +161,7 @@ y_totals = Int[]
 for date in star_dates
     date == "20140925" && continue  # First entry, not accurate
     date == "20150620" && continue  # Weird spike, double counting?
+    date == "20180108" && continue  # Another weird spike
     total = star_totals[date]
     if total > 10
         push!(x_dates, dbdate_to_date(date))
