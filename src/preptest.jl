@@ -38,7 +38,7 @@ function prepare_test()
     if get(PKGOPTS, pkg_name, :NORMAL) == :XVFB
         print(fp, "xvfb-run ")
     end
-    print(fp, "$TIMEOUTPATH -s 9 900s ")
+    print(fp, "$TIMEOUTPATH -s 9 2400s ")
     # Avoid emitting a deprecation warning for every package tested on 0.7
     print(fp, "julia -e 'VERSION >= v\"0.7.0-DEV.467\" ? versioninfo(verbose=true) :")
     print(fp, " versioninfo(true); Pkg.test(\"", pkg_name, "\")'")

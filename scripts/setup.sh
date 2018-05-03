@@ -52,10 +52,10 @@ sudo apt-get upgrade   # Upgrade system packages
 # Use first argument to script to distinguish between the versions
 if [ "$1" == "0.7" ]
 then
-    # Nightly
-    wget -O julia.tar.gz https://julialangnightlies-s3.julialang.org/bin/linux/x64/julia-latest-linux64.tar.gz
+    # Backports 0.6.3
+    wget -O julia.tar.gz https://julialangnightlies.s3.amazonaws.com/pretesting/bin/linux/x64/0.6/julia-1b309c9c1e-linux64.tar.gz
 else
-    wget -O julia.tar.gz https://julialang-s3.julialang.org/bin/linux/x64/${1}/julia-${1}-latest-linux-x86_64.tar.gz
+    wget -O julia.tar.gz https://julialang-s3.julialang.org/bin/linux/x64/0.6/julia-0.6-latest-linux-x86_64.tar.gz
 fi
 mkdir julia
 tar -zxf julia.tar.gz -C ./julia --strip-components=1
@@ -137,16 +137,16 @@ julia -e "Pkg.init(); println(Pkg.dir())"
 # Run PackageEvaluator
 if [ "$2" == "all" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/*
+    LOOPOVER=/home/vagrant/.julia/v0.6/METADATA/*
 elif [ "$2" == "AF" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/[A-F,a-f]*;
+    LOOPOVER=/home/vagrant/.julia/v0.6/METADATA/[A-F,a-f]*;
 elif [ "$2" == "GO" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/[G-O,g-o]*;
+    LOOPOVER=/home/vagrant/.julia/v0.6/METADATA/[G-O,g-o]*;
 elif [ "$2" == "PZ" ]
 then
-    LOOPOVER=/home/vagrant/.julia/v${1}/METADATA/[P-Z,p-z]*;
+    LOOPOVER=/home/vagrant/.julia/v0.6/METADATA/[P-Z,p-z]*;
 fi
 # For every package name...
 for f in $LOOPOVER;
