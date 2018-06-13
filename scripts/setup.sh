@@ -85,6 +85,8 @@ sudo apt-get install cmake
 sudo apt-get install r-base r-base-dev
 # R packages for BioBridgeR.jl
 sudo Rscript -e 'install.packages("ape", repos = "http://cran.rstudio.com/")'
+# Blast for BioTools.jl
+sudo apt-get install ncbi-blast+
 # Install gmsh and libav-tools for EllipticFEM.jl
 sudo apt-get install gmsh libav-tools
 # Install Java for e.g. JavaCall.jl, Taro.jl
